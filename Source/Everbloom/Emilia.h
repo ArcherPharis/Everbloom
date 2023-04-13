@@ -7,6 +7,11 @@
 #include "InputActionValue.h"
 #include "Emilia.generated.h"
 
+class AAbilityFlower;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnToggleFlowerMenu);
+
+
 /**
  * 
  */
@@ -21,6 +26,11 @@ public:
 
 	virtual void BeginPlay() override;
 
+	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+
+	FOnToggleFlowerMenu OnToggleFlowerMenu;
+	
+
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputMappingContext* MappingContext;
@@ -28,15 +38,29 @@ protected:
 	class UInputAction* MoveAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	class UInputAction* LookAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* InteractAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* ToggleFlowerMenuAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	class UInputAction* JumpAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Interact();
+	void ToggleFlowerMenu();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-		class USpringArmComponent* SpringArm;
+	class USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
-		class UCameraComponent* Camera;
+	class UCameraComponent* Camera;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float GrabRange = 200.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	UInventoryComponent* InventoryComponent;
 	
 };

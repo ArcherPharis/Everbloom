@@ -6,7 +6,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/InputComponent.h"
+#include "InteractableInterface.h"
 #include "Camera/CameraComponent.h"
+#include "InventoryComponent.h"
 
 AEmilia::AEmilia()
 {
@@ -14,6 +16,7 @@ AEmilia::AEmilia()
 	SpringArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 }
 
 void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -23,6 +26,9 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AEmilia::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AEmilia::Look);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AEmilia::Interact);
+		EnhancedInputComponent->BindAction(ToggleFlowerMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleFlowerMenu);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AEmilia::Jump);
 
 	}
 }
@@ -53,5 +59,32 @@ void AEmilia::Look(const FInputActionValue& Value)
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
 	AddControllerYawInput(CurrentValue.X);
 	AddControllerPitchInput(CurrentValue.Y);
+}
+
+void AEmilia::Interact()
+{
+	FHitResult traceResult;
+	FVector ViewLoc;
+	FRotator ViewRot;
+	FCollisionQueryParams CollisionParameters;
+	CollisionParameters.AddIgnoredActor(this);
+	GetActorEyesViewPoint(ViewLoc, ViewRot);
+	if (GetWorld()->LineTraceSingleByChannel(traceResult, ViewLoc, ViewLoc + ViewRot.Vector() * GrabRange, ECC_GameTraceChannel1, CollisionParameters))
+	{
+		if (traceResult.bBlockingHit)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Found something interactable"));
+			AActor* hitActor = traceResult.GetActor();
+			IInteractableInterface* interactInferface = Cast<IInteractableInterface>(hitActor);
+			interactInferface->InteractWith(this);
+
+		}
+	}
+}
+
+void AEmilia::ToggleFlowerMenu()
+{
+	
+	OnToggleFlowerMenu.Broadcast();
 }
 
