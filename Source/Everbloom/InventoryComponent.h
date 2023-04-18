@@ -31,13 +31,21 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	void InitializeInventory(USceneComponent* CompToAttach);
+
 private:
-	//Ability Flowers will share same inventory but be in different structures from normal items.
-	// Ability flowers are pure data and cannot even be used in battle. 
-	//Since there are only eight flowers the implementation will be simpler.
 	
 	UPROPERTY(VisibleAnywhere, Category = "Ability Flowers")
 	TArray<AAbilityFlower*> FlowersObtained;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AWeapon> InitialWeaponClass;
+
+	UPROPERTY()
+	TArray<AWeapon*> Weapons;
+
+	UPROPERTY()
+	AWeapon* CurrentWeapon;
 
 		
 };

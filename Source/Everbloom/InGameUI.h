@@ -20,6 +20,9 @@ public:
 	UFUNCTION()
 	void NewAbilityFlowerGiven(class AAbilityFlower* Flower);
 
+	UFUNCTION()
+	void ToggleMenu(bool ShouldToggle);
+
 
 private:
 
@@ -31,8 +34,13 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* FloriologyMenu;
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* MenuCanvas;
 
 	UPROPERTY(meta = (BindWidget))
 	class UListView* AbilityFlowerList;
+
+	UPROPERTY(meta = (BindWidget))
+	class UPlayerStatsWidget* StatsWidget;
 	
 };

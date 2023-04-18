@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "GameplayEffectTypes.h"
+#include "EBGameplayAbilityTypes.h"
+#include "GameplayAbilitySpec.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
@@ -19,11 +23,40 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
+	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
+
+	FGameplayAbilitySpec* GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID = -1, bool broadCast = true, int level = 0);
+
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	class UEBAbilitySystemComponent* GetAbilitySystemComponent() const { return AbilitySystemComp; }
+	FORCEINLINE class UEBAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	void ApplyInitialEffect();
+
+private:
+	UPROPERTY()
+	UEBAbilitySystemComponent* AbilitySystemComp;
+
+	UPROPERTY()
+	UEBAttributeSet* AttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TMap<EAbilityInputID, TSubclassOf<class UGameplayAbility>> InitialAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TArray <TSubclassOf<class UGameplayEffect>> InitialEffects;
+
+
+
+	
 
 };

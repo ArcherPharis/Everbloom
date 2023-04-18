@@ -15,6 +15,7 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		InGameUI = CreateWidget<UInGameUI>(this, InGameUIClass);
 		InGameUI->AddToViewport();
 		Player->OnToggleFlowerMenu.AddDynamic(this, &AEBPlayerController::SwitchToFloriologyScreen);
+		Player->OnToggleMenu.AddDynamic(InGameUI, &UInGameUI::ToggleMenu);
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
 	}
 }

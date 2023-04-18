@@ -2,6 +2,7 @@
 
 
 #include "InventoryComponent.h"
+#include "Weapon.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -43,5 +44,19 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+}
+
+void UInventoryComponent::InitializeInventory(USceneComponent* CompToAttach)
+{
+	if (!CurrentWeapon && InitialWeaponClass)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = GetOwner();
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		CurrentWeapon = GetWorld()->SpawnActor<AWeapon>(InitialWeaponClass, SpawnParams);
+		FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
+		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, CurrentWeapon->GetAttachmentSocketName());
+		Weapons.Add(CurrentWeapon);
+	}
 }
 

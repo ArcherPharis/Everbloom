@@ -18,3 +18,16 @@ void UInGameUI::NewAbilityFlowerGiven(AAbilityFlower* Flower)
 	AbilityFlowerList->AddItem(Flower);
 	AbilityFlowerList->RequestRefresh();
 }
+
+void UInGameUI::ToggleMenu(bool ShouldToggle)
+{
+	if (ShouldToggle)
+	{
+		WidgetSwitcher->SetActiveWidget(MenuCanvas);
+	}
+	else
+	{
+		WidgetSwitcher->SetActiveWidget(MainCanvas);
+
+	}
+}
