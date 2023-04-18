@@ -25,11 +25,16 @@ public:
 
 	FName GetAttachmentSocketName() const { return WeaponSocketName; }
 
+	float GetWeaponDamage() const { return Damage; }
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	USkeletalMeshComponent* WeaponMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponSocketName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float Damage = 10.f;
 
 };

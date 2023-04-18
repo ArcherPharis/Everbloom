@@ -21,7 +21,7 @@ public:
 	void NewAbilityFlowerGiven(class AAbilityFlower* Flower);
 
 	UFUNCTION()
-	void ToggleMenu(bool ShouldToggle);
+	void ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug);
 
 
 private:

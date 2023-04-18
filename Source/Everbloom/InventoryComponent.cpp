@@ -27,6 +27,15 @@ void UInventoryComponent::AddAbilityFlower(AAbilityFlower* FlowerToAdd)
 	}
 }
 
+float UInventoryComponent::GetCurrentWeaponDamage() const
+{
+	if (CurrentWeapon)
+	{
+		return CurrentWeapon->GetWeaponDamage();
+	}
+	return 0.f;
+}
+
 
 // Called when the game starts
 void UInventoryComponent::BeginPlay()

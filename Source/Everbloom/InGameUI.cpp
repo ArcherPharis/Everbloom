@@ -4,6 +4,7 @@
 #include "InGameUI.h"
 #include "Components/WidgetSwitcher.h"
 #include "AbilityFlower.h"
+#include "PlayerStatsWidget.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
 
@@ -19,7 +20,7 @@ void UInGameUI::NewAbilityFlowerGiven(AAbilityFlower* Flower)
 	AbilityFlowerList->RequestRefresh();
 }
 
-void UInGameUI::ToggleMenu(bool ShouldToggle)
+void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug)
 {
 	if (ShouldToggle)
 	{
@@ -30,4 +31,12 @@ void UInGameUI::ToggleMenu(bool ShouldToggle)
 		WidgetSwitcher->SetActiveWidget(MainCanvas);
 
 	}
+	StatsWidget->SetAllStatTexts(FString::FromInt(health),
+		FString::FromInt(maxHealth), 
+		FString::FromInt(strength), 
+		FString::FromInt(mag), 
+		FString::FromInt(def), 
+		FString::FromInt(res),
+		FString::FromInt(wepAug));
 }
+

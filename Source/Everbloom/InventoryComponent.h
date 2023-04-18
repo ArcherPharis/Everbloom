@@ -23,6 +23,8 @@ public:
 	void AddAbilityFlower(AAbilityFlower* FlowerToAdd);
 	FOnNewAbilityFlowerObtained OnNewAbilityFlowerObtained;
 
+	float GetCurrentWeaponDamage() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

@@ -49,6 +49,10 @@ public:
 	FGameplayAttributeData Resistance;
 	ATTRIBUTE_ACCESSORS(UEBAttributeSet, Resistance);
 
+	UPROPERTY()
+	FGameplayAttributeData WeaponAugmentDamage;
+	ATTRIBUTE_ACCESSORS(UEBAttributeSet, WeaponAugmentDamage);
+
 
 	
 };

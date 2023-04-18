@@ -10,7 +10,7 @@
 class AAbilityFlower;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnToggleFlowerMenu);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnToggleMenu, bool, Toggle);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_EightParams(FOnToggleMenu, bool, Toggle, float, currentHP, float, maxHP, float, str, float, mag, float, def, float, res, float, WeaponDamage);
 
 
 

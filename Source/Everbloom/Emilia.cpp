@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "EBAttributeSet.h"
 #include "Components/InputComponent.h"
 #include "InteractableInterface.h"
 #include "Camera/CameraComponent.h"
@@ -51,6 +52,13 @@ void AEmilia::BeginPlay()
 	ToggleInventoryTimelineComponent->AddInterpFloat(InventoryAlpha, InventoryTimeLineFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
+	//TODO when we swap weapons we need to make sure we also update the augment damage, can either be done here or inventory comp.
+	if (InventoryComponent)
+	{
+		UEBAttributeSet* AS = GetAttributeSet();
+		AS->SetWeaponAugmentDamage(InventoryComponent->GetCurrentWeaponDamage());
+	}
+
 	GiveAbility(BasicAttackAbility, 3);
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -106,17 +114,19 @@ void AEmilia::ToggleFlowerMenu()
 
 void AEmilia::ToggleMenu()
 {
+	UEBAttributeSet* AS = GetAttributeSet();
 	if (!bInInventory)
 	{
 		ToggleInventoryTimelineComponent->Play();
 		bInInventory = true;
-		OnToggleMenu.Broadcast(bInInventory);
+		OnToggleMenu.Broadcast(bInInventory, AS->GetHealth(), AS->GetMaxHealth(), AS->GetStrength(), AS->GetMagic(), AS->GetDefense(), AS->GetResistance(), AS->GetWeaponAugmentDamage());
 	}
 	else
 	{
 		ToggleInventoryTimelineComponent->Reverse();
 		bInInventory = false;
-		OnToggleMenu.Broadcast(bInInventory);
+		OnToggleMenu.Broadcast(bInInventory, AS->GetHealth(), AS->GetMaxHealth(), AS->GetStrength(), AS->GetMagic(), AS->GetDefense(), AS->GetResistance(), AS->GetWeaponAugmentDamage());
+
 	}
 }
 
