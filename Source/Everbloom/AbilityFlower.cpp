@@ -3,6 +3,7 @@
 
 #include "AbilityFlower.h"
 #include "Emilia.h"
+#include "AbilityFlowerItem.h"
 #include "InventoryComponent.h"
 
 void AAbilityFlower::InteractWith(AEmilia* player)
@@ -11,7 +12,8 @@ void AAbilityFlower::InteractWith(AEmilia* player)
 	if (PlayerInventoryComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Got the flower"));
-		PlayerInventoryComponent->AddAbilityFlower(this);
+		UAbilityFlowerItem* Flower = NewObject<UAbilityFlowerItem>(Cast<UAbilityFlowerItem>(GetItemClass()));
+		PlayerInventoryComponent->AddAbilityFlower(Flower);
 	}
 	Destroy();
 }

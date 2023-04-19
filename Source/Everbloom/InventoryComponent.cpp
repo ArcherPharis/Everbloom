@@ -14,7 +14,7 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-void UInventoryComponent::AddAbilityFlower(AAbilityFlower* FlowerToAdd)
+void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 {
 	if (!FlowersObtained.Contains(FlowerToAdd))
 	{

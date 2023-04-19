@@ -18,7 +18,7 @@ public:
 	void SwitchToFloriology();
 
 	UFUNCTION()
-	void NewAbilityFlowerGiven(class AAbilityFlower* Flower);
+	void NewAbilityFlowerGiven(class UAbilityFlowerItem* Flower);
 
 	UFUNCTION()
 	void ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug);

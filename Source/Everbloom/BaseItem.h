@@ -26,25 +26,20 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	TSubclassOf<class UBaseItemObject> GetItemClass() const { return  ItemClass; }
 
-	FText GetItemName() const { return ItemName; }
-	UTexture2D* GetItemIcon() const { return ItemIcon; }
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
-	FText ItemName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
-	FText ItemDescription;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Item")
-	UTexture2D* ItemIcon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	UStaticMeshComponent* ItemMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	class USphereComponent* HitSphere;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	TSubclassOf<class UBaseItemObject> ItemClass;
 
 
 

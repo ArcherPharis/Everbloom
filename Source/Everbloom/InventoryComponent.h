@@ -6,9 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "InventoryComponent.generated.h"
 
-class AAbilityFlower;
+class UAbilityFlowerItem;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewAbilityFlowerObtained, AAbilityFlower*, Flower);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewAbilityFlowerObtained, UAbilityFlowerItem*, Flower);
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -20,7 +20,7 @@ public:
 	// Sets default values for this component's properties
 	UInventoryComponent();
 
-	void AddAbilityFlower(AAbilityFlower* FlowerToAdd);
+	void AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd);
 	FOnNewAbilityFlowerObtained OnNewAbilityFlowerObtained;
 
 	float GetCurrentWeaponDamage() const;
@@ -38,7 +38,7 @@ public:
 private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Ability Flowers")
-	TArray<AAbilityFlower*> FlowersObtained;
+	TArray<UAbilityFlowerItem*> FlowersObtained;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AWeapon> InitialWeaponClass;

@@ -3,7 +3,7 @@
 
 #include "InGameUI.h"
 #include "Components/WidgetSwitcher.h"
-#include "AbilityFlower.h"
+#include "AbilityFlowerItem.h"
 #include "PlayerStatsWidget.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
@@ -13,7 +13,7 @@ void UInGameUI::SwitchToFloriology()
 	WidgetSwitcher->SetActiveWidget(FloriologyMenu);
 }
 
-void UInGameUI::NewAbilityFlowerGiven(AAbilityFlower* Flower)
+void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)
 {
 	UE_LOG(LogTemp, Warning, TEXT("getting to the UI"));
 	AbilityFlowerList->AddItem(Flower);
