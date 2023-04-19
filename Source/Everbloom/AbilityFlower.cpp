@@ -12,7 +12,7 @@ void AAbilityFlower::InteractWith(AEmilia* player)
 	if (PlayerInventoryComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Got the flower"));
-		UAbilityFlowerItem* Flower = NewObject<UAbilityFlowerItem>(Cast<UAbilityFlowerItem>(GetItemClass()));
+		UAbilityFlowerItem* Flower = NewObject<UAbilityFlowerItem>(player,GetItemClass());
 		PlayerInventoryComponent->AddAbilityFlower(Flower);
 	}
 	Destroy();

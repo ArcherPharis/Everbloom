@@ -23,5 +23,10 @@ private:
 	class UImage* FlowerIcon;
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* FlowerName;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* FlowerButton;
+
+	UFUNCTION()
+	void FlowerButtonPressed();
 	
 };

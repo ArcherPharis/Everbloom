@@ -10,14 +10,20 @@
 
 void UInGameUI::SwitchToFloriology()
 {
-	WidgetSwitcher->SetActiveWidget(FloriologyMenu);
+	if (WidgetSwitcher->GetActiveWidget() == FloriologyMenu)
+	{
+		WidgetSwitcher->SetActiveWidget(MainCanvas);
+	}
+	else
+	{
+		WidgetSwitcher->SetActiveWidget(FloriologyMenu);
+	}
 }
 
 void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)
 {
 	UE_LOG(LogTemp, Warning, TEXT("getting to the UI"));
 	AbilityFlowerList->AddItem(Flower);
-	AbilityFlowerList->RequestRefresh();
 }
 
 void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug)

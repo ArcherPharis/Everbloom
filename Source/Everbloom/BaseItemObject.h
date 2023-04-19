@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class EVERBLOOM_API UBaseItemObject : public UObject
 {
 	GENERATED_BODY()
