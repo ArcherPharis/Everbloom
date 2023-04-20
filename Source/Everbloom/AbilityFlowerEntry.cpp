@@ -19,6 +19,8 @@ void UAbilityFlowerEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void UAbilityFlowerEntry::FlowerButtonPressed()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Button Pressed"));
-	FlowerButton->SetIsEnabled(false);
+	UAbilityFlowerItem* Item = GetListItem<UAbilityFlowerItem>();
+	OnEntryClicked.Broadcast(Item);
+	UE_LOG(LogTemp, Warning, TEXT("Flower button Pressed:"));
+	//FlowerButton->SetIsEnabled(false);
 }

@@ -7,6 +7,9 @@
 #include "Blueprint/UserWidget.h"
 #include "AbilityFlowerEntry.generated.h"
 
+class UAbilityFlowerItem;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEntryClicked, UAbilityFlowerItem*, GivenFlower);
+
 /**
  * 
  */
@@ -14,6 +17,9 @@ UCLASS()
 class EVERBLOOM_API UAbilityFlowerEntry : public UUserWidget, public IUserObjectListEntry
 {
 	GENERATED_BODY()
+
+public:
+	FOnEntryClicked OnEntryClicked;
 
 private:
 

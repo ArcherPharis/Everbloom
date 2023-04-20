@@ -5,11 +5,13 @@
 #include "Components/WidgetSwitcher.h"
 #include "AbilityFlowerItem.h"
 #include "PlayerStatsWidget.h"
+#include "AbilityFlowerEntry.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
 
 void UInGameUI::SwitchToFloriology()
 {
+
 	if (WidgetSwitcher->GetActiveWidget() == FloriologyMenu)
 	{
 		WidgetSwitcher->SetActiveWidget(MainCanvas);
@@ -17,13 +19,22 @@ void UInGameUI::SwitchToFloriology()
 	else
 	{
 		WidgetSwitcher->SetActiveWidget(FloriologyMenu);
+
 	}
+
+
+
 }
 
 void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)
 {
-	UE_LOG(LogTemp, Warning, TEXT("getting to the UI"));
 	AbilityFlowerList->AddItem(Flower);
+	UAbilityFlowerEntry* Entry =  AbilityFlowerList->GetEntryWidgetFromItem<UAbilityFlowerEntry>(Flower);
+	if (Entry)
+	{
+		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::HandleFlowerFromEntry);
+	}
+
 }
 
 void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug)
@@ -44,5 +55,31 @@ void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, flo
 		FString::FromInt(def), 
 		FString::FromInt(res),
 		FString::FromInt(wepAug));
+}
+
+void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Flower has been given to UI as a selected flower"));
+	//flower one does not exist, assign the flower clicked as FlowerOne.
+	if (!FlowerOne)
+	{
+		FlowerOne = FlowerGiven;
+		return;
+	}
+	else
+	{
+		//flower one has been chosen. Assign flower two and then do something to let player know
+		//if valid recipe based off of FlowerOne's recipe TMap.
+		FlowerTwo = FlowerGiven;
+		if (FlowerOne->GetFlowerCraftingRecipes().Contains(FlowerTwo->GetClass()))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TODO: Some visual cue to show what ability will be given and a big create button."));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("not a valid recipe"));
+
+		}
+	}
 }
 

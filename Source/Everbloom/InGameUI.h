@@ -42,5 +42,13 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UPlayerStatsWidget* StatsWidget;
+
+	UPROPERTY()
+	class UAbilityFlowerItem* FlowerOne;
+	UPROPERTY()
+	class UAbilityFlowerItem* FlowerTwo;
+
+	UFUNCTION()
+	void HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven);
 	
 };
