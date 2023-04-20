@@ -13,5 +13,9 @@ UCLASS()
 class EVERBLOOM_API AEverbloomGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	TSubclassOf<class UGameplayAbility> GetAbilityForCombination(TArray<class UAbilityFlowerItem*> Items) const;
+private:
+	UPROPERTY(EditDefaultsOnly)
+	class URecipes* Recipes;
 };

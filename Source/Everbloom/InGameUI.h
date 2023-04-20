@@ -22,7 +22,8 @@ public:
 
 	UFUNCTION()
 	void ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug);
-
+protected:
+	virtual void NativeConstruct() override;
 
 private:
 
@@ -51,4 +52,9 @@ private:
 	UFUNCTION()
 	void HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven);
 	
+	void HandleNewFlowerEntry(UUserWidget& UserWidget);
+
+	UPROPERTY()
+	class AEverbloomGameModeBase* Gamemode;
 };
+
