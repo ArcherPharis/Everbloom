@@ -8,6 +8,7 @@
 #include "AbilityFlowerEntry.h"
 #include "EBGameplayAbilityBase.h"
 #include "EverbloomGameModeBase.h"
+#include "FloriologyCraftingWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
@@ -70,6 +71,7 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 	if (!FlowerOne)
 	{
 		FlowerOne = FlowerGiven;
+		CraftingWidget->SetFlowerOneImage(FlowerOne->GetItemIcon());
 		return;
 	}
 	else
@@ -80,7 +82,8 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 		TSubclassOf<UEBGameplayAbilityBase> abilityForRecipe = Gamemode->GetAbilityForCombination({ FlowerOne, FlowerTwo });
 		if (abilityForRecipe)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("the ability for the recipe is: %s"), *abilityForRecipe->GetName())
+			CraftingWidget->SetFlowerTwoImage(FlowerTwo->GetItemIcon());
+			UE_LOG(LogTemp, Warning, TEXT("the ability for the recipe is: %s"), *abilityForRecipe->GetName());
 		}
 		else
 		{

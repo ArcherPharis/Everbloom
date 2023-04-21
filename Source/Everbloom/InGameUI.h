@@ -44,6 +44,8 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UPlayerStatsWidget* StatsWidget;
+	UPROPERTY(meta = (BindWidget))
+	class UFloriologyCraftingWidget* CraftingWidget;
 
 	UPROPERTY()
 	class UAbilityFlowerItem* FlowerOne;
