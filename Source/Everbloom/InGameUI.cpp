@@ -6,6 +6,9 @@
 #include "AbilityFlowerItem.h"
 #include "PlayerStatsWidget.h"
 #include "AbilityFlowerEntry.h"
+#include "EBGameplayAbilityBase.h"
+#include "EverbloomGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
 
@@ -29,11 +32,6 @@ void UInGameUI::SwitchToFloriology()
 void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)
 {
 	AbilityFlowerList->AddItem(Flower);
-	UAbilityFlowerEntry* Entry =  AbilityFlowerList->GetEntryWidgetFromItem<UAbilityFlowerEntry>(Flower);
-	if (Entry)
-	{
-		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::HandleFlowerFromEntry);
-	}
 
 }
 
@@ -57,6 +55,14 @@ void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, flo
 		FString::FromInt(wepAug));
 }
 
+void UInGameUI::NativeConstruct()
+{
+	Super::NativeConstruct();
+	AbilityFlowerList->OnEntryWidgetGenerated().AddUObject(this, &UInGameUI::HandleNewFlowerEntry);
+
+	Gamemode = Cast<AEverbloomGameModeBase>(UGameplayStatics::GetGameMode(this));
+}
+
 void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Flower has been given to UI as a selected flower"));
@@ -71,15 +77,25 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 		//flower one has been chosen. Assign flower two and then do something to let player know
 		//if valid recipe based off of FlowerOne's recipe TMap.
 		FlowerTwo = FlowerGiven;
-		if (FlowerOne->GetFlowerCraftingRecipes().Contains(FlowerTwo->GetClass()))
+		TSubclassOf<UEBGameplayAbilityBase> abilityForRecipe = Gamemode->GetAbilityForCombination({ FlowerOne, FlowerTwo });
+		if (abilityForRecipe)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("TODO: Some visual cue to show what ability will be given and a big create button."));
+			UE_LOG(LogTemp, Warning, TEXT("the ability for the recipe is: %s"), *abilityForRecipe->GetName())
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("not a valid recipe"));
 
 		}
+	}
+}
+
+void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)
+{
+	UAbilityFlowerEntry* Entry = Cast<UAbilityFlowerEntry>(&UserWidget);
+	if (Entry)
+	{
+		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::HandleFlowerFromEntry);
 	}
 }
 

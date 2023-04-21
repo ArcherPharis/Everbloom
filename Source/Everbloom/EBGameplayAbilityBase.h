@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "EBAbility")
 	FORCEINLINE class ABaseCharacter* GetAvatarAsCharacter() const { return AvatarCharacterBase; }
+	FORCEINLINE UTexture2D* GetIcon() const { return AbilityIcon; }
+	FORCEINLINE FText GetAbilityName() const { return AbilityName; }
+	FORCEINLINE FText GetAbilityDescription() const { return AbilityDescription; }
 
 	FOnAbilityCommitted onAbilityCommitted;
 
@@ -29,5 +32,15 @@ protected:
 
 private:
 	class ABaseCharacter* AvatarCharacterBase;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbilityBase")
+	UTexture2D* AbilityIcon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbilityBase")
+	FText AbilityName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbilityBase", meta = (MultiLine = true))
+	FText AbilityDescription;
+
 	
 };
