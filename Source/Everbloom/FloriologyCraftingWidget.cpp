@@ -16,6 +16,18 @@ void UFloriologyCraftingWidget::SetFlowerTwoImage(UTexture2D* FlowerIcon)
 
 }
 
+void UFloriologyCraftingWidget::EnableValidCombinationButton(TSubclassOf<class UGameplayAbility> ValidAbility)
+{
+	ToggleCombinationButton(true);
+	HeldAbility = ValidAbility;
+
+}
+
+void UFloriologyCraftingWidget::ToggleCombinationButton(bool bToggle)
+{
+	MakeFlowerButton->SetIsEnabled(bToggle);
+}
+
 void UFloriologyCraftingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();

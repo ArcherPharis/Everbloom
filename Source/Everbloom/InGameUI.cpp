@@ -83,6 +83,7 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 		if (abilityForRecipe)
 		{
 			CraftingWidget->SetFlowerTwoImage(FlowerTwo->GetItemIcon());
+			CraftingWidget->EnableValidCombinationButton(abilityForRecipe);
 			UE_LOG(LogTemp, Warning, TEXT("the ability for the recipe is: %s"), *abilityForRecipe->GetName());
 		}
 		else
