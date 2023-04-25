@@ -28,7 +28,10 @@ public:
 
 	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+
 	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
+
 
 	FOnToggleFlowerMenu OnToggleFlowerMenu;
 	FOnToggleMenu OnToggleMenu;
@@ -53,12 +56,15 @@ protected:
 	UInputAction* AttackEventInputAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ToggleMenuAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* LockOnAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Interact();
 	void ToggleFlowerMenu();
 	void ToggleMenu();
+	void LockOn();
 	
 
 private:
@@ -108,6 +114,12 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	bool bInInventory = false;
 
+	AActor* LockedOnTarget;
 
+	UPROPERTY(EditDefaultsOnly)
+	float LockOnRange = 2500.f;
+
+	UPROPERTY()
+	class AEBPlayerController* PlayerCont;
 	
 };

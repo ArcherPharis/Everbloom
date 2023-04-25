@@ -6,8 +6,10 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "EBAttributeSet.h"
 #include "Components/InputComponent.h"
+#include "EBPlayerController.h"
 #include "InteractableInterface.h"
 #include "Camera/CameraComponent.h"
 #include "EBAbilitySystemComponent.h"
@@ -38,6 +40,8 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(AbilityInputAction, ETriggerEvent::Triggered, this, &AEmilia::HandleAbilityInput);
 		EnhancedInputComponent->BindAction(AttackEventInputAction, ETriggerEvent::Triggered, this, &AEmilia::BasicAttack);
 		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleMenu);
+		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Triggered, this, &AEmilia::LockOn);
+
 	}
 }
 
@@ -46,6 +50,7 @@ void AEmilia::BeginPlay()
 	Super::BeginPlay();
 	DefaultSpringArmOffset = SpringArm->SocketOffset;
 	DefaultSpringArmLength = SpringArm->TargetArmLength;
+	PlayerCont = Cast<AEBPlayerController>(GetOwner());
 
 	FOnTimelineFloat InventoryTimeLineFloat;
 	InventoryTimeLineFloat.BindUFunction(this, "UpdateSpringArmLocation");
@@ -67,6 +72,16 @@ void AEmilia::BeginPlay()
 		{
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
+	}
+}
+
+void AEmilia::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (LockedOnTarget)
+	{
+		FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+		PlayerCont->SetControlRotation(LookRotation);
 	}
 }
 
@@ -130,16 +145,46 @@ void AEmilia::ToggleMenu()
 	}
 }
 
+void AEmilia::LockOn()
+{
+
+	if (!LockedOnTarget)
+	{
+		TArray<FHitResult> OutHits;
+		FCollisionQueryParams TraceParams(FName(TEXT("SphereTraceByChannel")), true, this);
+		GetWorld()->SweepMultiByChannel(OutHits, Camera->GetComponentLocation(), Camera->GetComponentLocation() + Camera->GetForwardVector() * LockOnRange, FQuat(), ECC_Visibility, FCollisionShape::MakeSphere(250), TraceParams);
+		if (OutHits.Num() > 0)
+		{
+			LockedOnTarget = OutHits[0].GetActor();
+			if (LockedOnTarget)
+			{
+				
+			}
+		}
+		else
+		{
+
+		}
+	}
+}
+
 
 void AEmilia::BasicAttack()
 {
 	FGameplayAbilitySpec* MeleeAbilitySpec = GetAbilitySystemComponent()->FindAbilitySpecFromClass(BasicAttackAbility);
 	if (MeleeAbilitySpec->IsActive())
 	{
+		if (LockedOnTarget)
+		{
+			FRotator Rotat = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+			Rotat.Pitch = 0;
+			SetActorRotation(Rotat);
+		}
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, BasicAttackCombo, FGameplayEventData());
 	}
 	else
 	{
+
 		GetAbilitySystemComponent()->TryActivateAbilityByClass(BasicAttackAbility);
 	}
 }
