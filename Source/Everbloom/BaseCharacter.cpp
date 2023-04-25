@@ -3,6 +3,7 @@
 
 #include "BaseCharacter.h"
 #include "EBAbilitySystemComponent.h"
+#include "Components/WidgetComponent.h"
 #include "EBAttributeSet.h"
 
 // Sets default values
@@ -12,6 +13,8 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	AbilitySystemComp = CreateDefaultSubobject<UEBAbilitySystemComponent>("AbilitySystemComp");
 	AttributeSet = CreateDefaultSubobject<UEBAttributeSet>("AttributeSet");
+	WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
+	WidgetComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

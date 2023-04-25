@@ -19,6 +19,8 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
+	class UWidgetComponent* GetCharacterWidgetComponent() const { return WidgetComp; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -54,6 +56,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TArray <TSubclassOf<class UGameplayEffect>> InitialEffects;
+
+	//TODO: Move this onto Enemy class as the player does not need this.
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	class UWidgetComponent* WidgetComp;
 
 
 

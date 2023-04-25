@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "EBAttributeSet.h"
 #include "Components/InputComponent.h"
@@ -158,12 +159,21 @@ void AEmilia::LockOn()
 			LockedOnTarget = OutHits[0].GetActor();
 			if (LockedOnTarget)
 			{
-				
+				UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+				if (WidgetCpt)
+				{
+					WidgetCpt->SetVisibility(true);
+				}
 			}
 		}
 		else
 		{
-
+			UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+			if (WidgetCpt)
+			{
+				WidgetCpt->SetVisibility(false);
+			}
+			LockedOnTarget = nullptr;
 		}
 	}
 }
