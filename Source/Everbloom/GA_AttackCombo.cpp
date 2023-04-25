@@ -5,11 +5,16 @@
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "EBAbilitySystemBlueprintLibrary.h"
+#include "BaseCharacter.h"
 #include "GameFramework/Character.h"
 #include "GameFramework./CharacterMovementComponent.h"
 
 void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	GetAvatarAsCharacter()->GetCharacterMovement()->StopActiveMovement();
+	GetAvatarAsCharacter()->GetCharacterMovement()->DisableMovement();
+
 	UAbilityTask_PlayMontageAndWait* MontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, MeleeMontage);
 	if (MontagePlay)
 	{
@@ -40,6 +45,13 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 		WaitHit->EventReceived.AddDynamic(this, &UGA_AttackCombo::Hit);
 		WaitHit->ReadyForActivation();
 	}
+}
+
+void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	GetAvatarAsCharacter()->GetCharacterMovement()->SetMovementMode(GetAvatarAsCharacter()->GetCharacterMovement()->GetGroundMovementMode());
+
 }
 
 void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)

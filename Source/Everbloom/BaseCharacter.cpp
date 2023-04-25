@@ -3,6 +3,7 @@
 
 #include "BaseCharacter.h"
 #include "EBAbilitySystemComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Components/WidgetComponent.h"
 #include "EBAttributeSet.h"
 
@@ -13,8 +14,8 @@ ABaseCharacter::ABaseCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	AbilitySystemComp = CreateDefaultSubobject<UEBAbilitySystemComponent>("AbilitySystemComp");
 	AttributeSet = CreateDefaultSubobject<UEBAttributeSet>("AttributeSet");
-	WidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
-	WidgetComp->SetupAttachment(RootComponent);
+	HUDWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
+	HUDWidget->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +49,7 @@ void ABaseCharacter::ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>&
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 
 }
 

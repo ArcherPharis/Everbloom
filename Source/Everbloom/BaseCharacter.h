@@ -19,7 +19,7 @@ public:
 	// Sets default values for this character's properties
 	ABaseCharacter();
 
-	class UWidgetComponent* GetCharacterWidgetComponent() const { return WidgetComp; }
+	class UWidgetComponent* GetCharacterWidgetComponent() const { return HUDWidget; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -59,7 +59,7 @@ private:
 
 	//TODO: Move this onto Enemy class as the player does not need this.
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
-	class UWidgetComponent* WidgetComp;
+	class UWidgetComponent* HUDWidget;
 
 
 

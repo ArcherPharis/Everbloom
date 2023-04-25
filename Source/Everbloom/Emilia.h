@@ -58,9 +58,12 @@ protected:
 	UInputAction* ToggleMenuAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LockOnAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* LockOnToggleAction;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void LockOnToggle(const FInputActionValue& Value);
 	void Interact();
 	void ToggleFlowerMenu();
 	void ToggleMenu();
@@ -114,10 +117,13 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	bool bInInventory = false;
 
+	UPROPERTY(VisibleAnywhere)
 	AActor* LockedOnTarget;
 
 	UPROPERTY(EditDefaultsOnly)
 	float LockOnRange = 2500.f;
+	
+	
 
 	UPROPERTY()
 	class AEBPlayerController* PlayerCont;

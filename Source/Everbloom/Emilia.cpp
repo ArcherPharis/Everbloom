@@ -42,7 +42,7 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(AttackEventInputAction, ETriggerEvent::Triggered, this, &AEmilia::BasicAttack);
 		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleMenu);
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Triggered, this, &AEmilia::LockOn);
-
+		EnhancedInputComponent->BindAction(LockOnToggleAction, ETriggerEvent::Triggered, this, &AEmilia::LockOnToggle);
 	}
 }
 
@@ -79,11 +79,17 @@ void AEmilia::BeginPlay()
 void AEmilia::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (LockedOnTarget)
-	{
-		FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
-		PlayerCont->SetControlRotation(LookRotation);
-	}
+	//if (LockedOnTarget)
+	//{
+	//	FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+	//	PlayerCont->SetControlRotation(LookRotation);
+	//	UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+	//	if (WidgetCpt->IsVisible() && WidgetCpt)
+	//	{
+	//		FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(WidgetCpt->GetComponentLocation() ,Camera->GetComponentLocation());
+	//		WidgetCpt->SetWorldRotation(LookAt );
+	//	}
+	//}
 }
 
 void AEmilia::Move(const FInputActionValue& Value)
@@ -99,6 +105,47 @@ void AEmilia::Look(const FInputActionValue& Value)
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
 	AddControllerYawInput(CurrentValue.X);
 	AddControllerPitchInput(CurrentValue.Y);
+}
+
+void AEmilia::LockOnToggle(const FInputActionValue& Value)
+{
+	float ToggledAxis = Value.Get<float>();
+
+	if (LockedOnTarget)
+	{
+		FVector CurrentTargetPosition = LockedOnTarget->GetActorLocation();
+		TArray<FHitResult> OutHits;
+		FCollisionQueryParams TraceParams(FName(TEXT("SphereTraceByChannel")), true, this);
+		FCollisionShape ColShape = FCollisionShape::MakeSphere(1000);
+		GetWorld()->SweepMultiByChannel(OutHits, Camera->GetComponentLocation(), Camera->GetComponentLocation() + Camera->GetForwardVector() * LockOnRange, FQuat(), ECC_Visibility, ColShape, TraceParams);
+		
+		if (OutHits.Num() > 0)
+		{
+			TArray<AActor*> Enemies;
+			for (FHitResult Hit : OutHits)
+			{
+				Enemies.Add(Hit.GetActor());
+			}
+			TArray<TPair<float, AActor*>> DotProducts;
+			for (AActor* Enemy : Enemies)
+			{
+				FVector EnemyPosition = Enemy->GetActorLocation();
+				FVector ToEnemy = EnemyPosition - LockedOnTarget->GetActorLocation();
+				float DotProduct = FVector::DotProduct(ToEnemy, Camera->GetForwardVector());
+				DotProducts.Add(TPair<float, AActor*>(DotProduct, Enemy));
+			}
+
+			DotProducts.Sort([](const TPair<float, AActor*>& A, const TPair<float, AActor*>& B)
+				{
+					return A.Key < B.Key;
+				});
+
+			AActor* NextTarget = DotProducts[0].Value;
+			LockedOnTarget = NextTarget;
+		}
+
+	}
+	
 }
 
 void AEmilia::Interact()
