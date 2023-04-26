@@ -25,6 +25,9 @@ public:
 
 	float GetCurrentWeaponDamage() const;
 
+	UFUNCTION(BlueprintPure, Category = "InventoryComp")
+	class AWeapon* GetCurrentWeapon() const { return CurrentWeapon; }
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

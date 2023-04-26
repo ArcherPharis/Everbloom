@@ -30,7 +30,10 @@ private:
 	FGameplayTag HitTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
-	float HitPushSpeed = 200.f;
+	float HitPushSpeed = 400.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Melee")
+	TSubclassOf<UGameplayEffect> HitEffect;
 	UFUNCTION()
 	void UpdateCombo(FGameplayEventData Payload);
 

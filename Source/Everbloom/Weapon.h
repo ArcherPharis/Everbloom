@@ -37,4 +37,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float Damage = 10.f;
 
+	UPROPERTY(VisibleDefaultsOnly, Category = "GameplayAbility")
+	class UHitDetectionComponent* HitDetectionComp;
+
 };

@@ -92,6 +92,7 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 
 void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 {
+	
 	if (Payload.TargetData.Num() == 0) return;
 	if (!bAttackPush)
 	{
@@ -111,8 +112,8 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 		}
 	}
 
-	//FGameplayEffectSpecHandle spec = MakeOutgoingGameplayEffectSpec(HitEffect, Payload.EventMagnitude);
-	//spec.Data.Get()->SetContext(Payload.ContextHandle);
+	FGameplayEffectSpecHandle spec = MakeOutgoingGameplayEffectSpec(HitEffect, Payload.EventMagnitude);
+	spec.Data.Get()->SetContext(Payload.ContextHandle);
 
-	//K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
+	K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
 }

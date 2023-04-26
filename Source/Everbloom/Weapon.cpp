@@ -2,6 +2,7 @@
 
 
 #include "Weapon.h"
+#include "HitDetectionComponent.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -11,6 +12,8 @@ AWeapon::AWeapon()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("Root Comp"));
 	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon Mesh"));
 	WeaponMesh->SetupAttachment(RootComponent);
+	HitDetectionComp = CreateDefaultSubobject<UHitDetectionComponent>("HitDetectionComp");
+	HitDetectionComp->SetupAttachment(WeaponMesh);
 
 }
 
