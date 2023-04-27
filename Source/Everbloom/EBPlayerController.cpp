@@ -4,6 +4,7 @@
 #include "EBPlayerController.h"
 #include "Emilia.h"
 #include "InventoryComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "InGameUI.h"
 
 void AEBPlayerController::OnPossess(APawn* newPawn)
@@ -19,6 +20,8 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
 	}
 }
+
+
 
 void AEBPlayerController::SwitchToFloriologyScreen()
 {

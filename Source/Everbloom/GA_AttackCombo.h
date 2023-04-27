@@ -28,6 +28,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	FGameplayTag HitTag;
+	UPROPERTY(EditDefaultsOnly, Category = "Melee")
+	FGameplayTag PushPlayerTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	float HitPushSpeed = 400.f;
@@ -45,8 +47,11 @@ private:
 	UFUNCTION()
 	void Hit(FGameplayEventData Payload);
 
+	UFUNCTION()
+	void PushPlayer(FGameplayEventData Payload);
+
 	FName NextComboSectionName;
 
-	bool bAttackPush;
+	bool bAttackPush = false;
 	
 };

@@ -12,8 +12,7 @@
 void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	GetAvatarAsCharacter()->GetCharacterMovement()->StopActiveMovement();
-	GetAvatarAsCharacter()->GetCharacterMovement()->DisableMovement();
+
 
 	UAbilityTask_PlayMontageAndWait* MontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, MeleeMontage);
 	if (MontagePlay)
@@ -45,6 +44,13 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 		WaitHit->EventReceived.AddDynamic(this, &UGA_AttackCombo::Hit);
 		WaitHit->ReadyForActivation();
 	}
+
+	UAbilityTask_WaitGameplayEvent* PushPlayer = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, PushPlayerTag, nullptr, false, false);
+	if (PushPlayer)
+	{
+		PushPlayer->EventReceived.AddDynamic(this, &UGA_AttackCombo::PushPlayer);
+		PushPlayer->ReadyForActivation();
+	}
 }
 
 void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -56,7 +62,7 @@ void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 
 void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
 {
-	UE_LOG(LogTemp, Warning, TEXT("we updating"));
+	
 	NextComboSectionName = UEBAbilitySystemBlueprintLibrary::GetRandomNameFromTagContainer(Payload.TargetTags);
 }
 
@@ -71,7 +77,6 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 	if (NextComboSectionName == NAME_None)
 		return;
 
-	bAttackPush = false;
 	USkeletalMeshComponent* mesh = GetOwningComponentFromActorInfo();
 	if (mesh)
 	{
@@ -94,13 +99,7 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 {
 	
 	if (Payload.TargetData.Num() == 0) return;
-	if (!bAttackPush)
-	{
-		bAttackPush = true;
-		ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
-		AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
 
-	}
 
 	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(Payload.TargetData, 0);
 	for (AActor* TargetActor : TargetActors)
@@ -116,4 +115,11 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 	spec.Data.Get()->SetContext(Payload.ContextHandle);
 
 	K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
+}
+
+void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Push Player"));
+	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
 }

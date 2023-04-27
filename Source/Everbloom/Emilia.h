@@ -118,15 +118,20 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	bool bInInventory = false;
 
+	//todo, getting quite hefty, consider moving to a "LockOnComponent" or something.
 	UPROPERTY(VisibleAnywhere)
 	AActor* LockedOnTarget;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ALockOnCapturer> LockOnCapturerClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	float LockOnRange = 2500.f;
 	
-	
+	AActor* GetClosestTarget(TArray<AActor*> Targets, float& Distance);
 
 	UPROPERTY()
 	class AEBPlayerController* PlayerCont;
+
+
 	
 };

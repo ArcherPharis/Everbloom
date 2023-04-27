@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/WidgetComponent.h"
+#include "LockOnCapturer.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "EBAttributeSet.h"
 #include "Components/InputComponent.h"
@@ -79,17 +80,7 @@ void AEmilia::BeginPlay()
 void AEmilia::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//if (LockedOnTarget)
-	//{
-	//	FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
-	//	PlayerCont->SetControlRotation(LookRotation);
-	//	UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
-	//	if (WidgetCpt->IsVisible() && WidgetCpt)
-	//	{
-	//		FRotator LookAt = UKismetMathLibrary::FindLookAtRotation(WidgetCpt->GetComponentLocation() ,Camera->GetComponentLocation());
-	//		WidgetCpt->SetWorldRotation(LookAt );
-	//	}
-	//}
+
 }
 
 void AEmilia::Move(const FInputActionValue& Value)
@@ -106,6 +97,37 @@ void AEmilia::Look(const FInputActionValue& Value)
 	AddControllerYawInput(CurrentValue.X);
 	AddControllerPitchInput(CurrentValue.Y);
 }
+void AEmilia::LockOn()
+{
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	SpawnParams.Owner = this;
+	ALockOnCapturer* Capturer = GetWorld()->SpawnActor<ALockOnCapturer>(LockOnCapturerClass, GetActorTransform(), SpawnParams);
+	TArray<AActor*> PotentialTargets = Capturer->GetAllTargetsInRange();
+	if (PotentialTargets.Num() > 0)
+	{
+		float Distance = 0;
+		if (LockedOnTarget)
+		{
+			UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+			WidgetCpt->SetVisibility(false);
+		}
+		LockedOnTarget = GetClosestTarget(PotentialTargets, Distance);
+
+
+		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+		if (WidgetCpt)
+		{
+			WidgetCpt->SetVisibility(true);
+		}
+	}
+	else
+	{
+		return;
+	}
+
+}
 
 void AEmilia::LockOnToggle(const FInputActionValue& Value)
 {
@@ -113,40 +135,68 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 
 	if (LockedOnTarget)
 	{
-		FVector CurrentTargetPosition = LockedOnTarget->GetActorLocation();
-		TArray<FHitResult> OutHits;
-		FCollisionQueryParams TraceParams(FName(TEXT("SphereTraceByChannel")), true, this);
-		FCollisionShape ColShape = FCollisionShape::MakeSphere(1000);
-		GetWorld()->SweepMultiByChannel(OutHits, Camera->GetComponentLocation(), Camera->GetComponentLocation() + Camera->GetForwardVector() * LockOnRange, FQuat(), ECC_Visibility, ColShape, TraceParams);
-		
-		if (OutHits.Num() > 0)
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParams.Owner = this;
+		ALockOnCapturer* Capturer = GetWorld()->SpawnActor<ALockOnCapturer>(LockOnCapturerClass, GetActorTransform(), SpawnParams);
+		TArray<AActor*> PotentialTargets = Capturer->GetAllTargetsInRange();
+		TArray<AActor*> EnemiesInRange;
+		AActor* BestEnemy = nullptr;
+		float BestDistance = FLT_MAX;
+		for (AActor* Actor : PotentialTargets)
 		{
-			TArray<AActor*> Enemies;
-			for (FHitResult Hit : OutHits)
-			{
-				Enemies.Add(Hit.GetActor());
-			}
-			TArray<TPair<float, AActor*>> DotProducts;
-			for (AActor* Enemy : Enemies)
-			{
-				FVector EnemyPosition = Enemy->GetActorLocation();
-				FVector ToEnemy = EnemyPosition - LockedOnTarget->GetActorLocation();
-				float DotProduct = FVector::DotProduct(ToEnemy, Camera->GetForwardVector());
-				DotProducts.Add(TPair<float, AActor*>(DotProduct, Enemy));
-			}
-
-			DotProducts.Sort([](const TPair<float, AActor*>& A, const TPair<float, AActor*>& B)
-				{
-					return A.Key < B.Key;
-				});
-
-			AActor* NextTarget = DotProducts[0].Value;
-			LockedOnTarget = NextTarget;
+			EnemiesInRange.Add(Actor);
 		}
 
+		for (AActor* Enemy : EnemiesInRange)
+		{
+			if (Enemy == LockedOnTarget)
+			{
+				continue;
+			}
+
+			FVector ToEnemy = Enemy->GetActorLocation() - LockedOnTarget->GetActorLocation();
+			float Distance = ToEnemy.Size();
+			ToEnemy.Normalize();
+			FVector CamForward = Camera->GetForwardVector();
+			CamForward.Normalize();
+			float DotProduct = FVector::DotProduct(CamForward, ToEnemy);
+			//dotproduct gives incorrect product after first cycle
+			if (DotProduct > 0.0f)
+			{
+				
+				float DotProductRight = FVector::DotProduct(GetActorRightVector(), ToEnemy);
+
+
+				if (Distance < BestDistance && DotProductRight > 0.0f)
+				{
+					BestDistance = Distance;
+					BestEnemy = Enemy;
+				}
+			}
+
+
+
+		}
+		//current problem: BestEnemy seems to only get updated once
+		if (BestEnemy != nullptr)
+		{
+			
+			if (LockedOnTarget)
+			{
+				UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+				WidgetCpt->SetVisibility(false);
+			}
+			LockedOnTarget = BestEnemy;
+			UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+			if (WidgetCpt)
+			{
+				WidgetCpt->SetVisibility(true);
+			}
+		}
 	}
-	
 }
+
 
 void AEmilia::Interact()
 {
@@ -193,37 +243,7 @@ void AEmilia::ToggleMenu()
 	}
 }
 
-void AEmilia::LockOn()
-{
 
-	if (!LockedOnTarget)
-	{
-		TArray<FHitResult> OutHits;
-		FCollisionQueryParams TraceParams(FName(TEXT("SphereTraceByChannel")), true, this);
-		GetWorld()->SweepMultiByChannel(OutHits, Camera->GetComponentLocation(), Camera->GetComponentLocation() + Camera->GetForwardVector() * LockOnRange, FQuat(), ECC_Visibility, FCollisionShape::MakeSphere(250), TraceParams);
-		if (OutHits.Num() > 0)
-		{
-			LockedOnTarget = OutHits[0].GetActor();
-			if (LockedOnTarget)
-			{
-				UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
-				if (WidgetCpt)
-				{
-					WidgetCpt->SetVisibility(true);
-				}
-			}
-		}
-		else
-		{
-			UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
-			if (WidgetCpt)
-			{
-				WidgetCpt->SetVisibility(false);
-			}
-			LockedOnTarget = nullptr;
-		}
-	}
-}
 
 
 void AEmilia::BasicAttack()
@@ -259,5 +279,24 @@ void AEmilia::UpdateSpringArmLocation(float Alpha)
 	SpringArm->SocketOffset = FMath::Lerp(DefaultSpringArmOffset, InventorySocketLocation, Alpha);
 
 	
+}
+
+AActor* AEmilia::GetClosestTarget(TArray<AActor*> Targets, float& Distance)
+{
+	AActor* ClosestTarget = nullptr;
+	//because our radius of capturer if 1500
+	float ClosestDistance = 1600;
+
+	for (AActor* Target : Targets)
+	{
+		float DistTo = Target->GetDistanceTo(this);
+		if (DistTo < ClosestDistance)
+		{
+			ClosestDistance = DistTo;
+			ClosestTarget = Target;
+		}
+	}
+	Distance = ClosestDistance;
+	return ClosestTarget;
 }
 

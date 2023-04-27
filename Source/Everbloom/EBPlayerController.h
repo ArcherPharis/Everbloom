@@ -17,9 +17,11 @@ class EVERBLOOM_API AEBPlayerController : public APlayerController
 public:
 	virtual void OnPossess(APawn* newPawn) override;
 
+protected:
 
 
 private:
+
 
 	class AEmilia* Player;
 
