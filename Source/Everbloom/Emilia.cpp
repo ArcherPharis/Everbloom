@@ -148,6 +148,9 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 			EnemiesInRange.Add(Actor);
 		}
 
+		FVector2D CurrentTargetScreenLoc;
+		GetActorScreenPos(LockedOnTarget, CurrentTargetScreenLoc);
+
 		for (AActor* Enemy : EnemiesInRange)
 		{
 			if (Enemy == LockedOnTarget)
@@ -155,26 +158,41 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 				continue;
 			}
 
-			FVector ToEnemy = Enemy->GetActorLocation() - LockedOnTarget->GetActorLocation();
-			float Distance = ToEnemy.Size();
-			ToEnemy.Normalize();
-			FVector CamForward = Camera->GetForwardVector();
-			CamForward.Normalize();
-			float DotProduct = FVector::DotProduct(CamForward, ToEnemy);
-			//dotproduct gives incorrect product after first cycle
-			if (DotProduct > 0.0f)
+			//FVector ToEnemy = Enemy->GetActorLocation() - LockedOnTarget->GetActorLocation();
+			//FVector Right = Camera->GetRightVector();
+			//float dot = FVector::DotProduct(ToEnemy.GetSafeNormal(), Right);
+			//bool bothPos = dot > 0 && ToggledAxis > 0;
+			//bool bothNeg = dot < 0 && ToggledAxis < 0;
+			//if (dot * ToggledAxis > 0)
+			//{
+
+			//	FVector CurrentTargetToEnemy = Enemy->GetActorLocation() - LockedOnTarget->GetActorLocation();
+			//	float CamViewDistance = FMath::Abs(FVector::DotProduct(CurrentTargetToEnemy, Right));
+
+			//	if (CamViewDistance < BestDistance)
+			//	{
+			//		
+			//		BestEnemy = Enemy;
+			//		BestDistance = CamViewDistance;
+			//	}
+
+			FVector2D ScreenPos;
+			if(!GetActorScreenPos(Enemy, ScreenPos))
 			{
-				
-				float DotProductRight = FVector::DotProduct(GetActorRightVector(), ToEnemy);
 
+				continue;
 
-				if (Distance < BestDistance && DotProductRight > 0.0f)
+			}
+			float XOffset = ScreenPos.X - CurrentTargetScreenLoc.X;
+			if (XOffset * ToggledAxis > 0)
+			{
+				float distance = FMath::Abs(XOffset);
+				if (distance < BestDistance)
 				{
-					BestDistance = Distance;
+					BestDistance = distance;
 					BestEnemy = Enemy;
 				}
 			}
-
 
 
 		}
@@ -298,5 +316,14 @@ AActor* AEmilia::GetClosestTarget(TArray<AActor*> Targets, float& Distance)
 	}
 	Distance = ClosestDistance;
 	return ClosestTarget;
+}
+
+bool AEmilia::GetActorScreenPos(const AActor* Actor, FVector2D& outPOS) const
+{
+	if (PlayerCont)
+	{
+		return PlayerCont->ProjectWorldLocationToScreen(Actor->GetActorLocation(), outPOS, true);
+	}
+	return false;
 }
 
