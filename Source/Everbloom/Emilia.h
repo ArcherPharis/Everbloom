@@ -109,6 +109,9 @@ private:
 	FVector  DefaultSpringArmOffset;
 	float  DefaultSpringArmLength;
 
+	UPROPERTY(EditDefaultsOnly, Category = "LockOn")
+	FVector LockOnSpringArmOffset {0.0f, 0.0f, 90.0f};
+
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	float InventoryArmLength = 200.f;
 

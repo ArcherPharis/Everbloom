@@ -81,6 +81,13 @@ void AEmilia::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (LockedOnTarget)
+	{
+		FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+		FRotator InterpRot = FMath::RInterpTo(PlayerCont->GetControlRotation(), LookAtRotation, DeltaTime, 5.f);
+		PlayerCont->SetControlRotation(InterpRot);
+	}
+
 }
 
 void AEmilia::Move(const FInputActionValue& Value)
@@ -94,11 +101,31 @@ void AEmilia::Move(const FInputActionValue& Value)
 void AEmilia::Look(const FInputActionValue& Value)
 {
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
-	AddControllerYawInput(CurrentValue.X);
-	AddControllerPitchInput(CurrentValue.Y);
+
+	if (LockedOnTarget)
+	{
+		AddControllerYawInput(0);
+		AddControllerPitchInput(0);
+	}
+	else
+	{
+		AddControllerYawInput(CurrentValue.X);
+		AddControllerPitchInput(CurrentValue.Y);
+	}
+	
+	
 }
 void AEmilia::LockOn()
 {
+
+	if (LockedOnTarget)
+	{
+		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+		WidgetCpt->SetVisibility(false);
+		LockedOnTarget = nullptr;
+		SpringArm->SocketOffset = DefaultSpringArmOffset;
+		return;
+	}
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -108,13 +135,9 @@ void AEmilia::LockOn()
 	if (PotentialTargets.Num() > 0)
 	{
 		float Distance = 0;
-		if (LockedOnTarget)
-		{
-			UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
-			WidgetCpt->SetVisibility(false);
-		}
-		LockedOnTarget = GetClosestTarget(PotentialTargets, Distance);
 
+		LockedOnTarget = GetClosestTarget(PotentialTargets, Distance);
+		SpringArm->SocketOffset = LockOnSpringArmOffset;
 
 		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
 		if (WidgetCpt)
@@ -124,6 +147,7 @@ void AEmilia::LockOn()
 	}
 	else
 	{
+		SpringArm->SocketOffset = DefaultSpringArmOffset;
 		return;
 	}
 

@@ -100,7 +100,7 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 	
 	if (Payload.TargetData.Num() == 0) return;
 
-
+	UE_LOG(LogTemp, Warning, TEXT("Hitting Something"));
 	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(Payload.TargetData, 0);
 	for (AActor* TargetActor : TargetActors)
 	{
@@ -119,7 +119,6 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Push Player"));
 	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
 	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
 }
