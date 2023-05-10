@@ -98,13 +98,20 @@ private:
 	void HandleAbilityInput(const FInputActionValue& InputActionValue);
 
 	UPROPERTY()
-	class UTimelineComponent* ToggleInventoryTimelineComponent;
+	class UTimelineComponent* InventoryTimelineComponent;
+	UPROPERTY()
+	class UTimelineComponent* DisengageLockonTimelineComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	UCurveFloat* InventoryAlpha;
 
+	UPROPERTY(EditDefaultsOnly)
+	UCurveFloat* DisengageLockOnAlpha;
+
 	UFUNCTION()
 	void UpdateSpringArmLocation(float Alpha);
+	UFUNCTION()
+	void UpdateSpringArmFromLockon(float Alpha);
 
 	FVector  DefaultSpringArmOffset;
 	float  DefaultSpringArmLength;

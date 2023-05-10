@@ -25,7 +25,9 @@ AEmilia::AEmilia()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
-	ToggleInventoryTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Inventory Timeline Comp"));
+	InventoryTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Inventory Timeline Comp"));
+	DisengageLockonTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Disengage Timeline Comp"));
+
 
 }
 
@@ -55,8 +57,12 @@ void AEmilia::BeginPlay()
 	PlayerCont = Cast<AEBPlayerController>(GetOwner());
 
 	FOnTimelineFloat InventoryTimeLineFloat;
+	FOnTimelineFloat DisengageLockOnFloat;
 	InventoryTimeLineFloat.BindUFunction(this, "UpdateSpringArmLocation");
-	ToggleInventoryTimelineComponent->AddInterpFloat(InventoryAlpha, InventoryTimeLineFloat);
+	DisengageLockOnFloat.BindUFunction(this, "UpdateSpringArmFromLockon");
+
+	InventoryTimelineComponent->AddInterpFloat(InventoryAlpha, InventoryTimeLineFloat);
+	DisengageLockonTimelineComponent->AddInterpFloat(DisengageLockOnAlpha, DisengageLockOnFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
 	//TODO when we swap weapons we need to make sure we also update the augment damage, can either be done here or inventory comp.
@@ -123,8 +129,13 @@ void AEmilia::LockOn()
 		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
 		WidgetCpt->SetVisibility(false);
 		LockedOnTarget = nullptr;
-		SpringArm->SocketOffset = DefaultSpringArmOffset;
+		DisengageLockonTimelineComponent->Play();
 		return;
+	}
+	else
+	{
+		DisengageLockonTimelineComponent->Reverse();
+
 	}
 
 	FActorSpawnParameters SpawnParams;
@@ -272,13 +283,13 @@ void AEmilia::ToggleMenu()
 	UEBAttributeSet* AS = GetAttributeSet();
 	if (!bInInventory)
 	{
-		ToggleInventoryTimelineComponent->Play();
+		InventoryTimelineComponent->Play();
 		bInInventory = true;
 		OnToggleMenu.Broadcast(bInInventory, AS->GetHealth(), AS->GetMaxHealth(), AS->GetStrength(), AS->GetMagic(), AS->GetDefense(), AS->GetResistance(), AS->GetWeaponAugmentDamage());
 	}
 	else
 	{
-		ToggleInventoryTimelineComponent->Reverse();
+		InventoryTimelineComponent->Reverse();
 		bInInventory = false;
 		OnToggleMenu.Broadcast(bInInventory, AS->GetHealth(), AS->GetMaxHealth(), AS->GetStrength(), AS->GetMagic(), AS->GetDefense(), AS->GetResistance(), AS->GetWeaponAugmentDamage());
 
@@ -321,6 +332,11 @@ void AEmilia::UpdateSpringArmLocation(float Alpha)
 	SpringArm->SocketOffset = FMath::Lerp(DefaultSpringArmOffset, InventorySocketLocation, Alpha);
 
 	
+}
+
+void AEmilia::UpdateSpringArmFromLockon(float Alpha)
+{
+	SpringArm->SocketOffset = FMath::Lerp(LockOnSpringArmOffset, DefaultSpringArmOffset, Alpha);
 }
 
 AActor* AEmilia::GetClosestTarget(TArray<AActor*> Targets, float& Distance)
