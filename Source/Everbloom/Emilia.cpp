@@ -132,11 +132,6 @@ void AEmilia::LockOn()
 		DisengageLockonTimelineComponent->Play();
 		return;
 	}
-	else
-	{
-		DisengageLockonTimelineComponent->Reverse();
-
-	}
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -148,6 +143,7 @@ void AEmilia::LockOn()
 		float Distance = 0;
 
 		LockedOnTarget = GetClosestTarget(PotentialTargets, Distance);
+		DisengageLockonTimelineComponent->Reverse();
 		SpringArm->SocketOffset = LockOnSpringArmOffset;
 
 		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();

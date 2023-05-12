@@ -23,6 +23,8 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 		MontagePlay->OnCompleted.AddDynamic(this, &UGA_AttackCombo::MontageFinished);
 		MontagePlay->ReadyForActivation();
 	}
+	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
+	MovementComp->GravityScale = 0.0f;
 
 	UAbilityTask_WaitGameplayEvent* WaitComboChange = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, ComboChangeTag, nullptr, false, false);
 	if (WaitComboChange)
@@ -56,7 +58,8 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	GetAvatarAsCharacter()->GetCharacterMovement()->SetMovementMode(GetAvatarAsCharacter()->GetCharacterMovement()->GetGroundMovementMode());
+	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
+	MovementComp->GravityScale = 1.0f;
 
 }
 
@@ -120,5 +123,11 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 {
 	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
+	MovementComp->StopMovementImmediately();
+	if (MovementComp->IsFalling())
+	{
+		return;
+	}
 	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
 }
