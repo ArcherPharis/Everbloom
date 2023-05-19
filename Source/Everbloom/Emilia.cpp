@@ -73,6 +73,7 @@ void AEmilia::BeginPlay()
 	}
 
 	GiveAbility(BasicAttackAbility, 3);
+	GiveAbility(FlowerAbilityOne, 8);
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());

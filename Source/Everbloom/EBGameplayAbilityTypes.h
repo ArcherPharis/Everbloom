@@ -14,5 +14,12 @@ enum class EAbilityInputID : uint8
 	Confirm,
 	Cancel,
 	Attack,
-	AbilityOne
+	AbilityOne,
+	AbilityTwo,
+	AbilityThree,
+	AbilityFour,
+	FlowerOne,
+	FlowerTwo,
+	FlowerThree,
+	FlowerFour
 };

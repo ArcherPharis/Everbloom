@@ -80,6 +80,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> BasicAttackAbility;
 
+	//TEMPORARY ONLY FOR TESTTING PURPOSES, EMILIA WILL GET ABILITIES FROM MAIN FLOWERS LATER.
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> FlowerAbilityOne;
+
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag BasicAttackCombo;
 
