@@ -47,6 +47,8 @@ public:
 
 	void ApplyInitialEffect();
 
+	void EnableAiming(bool IsCurrentlyAiming);
+
 private:
 	UPROPERTY()
 	UEBAbilitySystemComponent* AbilitySystemComp;
@@ -63,6 +65,8 @@ private:
 	//TODO: Move this onto Enemy class as the player does not need this.
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	class UWidgetComponent* HUDWidget;
+
+	bool bIsAiming = false;
 
 
 

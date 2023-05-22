@@ -4,6 +4,7 @@
 #include "BaseCharacter.h"
 #include "EBAbilitySystemComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Components/WidgetComponent.h"
 #include "EBAttributeSet.h"
 
@@ -68,6 +69,21 @@ void ABaseCharacter::ApplyInitialEffect()
 		{
 			ApplyEffectToSelf(effect);
 		}
+	}
+}
+
+void ABaseCharacter::EnableAiming(bool IsCurrentlyAiming)
+{
+	bIsAiming = IsCurrentlyAiming;
+	if (bIsAiming)
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+		bUseControllerRotationYaw = true;
+	}
+	else
+	{
+		GetCharacterMovement()->bOrientRotationToMovement = true;
+		bUseControllerRotationYaw = false;
 	}
 }
 
