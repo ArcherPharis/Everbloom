@@ -6,6 +6,7 @@
 #include "InventoryComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EBAbilitySystemComponent.h"
+#include "EBGameplayAbilityBase.h"
 #include "GameplayEffectTypes.h"
 #include "EBAttributeSet.h"
 #include "InGameUI.h"
@@ -24,6 +25,12 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
 
 	}
+}
+
+void AEBPlayerController::GiveAbilityToUI(UEBGameplayAbilityBase* AbilityToGive, AEmilia* PlayerToGive)
+{
+	//temporary, in future when the flowers are interacted with they will just broadcast this data.
+	InGameUI->AddNewMainAbility(AbilityToGive, PlayerToGive);
 }
 
 

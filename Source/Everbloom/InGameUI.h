@@ -20,6 +20,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ChangeHealthBarColor(float CurrentPercent);
 
+	void AddNewMainAbility(class UEBGameplayAbilityBase* Ability, class AEmilia* Player);
+
 	UFUNCTION(BlueprintPure)
 	class UProgressBar* GetHealthBar() const { return HealthBar; }
 
@@ -39,6 +41,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+	class UMainAbilitiesWidget* MainAbilities;
 
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* HealthBar;

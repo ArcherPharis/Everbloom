@@ -55,7 +55,6 @@ void AEmilia::BeginPlay()
 	DefaultSpringArmOffset = SpringArm->SocketOffset;
 	DefaultSpringArmLength = SpringArm->TargetArmLength;
 	PlayerCont = Cast<AEBPlayerController>(GetOwner());
-
 	FOnTimelineFloat InventoryTimeLineFloat;
 	FOnTimelineFloat DisengageLockOnFloat;
 	InventoryTimeLineFloat.BindUFunction(this, "UpdateSpringArmLocation");
@@ -73,7 +72,7 @@ void AEmilia::BeginPlay()
 	}
 
 	GiveAbility(BasicAttackAbility, 3);
-	GiveAbility(FlowerAbilityOne, 8);
+	//GiveAbility(FlowerAbilityOne, 8);
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());

@@ -17,6 +17,9 @@ class EVERBLOOM_API AEBPlayerController : public APlayerController
 public:
 	virtual void OnPossess(APawn* newPawn) override;
 
+	UFUNCTION(BlueprintCallable)
+	void GiveAbilityToUI(class UEBGameplayAbilityBase* AbilityToGive, class AEmilia* PlayerToGive);
+
 protected:
 
 

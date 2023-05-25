@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
+#include "MainAbilitiesWidget.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -29,6 +30,11 @@ void UInGameUI::SwitchToFloriology()
 
 
 
+}
+
+void UInGameUI::AddNewMainAbility(UEBGameplayAbilityBase* Ability, AEmilia* Player)
+{
+	MainAbilities->AddMainAbility(Ability, Player);
 }
 
 void UInGameUI::SetHealthBar(float CurrentValue, float MaxValue)
