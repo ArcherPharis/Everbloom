@@ -8,6 +8,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "GA_ThunderboltTargetActor.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "EBAbilitySystemComponent.h"
 #include "AbilitySystemComponent.h"
 
 void UGA_Thunderbolt::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -74,7 +75,20 @@ void UGA_Thunderbolt::StartTargeting(FGameplayEventData Payload)
 void UGA_Thunderbolt::TargetAquired(const FGameplayAbilityTargetDataHandle& Data)
 {
 	CastTargetingMontageTask->EndTask();
-	K2_CommitAbility();
+	UAbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponentFromActorInfo();
+
+	if (AbilitySystemComponent)
+	{
+		FGameplayAbilitySpecHandle Handle = CurrentSpecHandle;
+
+		FGameplayAbilityActorInfo ActorInfo;
+		ActorInfo.InitFromActor(GetAvatarActorFromActorInfo(), GetAvatarActorFromActorInfo(), AbilitySystemComponent);
+
+		FGameplayAbilityActivationInfo ActivationInfo;
+		ActivationInfo.SetActivationConfirmed();
+
+		CommitAbility(Handle, &ActorInfo, ActivationInfo);
+	}
 	UAbilityTask_PlayMontageAndWait* CastingMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, CastingMontage);
 	if (CastingMontageTask)
 	{
