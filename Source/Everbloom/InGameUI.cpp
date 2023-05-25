@@ -3,6 +3,7 @@
 
 #include "InGameUI.h"
 #include "Components/WidgetSwitcher.h"
+#include "Components/ProgressBar.h"
 #include "AbilityFlowerItem.h"
 #include "PlayerStatsWidget.h"
 #include "AbilityFlowerEntry.h"
@@ -28,6 +29,12 @@ void UInGameUI::SwitchToFloriology()
 
 
 
+}
+
+void UInGameUI::SetHealthBar(float CurrentValue, float MaxValue)
+{
+	HealthBar->SetPercent(CurrentValue / MaxValue);
+	ChangeHealthBarColor(CurrentValue/MaxValue);
 }
 
 void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)

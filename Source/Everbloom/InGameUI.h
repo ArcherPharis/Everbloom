@@ -17,6 +17,15 @@ class EVERBLOOM_API UInGameUI : public UUserWidget
 public:
 	void SwitchToFloriology();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void ChangeHealthBarColor(float CurrentPercent);
+
+	UFUNCTION(BlueprintPure)
+	class UProgressBar* GetHealthBar() const { return HealthBar; }
+
+	UFUNCTION()
+	void SetHealthBar(float CurrentValue, float MaxValue);
+
 	UFUNCTION()
 	void NewAbilityFlowerGiven(class UAbilityFlowerItem* Flower);
 
@@ -30,6 +39,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+	class UProgressBar* HealthBar;
 
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* MainCanvas;

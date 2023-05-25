@@ -5,6 +5,9 @@
 #include "Emilia.h"
 #include "InventoryComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "EBAbilitySystemComponent.h"
+#include "GameplayEffectTypes.h"
+#include "EBAttributeSet.h"
 #include "InGameUI.h"
 
 void AEBPlayerController::OnPossess(APawn* newPawn)
@@ -18,6 +21,8 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->OnToggleFlowerMenu.AddDynamic(this, &AEBPlayerController::SwitchToFloriologyScreen);
 		Player->OnToggleMenu.AddDynamic(InGameUI, &UInGameUI::ToggleMenu);
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
+		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
+
 	}
 }
 
@@ -27,3 +32,4 @@ void AEBPlayerController::SwitchToFloriologyScreen()
 {
 	InGameUI->SwitchToFloriology();
 }
+

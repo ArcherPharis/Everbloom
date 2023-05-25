@@ -12,5 +12,9 @@ void UEBAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     if (Data.EvaluatedData.Attribute == GetHealthAttribute())
     {
         SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+        float NewHealthValue = GetHealth();
+        //float OldHealthValue = NewHealthValue - Data.EvaluatedData.Magnitude;
+
+        OnHealthAttributeChanged.Broadcast(NewHealthValue, GetMaxHealth());
     }
 }

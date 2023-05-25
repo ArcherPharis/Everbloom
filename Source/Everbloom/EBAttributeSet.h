@@ -13,6 +13,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthAttributeChanged, float, NewValue, float, OldValue);
+
 /**
  * 
  */
@@ -24,6 +26,9 @@ class EVERBLOOM_API UEBAttributeSet : public UAttributeSet
 public:
 
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+	FOnHealthAttributeChanged OnHealthAttributeChanged;
+
 
 	UPROPERTY()
 	FGameplayAttributeData Health;
