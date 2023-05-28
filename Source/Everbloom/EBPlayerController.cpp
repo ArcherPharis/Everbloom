@@ -29,7 +29,6 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 
 void AEBPlayerController::GiveAbilityToUI(UEBGameplayAbilityBase* AbilityToGive, AEmilia* PlayerToGive)
 {
-	//temporary, in future when the flowers are interacted with they will just broadcast this data.
 	InGameUI->AddNewMainAbility(AbilityToGive, PlayerToGive);
 }
 

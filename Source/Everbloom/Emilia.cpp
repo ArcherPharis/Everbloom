@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/WidgetComponent.h"
+#include "EBGameplayAbilityBase.h"
 #include "LockOnCapturer.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "EBAttributeSet.h"
@@ -80,6 +81,15 @@ void AEmilia::BeginPlay()
 		{
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
+	}
+}
+
+void AEmilia::GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input)
+{
+	FGameplayAbilitySpec* Spec = GiveAbility(Ability, input);
+	if (PlayerCont && Spec->Ability)
+	{
+		PlayerCont->GiveAbilityToUI(Cast<UEBGameplayAbilityBase>(Spec->Ability), this);
 	}
 }
 
