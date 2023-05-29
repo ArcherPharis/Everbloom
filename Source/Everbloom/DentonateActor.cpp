@@ -44,3 +44,23 @@ TArray<AActor*> ADentonateActor::GetOverlappingActors(AActor* OwnerCharacter)
 	return OverlappingActors;
 }
 
+void ADentonateActor::SendOverlappingActors(AActor* OwningCharacter)
+{
+	TArray<AActor*> OverlappingActors;
+	HitSphere->GetOverlappingActors(OverlappingActors);
+	OverlappingActors.Remove(OwningCharacter);
+
+	UAbilitySystemBlueprintLibrary::AbilityTargetDataFromActorArray(OverlappingActors, false);
+
+	TSharedPtr<FGameplayAbilityTargetData_ActorArray> targetedActorInfo{ new FGameplayAbilityTargetData_ActorArray };
+	for (auto actor : OverlappingActors)
+	{
+		targetedActorInfo->TargetActorArray.Add(actor);
+	}
+
+	FGameplayAbilityTargetDataHandle TargetDataWithActors;
+	TargetDataWithActors.Data.Add(targetedActorInfo);
+
+	OnExplosion.Broadcast(TargetDataWithActors);
+}
+

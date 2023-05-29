@@ -31,7 +31,8 @@ private:
 	class UParticleSystem* ExplosionFX;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dentonate")
-	TSubclassOf<class ADentonateActor> DentActor;
+	TSubclassOf<class ADentonateActor> DentActorClass;
+
 
 
 	void LaunchActorAsCharacter(AActor* Actor, float speed);
@@ -55,4 +56,7 @@ private:
 
 	UFUNCTION()
 	void DentonateBomb(float time);
+
+	UFUNCTION()
+	void ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData);
 };

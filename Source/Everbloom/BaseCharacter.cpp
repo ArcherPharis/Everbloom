@@ -23,6 +23,7 @@ ABaseCharacter::ABaseCharacter()
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAttributeEvents();
 	ApplyInitialEffect();
 	for (auto& Ability : InitialAbilities)
 	{
@@ -85,6 +86,25 @@ void ABaseCharacter::EnableAiming(bool IsCurrentlyAiming)
 		GetCharacterMovement()->bOrientRotationToMovement = true;
 		bUseControllerRotationYaw = false;
 	}
+}
+
+void ABaseCharacter::InitAttributeEvents()
+{
+	AttributeSet->OnHealthAttributeChanged.AddDynamic(this, &ABaseCharacter::HandleCharacterHealth);
+}
+
+void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
+{
+	if (NewValue == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DEAD"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Ow"));
+	}
+	
+
 }
 
 FGameplayAbilitySpec* ABaseCharacter::GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID, bool broadCast, int level)

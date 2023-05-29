@@ -50,6 +50,8 @@ public:
 
 	void EnableAiming(bool IsCurrentlyAiming);
 
+	void InitAttributeEvents();
+
 private:
 	UPROPERTY()
 	UEBAbilitySystemComponent* AbilitySystemComp;
@@ -68,6 +70,9 @@ private:
 	class UWidgetComponent* HUDWidget;
 
 	bool bIsAiming = false;
+
+	UFUNCTION()
+	void HandleCharacterHealth(float NewValue, float MaxHealth);
 
 
 

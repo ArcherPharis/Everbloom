@@ -40,12 +40,21 @@ void UGA_Dentonator::EndAbility(const FGameplayAbilitySpecHandle Handle, const F
 }
 
 
-void UGA_Dentonator::LaunchActorAsCharacter(AActor* Actor, float speed)
+void UGA_Dentonator::LaunchActorAsCharacter(AActor* Actor, float Speed)
 {
 	ACharacter* actorAsCharacter = Cast<ACharacter>(Actor);
 	if (actorAsCharacter)
 	{
-		actorAsCharacter->LaunchCharacter(FVector::UpVector * speed, true, true);
+		//FVector LaunchDirection = FVector::UpVector;
+		//float PitchAngle = FMath::RandRange(45.f, 270.f);
+		//float YawAngle = FMath::RandRange(45.f, 270.f);
+		//FRotator LaunchRotation(PitchAngle, YawAngle, 0.f);
+		//LaunchDirection = LaunchRotation.RotateVector(LaunchDirection);
+
+		FVector LaunchDirection = FVector::UpVector + FMath::VRandCone(FVector::UpVector, 99.f);
+
+		FVector LaunchImpulse = LaunchDirection.GetSafeNormal() * Speed;
+		actorAsCharacter->LaunchCharacter(LaunchImpulse, true, true);
 	}
 }
 
@@ -75,21 +84,21 @@ void UGA_Dentonator::DentonateBomb(float time)
 	PartComp->DestroyComponent();
 	
 	
-	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActor);
+	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActorClass);
+	DA->OnExplosion.AddDynamic(this, &UGA_Dentonator::ApplyDamageAndForce);
 	DA->SetActorLocation(BombLocation);
-	TArray<AActor*> targetActors = DA->GetOverlappingActors(GetAvatarAsCharacter());
-	for (auto targetActor : targetActors)
+	DA->SendOverlappingActors(GetAvatarAsCharacter());
+
+}
+
+void UGA_Dentonator::ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData)
+{
+	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(TargetData, 0);
+	for (auto targetActor : TargetActors)
 	{
 		LaunchActorAsCharacter(targetActor, BlastLaunchSpeed);
-		UAbilitySystemComponent* ASC = targetActor->FindComponentByClass<UAbilitySystemComponent>();
-		if (ASC)
-		{
-			FGameplayEffectContextHandle handle;
-			ASC->ApplyGameplayEffectToSelf(ExplosionEffect.GetDefaultObject(), -1, handle);
-		}
-		
 	}
-
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(ExplosionEffect), TargetData);
 
 	K2_EndAbility();
 }
