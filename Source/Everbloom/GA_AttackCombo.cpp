@@ -71,7 +71,7 @@ void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
 
 void UGA_AttackCombo::MontageFinished()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Melee ended"));
+
 	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), false, false);
 }
 
@@ -91,6 +91,11 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 
 		if (AnimBP && AnimBP->GetCurrentActiveMontage())
 		{
+			if (NextComboSectionName == TEXT("Combo04"))
+			{
+				bAttackPush = true;
+			}
+
 			UE_LOG(LogTemp, Warning, TEXT("NEXT SECTION!: %s"), *NextComboSectionName.ToString());
 			AnimBP->Montage_SetNextSection(AnimBP->Montage_GetCurrentSection(), NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 			AnimBP->Montage_JumpToSection(NextComboSectionName, AnimBP->GetCurrentActiveMontage());
@@ -102,22 +107,33 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 {
 	
 	if (Payload.TargetData.Num() == 0) return;
+	
 
-	UE_LOG(LogTemp, Warning, TEXT("Hitting Something"));
 	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(Payload.TargetData, 0);
 	for (AActor* TargetActor : TargetActors)
 	{
 		ACharacter* TargetAsCharacter = Cast<ACharacter>(TargetActor);
 		if (TargetAsCharacter)
 		{
-			TargetAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
+			UE_LOG(LogTemp, Warning, TEXT("NEXT SECTION!: %s"), *NextComboSectionName.ToString());
+			if (!TargetAsCharacter->GetMovementComponent()->IsFalling() || bAttackPush && TargetAsCharacter->GetMovementComponent()->IsFalling())
+			{
+				TargetAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
+			}
+			else
+			{
+				TargetAsCharacter->GetCharacterMovement()->Velocity = FVector(0, 0, 0);
+			}
 		}
 	}
 
 	FGameplayEffectSpecHandle spec = MakeOutgoingGameplayEffectSpec(HitEffect, Payload.EventMagnitude);
 	spec.Data.Get()->SetContext(Payload.ContextHandle);
+	FGameplayEffectSpecHandle AirSpec = MakeOutgoingGameplayEffectSpec(InAirHitEffect, Payload.EventMagnitude);
+
 
 	K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
+	K2_ApplyGameplayEffectSpecToTarget(AirSpec, Payload.TargetData);
 }
 
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)

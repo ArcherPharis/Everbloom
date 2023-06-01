@@ -17,6 +17,8 @@ ABaseCharacter::ABaseCharacter()
 	AttributeSet = CreateDefaultSubobject<UEBAttributeSet>("AttributeSet");
 	HUDWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetComp"));
 	HUDWidget->SetupAttachment(GetRootComponent());
+	BaseTransform = CreateDefaultSubobject<USceneComponent>(TEXT("Base Transform"));
+	BaseTransform->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -97,11 +99,11 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
 {
 	if (NewValue == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("DEAD"));
+
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Ow"));
+
 	}
 	
 

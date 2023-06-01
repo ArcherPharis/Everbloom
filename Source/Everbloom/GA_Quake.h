@@ -27,6 +27,29 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Quake")
 	class UNiagaraSystem* QuakeFX;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Quake")
+	TSubclassOf<class UGameplayEffect> QuakeEffect;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "Quake")
+	float SpikesSpawnRadius = 500.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Quake")
+	int NumOfFXToSpawn = 10;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Quake")
+	float UpwardLaunchSpeed = 300.f;
+
 	UFUNCTION()
 	void MontageOut();
+
+	UFUNCTION()
+	void MontageInterrupted();
+
+	void SpawnSystem(float Radius, int NumOfSystems);
+
+	UFUNCTION()
+	void ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData);
+
+	void LaunchTargets(const FGameplayAbilityTargetDataHandle& Data);
 };

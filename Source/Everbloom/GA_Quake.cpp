@@ -3,9 +3,11 @@
 
 #include "GA_Quake.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "BaseCharacter.h"
+#include "DentonateActor.h"
 
 void UGA_Quake::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -14,9 +16,9 @@ void UGA_Quake::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	UAbilityTask_PlayMontageAndWait* CastTargetingMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, CastingMontage);
 	if (CastTargetingMontageTask)
 	{
-		CastTargetingMontageTask->OnBlendOut.AddDynamic(this, &UGA_Quake::MontageOut);
-		CastTargetingMontageTask->OnCancelled.AddDynamic(this, &UGA_Quake::MontageOut);
-		CastTargetingMontageTask->OnInterrupted.AddDynamic(this, &UGA_Quake::MontageOut);
+
+		CastTargetingMontageTask->OnCancelled.AddDynamic(this, &UGA_Quake::MontageInterrupted);
+		CastTargetingMontageTask->OnInterrupted.AddDynamic(this, &UGA_Quake::MontageInterrupted);
 		CastTargetingMontageTask->OnCompleted.AddDynamic(this, &UGA_Quake::MontageOut);
 		CastTargetingMontageTask->ReadyForActivation();
 	}
@@ -33,12 +35,72 @@ void UGA_Quake::MontageOut()
 {
 	K2_CommitAbility();
 
-	FTransform SpawnTransform;
-	SpawnTransform.SetLocation(GetAvatarAsCharacter()->GetActorLocation());
-	SpawnTransform.SetScale3D(FVector(50.0f, 50.0f, 50.0f));
-
 	// Spawn the Niagara system at the specified location with the scale
-	UNiagaraComponent* NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), QuakeFX, SpawnTransform.GetLocation(), SpawnTransform.Rotator());
+	SpawnSystem(SpikesSpawnRadius, NumOfFXToSpawn);
+	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActorClass);
+	DA->OnExplosion.AddDynamic(this, &UGA_Quake::ApplyDamageAndForce);
+	DA->SetActorLocation(GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation());
+	DA->SendOverlappingActors(GetAvatarAsCharacter());
 
 	K2_EndAbility();
+}
+
+void UGA_Quake::MontageInterrupted()
+{
+	K2_EndAbility();
+}
+
+void UGA_Quake::SpawnSystem(float Radius, int NumOfSystems)
+{
+	FVector PlayerLocation = GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation();
+
+    for (int i = 0; i < NumOfSystems; i++)
+    {
+
+        FVector SpawnOffset = FVector::ZeroVector;
+        SpawnOffset.X = FMath::FRandRange(-Radius, Radius);
+        SpawnOffset.Y = FMath::FRandRange(-Radius, Radius);
+
+        FVector SpawnLocation = PlayerLocation + SpawnOffset;
+
+        if (QuakeFX != nullptr)
+        {
+            FTransform SpawnTransform;
+            SpawnTransform.SetLocation(SpawnLocation);
+
+            UNiagaraComponent* NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), QuakeFX, SpawnTransform.GetLocation(), SpawnTransform.Rotator(), FVector(5.f,5.f,5.f));
+
+        }
+    }
+
+}
+
+void UGA_Quake::ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData)
+{
+	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(TargetData, 0);
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(QuakeEffect), TargetData);
+	LaunchTargets(TargetData);
+
+}
+
+void UGA_Quake::LaunchTargets(const FGameplayAbilityTargetDataHandle& Data)
+{
+
+	TArray<AActor*> ComboTargets = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(Data, 0);
+
+	AActor* avatar = GetAvatarActorFromActorInfo();
+	ACharacter* avatarAsCharacter = Cast<ACharacter>(avatar);
+	avatarAsCharacter->LaunchCharacter(FVector::UpVector * UpwardLaunchSpeed, true, true);
+
+
+	for (AActor* target : ComboTargets)
+	{
+		if (target == avatar) continue;
+
+		ACharacter* TargetAsCharacter = Cast<ACharacter>(target);
+		if (TargetAsCharacter)
+		{
+			TargetAsCharacter->LaunchCharacter(FVector::UpVector * UpwardLaunchSpeed, true, true);
+		}
+	}
 }

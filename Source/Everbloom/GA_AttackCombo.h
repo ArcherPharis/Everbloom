@@ -36,6 +36,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	TSubclassOf<UGameplayEffect> HitEffect;
+	UPROPERTY(EditDefaultsOnly, Category = "Melee")
+	TSubclassOf<UGameplayEffect> InAirHitEffect;
 	UFUNCTION()
 	void UpdateCombo(FGameplayEventData Payload);
 

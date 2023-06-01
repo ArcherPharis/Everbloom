@@ -52,6 +52,8 @@ public:
 
 	void InitAttributeEvents();
 
+	USceneComponent* GetBaseLocation() const { return BaseTransform; }
+
 private:
 	UPROPERTY()
 	UEBAbilitySystemComponent* AbilitySystemComp;
@@ -68,6 +70,9 @@ private:
 	//TODO: Move this onto Enemy class as the player does not need this.
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	class UWidgetComponent* HUDWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	USceneComponent* BaseTransform;
 
 	bool bIsAiming = false;
 
