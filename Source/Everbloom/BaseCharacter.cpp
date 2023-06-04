@@ -5,6 +5,7 @@
 #include "EBAbilitySystemComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "EBAttributeSet.h"
 
@@ -106,6 +107,41 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
 
 	}
 	
+
+}
+
+
+
+void ABaseCharacter::MoveToTarget(AActor* TargetActor)
+{
+	FVector StartLocation = GetActorLocation();
+	FVector TargetLocation = TargetActor->GetActorLocation();
+
+
+
+	float DistanceToTarget = FVector::Distance(StartLocation, TargetLocation);
+
+	const float AcceptableDistance = 40.f;
+
+	if (DistanceToTarget <= AcceptableDistance)
+	{
+		return;
+	}
+
+	float BaseMovementSpeed = 1000.0f; // Adjust as needed
+	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 50.0f); // Adjust the divisor as needed
+
+	FVector MovementDirection = (TargetLocation - StartLocation).GetSafeNormal();
+	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
+	TargetRotation.Pitch = 0;
+	SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->DeltaTimeSeconds, 200.5f));
+	float MovementAmount = FMath::Min(DistanceToTarget, MovementSpeed * GetWorld()->DeltaTimeSeconds);
+
+	FVector NewLocation = StartLocation + MovementDirection * MovementAmount;
+
+
+	SetActorLocation(NewLocation);
+
 
 }
 

@@ -54,6 +54,9 @@ public:
 
 	USceneComponent* GetBaseLocation() const { return BaseTransform; }
 
+	UFUNCTION(BlueprintCallable, Category = "Character")
+	void MoveToTarget(AActor* TargetActor);
+
 private:
 	UPROPERTY()
 	UEBAbilitySystemComponent* AbilitySystemComp;
@@ -76,8 +79,15 @@ private:
 
 	bool bIsAiming = false;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	UCurveVector* VectorCurve;
+
 	UFUNCTION()
 	void HandleCharacterHealth(float NewValue, float MaxHealth);
+
+
+	
 
 
 
