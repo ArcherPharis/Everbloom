@@ -121,15 +121,15 @@ void ABaseCharacter::MoveToTarget(AActor* TargetActor)
 
 	float DistanceToTarget = FVector::Distance(StartLocation, TargetLocation);
 
-	const float AcceptableDistance = 40.f;
+	const float AcceptableDistance = 200.f;
 
 	if (DistanceToTarget <= AcceptableDistance)
 	{
 		return;
 	}
 
-	float BaseMovementSpeed = 1000.0f; // Adjust as needed
-	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 50.0f); // Adjust the divisor as needed
+	float BaseMovementSpeed = 1000.0f;
+	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 50.0f);
 
 	FVector MovementDirection = (TargetLocation - StartLocation).GetSafeNormal();
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);

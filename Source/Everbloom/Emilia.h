@@ -149,5 +149,7 @@ private:
 
 	bool GetActorScreenPos(const AActor* Actor, FVector2D& outPOS) const;
 
+	virtual void MoveToTarget(AActor* TargetActor) override;
+
 
 };

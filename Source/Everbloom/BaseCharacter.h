@@ -55,7 +55,7 @@ public:
 	USceneComponent* GetBaseLocation() const { return BaseTransform; }
 
 	UFUNCTION(BlueprintCallable, Category = "Character")
-	void MoveToTarget(AActor* TargetActor);
+	virtual void MoveToTarget(AActor* TargetActor);
 
 private:
 	UPROPERTY()

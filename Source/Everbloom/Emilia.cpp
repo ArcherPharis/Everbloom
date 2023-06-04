@@ -373,4 +373,16 @@ bool AEmilia::GetActorScreenPos(const AActor* Actor, FVector2D& outPOS) const
 	return false;
 }
 
+void AEmilia::MoveToTarget(AActor* TargetActor)
+{
+	if (LockedOnTarget)
+	{
+		Super::MoveToTarget(LockedOnTarget);
+	}
+	else
+	{
+		Super::MoveToTarget(TargetActor);
+	}
+}
+
 
