@@ -145,5 +145,5 @@ void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 	{
 		return;
 	}
-	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude/1.2f, true);
+	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude/1.8f, true);
 }

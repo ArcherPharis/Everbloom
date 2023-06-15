@@ -123,23 +123,24 @@ void ABaseCharacter::MoveToTarget(AActor* TargetActor)
 
 	const float AcceptableDistance = 200.f;
 
-	if (DistanceToTarget <= AcceptableDistance)
-	{
-		return;
-	}
 
-	float BaseMovementSpeed = 1000.0f;
+
+	float BaseMovementSpeed = 800.0f;
 	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 50.0f);
 
 	FVector MovementDirection = (TargetLocation - StartLocation).GetSafeNormal();
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
 	TargetRotation.Pitch = 0;
-	SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->DeltaTimeSeconds, 200.5f));
-	float MovementAmount = FMath::Min(DistanceToTarget, MovementSpeed * GetWorld()->DeltaTimeSeconds);
+	SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->DeltaTimeSeconds, 2000.5f));
+
+	if (DistanceToTarget <= AcceptableDistance)
+	{
+		return;
+	}
+	float MaxMovementAmount = MovementSpeed * GetWorld()->DeltaTimeSeconds;
+	float MovementAmount = FMath::Min(DistanceToTarget - AcceptableDistance, MaxMovementAmount);
 
 	FVector NewLocation = StartLocation + MovementDirection * MovementAmount;
-
-
 	SetActorLocation(NewLocation);
 
 
