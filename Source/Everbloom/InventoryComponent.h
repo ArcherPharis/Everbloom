@@ -28,6 +28,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "InventoryComp")
 	class AWeapon* GetCurrentWeapon() const { return CurrentWeapon; }
 
+	int GetLifedews() const { return Lifedew; }
+	void SetLifedewAmount(int Amount);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -45,6 +48,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AWeapon> InitialWeaponClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	int Lifedew = 0;
+
+	int MaxLifedewAmount = 9999;
 
 	UPROPERTY()
 	TArray<AWeapon*> Weapons;

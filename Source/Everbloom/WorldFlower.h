@@ -38,4 +38,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	int InputValue = 8;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UDialogueComponent* DialogueComponent;
+
+
 };

@@ -5,6 +5,9 @@
 #include "EBGameplayAbilityBase.h"
 #include "Components/CapsuleComponent.h"
 #include "Emilia.h"
+#include "Blueprint/UserWidget.h"
+#include "DialogueComponent.h"
+
 
 // Sets default values
 AWorldFlower::AWorldFlower()
@@ -17,6 +20,7 @@ AWorldFlower::AWorldFlower()
 	FlowerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Flower Mesh"));
 	FlowerMesh->SetupAttachment(HitCapsule);
 	HitCapsule->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
+	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("Dialogue Component"));
 
 }
 
@@ -36,9 +40,12 @@ void AWorldFlower::Tick(float DeltaTime)
 
 void AWorldFlower::InteractWith(AEmilia* Player)
 {
-	if (MainAbilityClass)
-	{
-		Player->GiveMainAbility(MainAbilityClass, InputValue);
-	}
+	//if (MainAbilityClass)
+	//{
+	//	Player->GiveMainAbility(MainAbilityClass, InputValue);
+	//}
+	DialogueComponent->CreateDialogueBox(Player);
+	
+	
 }
 

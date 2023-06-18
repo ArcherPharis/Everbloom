@@ -37,6 +37,11 @@ float UInventoryComponent::GetCurrentWeaponDamage() const
 }
 
 
+void UInventoryComponent::SetLifedewAmount(int Amount)
+{
+	Lifedew = FMath::Clamp(Lifedew + Amount, 0, MaxLifedewAmount);
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
