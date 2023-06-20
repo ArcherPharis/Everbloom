@@ -269,7 +269,6 @@ void AEmilia::Interact()
 	{
 		if (traceResult.bBlockingHit)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Found something interactable"));
 			AActor* hitActor = traceResult.GetActor();
 			IInteractableInterface* interactInferface = Cast<IInteractableInterface>(hitActor);
 			interactInferface->InteractWith(this);

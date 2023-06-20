@@ -3,6 +3,8 @@
 
 #include "DialogueComponent.h"
 #include "DialogueAIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "AIModule/Classes/BrainComponent.h"
 #include "DialogueWidget.h"
 
 // Sets default values for this component's properties
@@ -37,9 +39,12 @@ void UDialogueComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UDialogueComponent::OnExit()
 {
+	AICont->GetBrainComponent()->StopLogic("Dialogue Attempted to exit.");
+	DialogueWidget->RemoveFromParent();
 	APlayerController* PlayerCont = Cast<APlayerController>(DialogueWidget->GetOwningPlayer());
-	PlayerCont->bShowMouseCursor = false;
 	PlayerCont->SetInputMode(FInputModeGameOnly());
+	PlayerCont->bShowMouseCursor = false;
+
 }
 
 void UDialogueComponent::CreateDialogueBox(APawn* Player)
@@ -49,5 +54,12 @@ void UDialogueComponent::CreateDialogueBox(APawn* Player)
 	DialogueWidget->OnExit.AddDynamic(this, &UDialogueComponent::OnExit);
 	DialogueWidget->AddToViewport();
 	DialogueWidget->InitDialogue(PlayerCont);
+
+	AICont->RunBehaviorTree(DialogueTree);
+	UBlackboardComponent* BBoardComp = AICont->GetBlackboardComponent();
+	if (BBoardComp)
+	{
+		BBoardComp->SetValueAsObject(BlackboardWidgetName, DialogueWidget);
+	}
 }
 

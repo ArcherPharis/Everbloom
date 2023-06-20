@@ -15,7 +15,19 @@ class EVERBLOOM_API UDialogueEntryWidget : public UUserWidget, public IUserObjec
 {
 	GENERATED_BODY()
 
+private:
+	virtual void NativeOnListItemObjectSet(UObject* ListItemObject);
+
 	UPROPERTY(meta = (BindWidget))
 	class UButton* DialogueButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* DialogueText;
+
+	UFUNCTION()
+	void DialogueButtonClicked();
+
+	UPROPERTY()
+	class UDialogueReplyObject* ReplyObject;
 	
 };
