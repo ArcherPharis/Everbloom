@@ -59,6 +59,8 @@ void UDialogueComponent::CreateDialogueBox(APawn* Player)
 	UBlackboardComponent* BBoardComp = AICont->GetBlackboardComponent();
 	if (BBoardComp)
 	{
+		BBoardComp->SetValueAsObject("SelfActor", GetOwner());
+		BBoardComp->SetValueAsObject("Player", Player);
 		BBoardComp->SetValueAsObject(BlackboardWidgetName, DialogueWidget);
 	}
 }

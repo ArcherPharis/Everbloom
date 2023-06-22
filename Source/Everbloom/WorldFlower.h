@@ -24,6 +24,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void CreateMenuWidget(AEmilia* WidgetOwnerActor);
+
 private:
 	virtual void InteractWith(AEmilia* Player);
 
@@ -40,6 +42,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	UDialogueComponent* DialogueComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	TSubclassOf<class UWorldTreeMenuWidget> TreeMenuWidgetClass;
+
+	UPROPERTY()
+	UWorldTreeMenuWidget* TreeMenuWidget;
 
 
 };

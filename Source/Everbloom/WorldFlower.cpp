@@ -7,6 +7,8 @@
 #include "Emilia.h"
 #include "Blueprint/UserWidget.h"
 #include "DialogueComponent.h"
+#include "WorldTreeMenuWidget.h"
+#include "InventoryComponent.h"
 
 
 // Sets default values
@@ -36,6 +38,17 @@ void AWorldFlower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AWorldFlower::CreateMenuWidget(AEmilia* WidgetOwnerActor)
+{
+	APlayerController* PlayerCont = Cast<APlayerController>(WidgetOwnerActor->GetController());
+	TreeMenuWidget = CreateWidget<UWorldTreeMenuWidget>(PlayerCont, TreeMenuWidgetClass);
+	if (TreeMenuWidget)
+	{
+		TreeMenuWidget->SetLifedewAmount(WidgetOwnerActor->GetInventoryComponent()->GetLifedews());
+		TreeMenuWidget->AddToViewport();
+	}
 }
 
 void AWorldFlower::InteractWith(AEmilia* Player)
