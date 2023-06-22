@@ -47,7 +47,43 @@ void AWorldFlower::CreateMenuWidget(AEmilia* WidgetOwnerActor)
 	if (TreeMenuWidget)
 	{
 		TreeMenuWidget->SetLifedewAmount(WidgetOwnerActor->GetInventoryComponent()->GetLifedews());
+		TreeMenuWidget->SetWorldFlowerText(WorldFlowerName);
+		TreeMenuWidget->SetSpecialityWidgetParams(SpecialtyText, SpecialityIcon);
 		TreeMenuWidget->AddToViewport();
+	}
+}
+
+void AWorldFlower::CloseMenuWidget()
+{
+	TreeMenuWidget->RemoveFromParent();
+}
+
+void AWorldFlower::CheckCanUpgrade(int ChoiceIndex, AEmilia* Emilia, bool& CanUpgrade)
+{
+	bool CheckUp;
+	switch (ChoiceIndex)
+	{
+	case 0:
+		UE_LOG(LogTemp, Warning, TEXT("Health Logic Here"));
+		CanUpgrade = false;
+		break;
+	case 1:
+		CheckUp = Emilia->GetInventoryComponent()->GetLifedews() >= 10;
+		CanUpgrade = CheckUp;
+		break;
+	default: UE_LOG(LogTemp, Warning, TEXT("Out Of Range Index on ChoiceIndex")); break;
+	}
+}
+
+void AWorldFlower::GiveUpgrade(int ChoiceIndex, AEmilia* Emilia)
+{
+	switch (ChoiceIndex)
+	{
+	case 0: UE_LOG(LogTemp, Warning, TEXT("Give Health Effect Boost."));
+		break;
+	case 1: UE_LOG(LogTemp, Warning, TEXT("Give Stat Effect Boost."));
+		break;
+	default: break;
 	}
 }
 

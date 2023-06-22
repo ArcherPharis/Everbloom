@@ -25,6 +25,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void CreateMenuWidget(AEmilia* WidgetOwnerActor);
+	void CloseMenuWidget();
+	void CheckCanUpgrade(int ChoiceIndex, AEmilia* Emilia, bool& CanUpgrade);
+	void GiveUpgrade(int ChoiceIndex, AEmilia* Emilia);
+
 
 private:
 	virtual void InteractWith(AEmilia* Player);
@@ -38,10 +42,25 @@ private:
 	TSubclassOf<class UGameplayAbility> MainAbilityClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	TSubclassOf<class UGameplayEffect> HealthUpgradeEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	TSubclassOf<class UGameplayEffect> SpecialtyUpgradeEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	UTexture2D* SpecialityIcon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	FText SpecialtyText;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	int InputValue = 8;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	UDialogueComponent* DialogueComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	FName WorldFlowerName {"Flower Name"};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	TSubclassOf<class UWorldTreeMenuWidget> TreeMenuWidgetClass;
