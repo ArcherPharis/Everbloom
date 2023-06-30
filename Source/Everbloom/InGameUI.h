@@ -72,6 +72,9 @@ private:
 	UFUNCTION()
 	void HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven);
 
+	UFUNCTION()
+	void SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven);
+
 	UPROPERTY()
 	class AEverbloomGameModeBase* Gamemode;
 

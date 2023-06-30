@@ -25,6 +25,7 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 	}
 	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
 	MovementComp->GravityScale = 0.0f;
+	//MovementComp->DisableMovement();
 
 	UAbilityTask_WaitGameplayEvent* WaitComboChange = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, ComboChangeTag, nullptr, false, false);
 	if (WaitComboChange)
@@ -60,6 +61,7 @@ void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
 	MovementComp->GravityScale = 1.0f;
+	//MovementComp->SetMovementMode(EMovementMode::MOVE_Walking);
 
 }
 
@@ -71,7 +73,6 @@ void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
 
 void UGA_AttackCombo::MontageFinished()
 {
-
 	EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), false, false);
 }
 
@@ -93,10 +94,9 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 		{
 			if (NextComboSectionName == TEXT("Combo04"))
 			{
-				bAttackPush = true;
+				//bAttackPush = true;
 			}
 
-			UE_LOG(LogTemp, Warning, TEXT("NEXT SECTION!: %s"), *NextComboSectionName.ToString());
 			AnimBP->Montage_SetNextSection(AnimBP->Montage_GetCurrentSection(), NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 			AnimBP->Montage_JumpToSection(NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 		}

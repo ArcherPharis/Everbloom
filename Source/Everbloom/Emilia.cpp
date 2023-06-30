@@ -106,6 +106,16 @@ void AEmilia::Tick(float DeltaTime)
 
 }
 
+void AEmilia::LookAtTarget(AActor* Target)
+{
+	if (Target)
+	{
+		FRotator Rotat = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+		Rotat.Pitch = 0;
+		SetActorRotation(Rotat);
+	}
+}
+
 void AEmilia::Move(const FInputActionValue& Value)
 {
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
@@ -237,7 +247,6 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 
 
 		}
-		//current problem: BestEnemy seems to only get updated once
 		if (BestEnemy != nullptr)
 		{
 			

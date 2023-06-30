@@ -15,10 +15,11 @@ class EVERBLOOM_API UFloriologyCraftingWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetFlowerOneImage(UTexture2D* FlowerIcon);
+	void SetFlowerOneImage(UTexture2D* FlowerIcon, FText FlowerName);
 	void SetFlowerTwoImage(UTexture2D* FlowerIcon);
 	void EnableValidCombinationButton(TSubclassOf<class UGameplayAbility> ValidAbility);
 	void ToggleCombinationButton(bool bToggle);
+	void AddToNodeEntryList(class UAbilityFlowerItem* Item);
 
 
 protected:
@@ -27,8 +28,17 @@ protected:
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* FlowerOneImage;
+
 	UPROPERTY(meta = (BindWidget))
-	UImage* FlowerTwoImage;
+	class UTextBlock* FlowerOneName;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* MasterNodeImage;
+
+	UPROPERTY(meta = (BindWidget))
+	class UListView* NodeEntryList;
+	//UPROPERTY(meta = (BindWidget))
+	//UImage* FlowerTwoImage;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MakeFlowerButton;

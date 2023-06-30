@@ -14,6 +14,7 @@ struct FRecipe
 public:
 	bool IsCombinationValid(const TArray<class UAbilityFlowerItem*>& Combination)const;
 	TSubclassOf<class UEBGameplayAbilityBase>GetAbilityClass() const { return Ability; }
+	TArray<TSubclassOf<class UAbilityFlowerItem>> GetItems() const { return Items; }
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -34,6 +35,7 @@ class EVERBLOOM_API UFloriologyRecipes : public UPrimaryDataAsset
 public:
 	TSubclassOf<class UEBGameplayAbilityBase> GetAbilityForCombination(const TArray<class UAbilityFlowerItem*>& Combination) const;
 
+	TArray<FRecipe> GetRecipes() const {return Recipes; }
 private:
 	UPROPERTY(EditDefaultsOnly)
 	TArray<FRecipe> Recipes;

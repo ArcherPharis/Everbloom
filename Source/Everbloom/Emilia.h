@@ -32,6 +32,10 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void LookAtTarget(AActor* Target);
+
+	AActor* GetLockedOnTarget() const { return LockedOnTarget; }
+
 	UFUNCTION(BlueprintPure, Category = "Emilia")
 	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 

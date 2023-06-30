@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "FloriologyRecipes.h"
 #include "EverbloomGameModeBase.generated.h"
 
 /**
@@ -16,6 +17,9 @@ class EVERBLOOM_API AEverbloomGameModeBase : public AGameModeBase
 
 public:
 	TSubclassOf<class UEBGameplayAbilityBase> GetAbilityForCombination(TArray<class UAbilityFlowerItem*> Items)const;
+	TArray<FRecipe> GetFlowerRecipes() const;
+	class UAbilityFlowerItem* GetRemainingFlowerFromRecipe(FRecipe Recipe, TSubclassOf<UAbilityFlowerItem> FlowerItemClass);
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	class UFloriologyRecipes* Recipes;

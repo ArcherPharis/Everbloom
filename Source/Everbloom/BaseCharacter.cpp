@@ -104,7 +104,7 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
 	}
 	else
 	{
-
+		UE_LOG(LogTemp, Warning, TEXT("Ouch"));
 	}
 	
 
@@ -124,9 +124,9 @@ void ABaseCharacter::MoveToTarget(AActor* TargetActor)
 	const float AcceptableDistance = 200.f;
 
 
-
-	float BaseMovementSpeed = 800.0f;
-	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 50.0f);
+	//original values were 800 and 50.f if you need to revert.
+	float BaseMovementSpeed = 8000.0f;
+	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 150.0f);
 
 	FVector MovementDirection = (TargetLocation - StartLocation).GetSafeNormal();
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);

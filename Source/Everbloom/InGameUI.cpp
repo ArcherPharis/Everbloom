@@ -10,6 +10,7 @@
 #include "EBGameplayAbilityBase.h"
 #include "EverbloomGameModeBase.h"
 #include "FloriologyCraftingWidget.h"
+#include "FloriologyRecipes.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
@@ -84,7 +85,7 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 	if (!FlowerOne)
 	{
 		FlowerOne = FlowerGiven;
-		CraftingWidget->SetFlowerOneImage(FlowerOne->GetItemIcon());
+		CraftingWidget->SetFlowerOneImage(FlowerOne->GetItemIcon(), FlowerOne->GetItemName());
 		return;
 	}
 	else
@@ -107,12 +108,33 @@ void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
 	}
 }
 
+void UInGameUI::SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven)
+{
+	FlowerOne = FlowerGiven;
+	CraftingWidget->SetFlowerOneImage(FlowerGiven->GetItemIcon(), FlowerGiven->GetItemName());
+
+	TArray<FRecipe> Recipes = Gamemode->GetFlowerRecipes();
+
+	for (FRecipe Recipe : Recipes)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("hello sir"));
+		if (Recipe.GetItems().Contains(FlowerOne->GetClass()))
+		{
+			UAbilityFlowerItem* Flower = Gamemode->GetRemainingFlowerFromRecipe(Recipe, FlowerOne->GetClass());
+			CraftingWidget->AddToNodeEntryList(Flower);
+
+		}
+	}
+	
+
+}
+
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)
 {
 	UAbilityFlowerEntry* Entry = Cast<UAbilityFlowerEntry>(&UserWidget);
 	if (Entry)
 	{
-		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::HandleFlowerFromEntry);
+		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::SpawnUpgradeNodes);
 	}
 }
 
