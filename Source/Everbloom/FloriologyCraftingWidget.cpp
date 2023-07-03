@@ -7,6 +7,8 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/ListView.h"
+#include "FloriologyCraftingWidget.h"
+#include "AbilityNodeEntry.h"
 
 void UFloriologyCraftingWidget::SetFlowerOneImage(UTexture2D* FlowerIcon, FText FlowerName)
 {
@@ -38,10 +40,46 @@ void UFloriologyCraftingWidget::AddToNodeEntryList(UAbilityFlowerItem* Item)
 {
 	//NodeEntryList->ClearListItems();
 	NodeEntryList->AddItem(Item);
+
+	FTimerHandle TimerHandle;
+	FTimerDelegate TimerDelegate;
+	TimerDelegate.BindLambda([this, Item]() {
+		
+		UAbilityNodeEntry* Entry =  Cast<UAbilityNodeEntry>(NodeEntryList->GetEntryWidgetFromItem(Item));
+		if (Entry)
+		{
+			Entry->OnNodePressed.AddDynamic(this, &UFloriologyCraftingWidget::ProcessFlowerItem);
+		}
+		});
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, 0.1f, false);
 }
+
+void UFloriologyCraftingWidget::ClearNodes()
+{
+	
+	TArray<UUserWidget*> Entries = NodeEntryList->GetDisplayedEntryWidgets();
+
+	for (UUserWidget* Entry : Entries)
+	{
+		UAbilityNodeEntry* Node = Cast<UAbilityNodeEntry>(Entry);
+		if (Node)
+		{
+			Node->OnNodePressed.RemoveDynamic(this, &UFloriologyCraftingWidget::ProcessFlowerItem);
+		}
+	}
+	NodeEntryList->ClearListItems();
+}
+
 
 void UFloriologyCraftingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	MakeFlowerButton->SetIsEnabled(false);
+
+}
+
+void UFloriologyCraftingWidget::ProcessFlowerItem(UAbilityFlowerItem* FlowerItem)
+{
+	OnCreationWidget.Broadcast(FlowerItem);
 }

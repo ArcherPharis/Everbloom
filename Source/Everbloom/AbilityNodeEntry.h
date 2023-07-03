@@ -7,6 +7,8 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "AbilityNodeEntry.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNodePressed, class UAbilityFlowerItem*, FlowerItem);
+
 /**
  * 
  */
@@ -15,6 +17,10 @@ class EVERBLOOM_API UAbilityNodeEntry : public UUserWidget, public IUserObjectLi
 {
 	GENERATED_BODY()
 
+public:
+	FOnNodePressed OnNodePressed;
+
+
 private:
 
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
@@ -22,7 +28,11 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* NodeImage;
 
-	UPROPERTY()
-	class UAbilityFlowerItem* SecondFlower;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* NodeButton;
+
+
+	UFUNCTION()
+	void OnButtonPressed();
 	
 };

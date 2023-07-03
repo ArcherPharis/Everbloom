@@ -21,6 +21,5 @@ void UAbilityFlowerEntry::FlowerButtonPressed()
 {
 	UAbilityFlowerItem* Item = GetListItem<UAbilityFlowerItem>();
 	OnEntryClicked.Broadcast(Item);
-	UE_LOG(LogTemp, Warning, TEXT("Flower button Pressed:"));
 	//FlowerButton->SetIsEnabled(false);
 }

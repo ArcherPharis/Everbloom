@@ -12,15 +12,23 @@ bool FRecipe::IsCombinationValid(const TArray<class UAbilityFlowerItem*>& Combin
 		return false;
 	}
 
-	TArray<UAbilityFlowerItem*> SortedCombination = Combination;
-	SortedCombination.Sort();
+	TArray<TSubclassOf<UAbilityFlowerItem>> RemainingItems = Items;
 
-	TArray<TSubclassOf<UAbilityFlowerItem>> SortedFlowerItems = Items;
-	SortedFlowerItems.Sort();
-
-	for (int32 i = 0; i < SortedCombination.Num(); i++)
+	for (UAbilityFlowerItem* CombinationItem : Combination)
 	{
-		if (SortedCombination[i]->GetClass() != SortedFlowerItems[i])
+		bool bItemFound = false;
+
+		for (int32 i = 0; i < RemainingItems.Num(); i++)
+		{
+			if (CombinationItem->GetClass() == RemainingItems[i])
+			{
+				bItemFound = true;
+				RemainingItems.RemoveAt(i);
+				break;
+			}
+		}
+
+		if (!bItemFound)
 		{
 			return false;
 		}

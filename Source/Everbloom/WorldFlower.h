@@ -57,7 +57,7 @@ private:
 	int InputValue = 8;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	UDialogueComponent* DialogueComponent;
+	class UDialogueComponent* DialogueComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FName WorldFlowerName {"Flower Name"};

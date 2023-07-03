@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "FloriologyCraftingWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCreationWidget, class UAbilityFlowerItem*, Flower);
+
 /**
  * 
  */
@@ -20,6 +22,11 @@ public:
 	void EnableValidCombinationButton(TSubclassOf<class UGameplayAbility> ValidAbility);
 	void ToggleCombinationButton(bool bToggle);
 	void AddToNodeEntryList(class UAbilityFlowerItem* Item);
+	void ClearNodes();
+	class UFloriologyCreationWidget* GetCreationWidget() const { return CreationWidget; }
+
+	FOnCreationWidget OnCreationWidget;
+
 
 
 protected:
@@ -43,6 +50,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MakeFlowerButton;
 
+	UPROPERTY(meta = (BindWidget))
+	class UFloriologyCreationWidget* CreationWidget;
+
 	TSubclassOf<class UGameplayAbility> HeldAbility;
 	
+	UFUNCTION()
+	void ProcessFlowerItem(class UAbilityFlowerItem* FlowerItem);
+
 };

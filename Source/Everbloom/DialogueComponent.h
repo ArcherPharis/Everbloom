@@ -38,7 +38,7 @@ private:
 	UDialogueWidget* DialogueWidget;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	UBehaviorTree* DialogueTree;
+	class UBehaviorTree* DialogueTree;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FName BlackboardWidgetName {"DialogueWidget"};

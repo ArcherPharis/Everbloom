@@ -16,7 +16,6 @@ TArray<FRecipe> AEverbloomGameModeBase::GetFlowerRecipes() const
 
 UAbilityFlowerItem* AEverbloomGameModeBase::GetRemainingFlowerFromRecipe(FRecipe Recipe, TSubclassOf<UAbilityFlowerItem> FlowerItemClass)
 {
-    //this version does not check if both items are the same, use if you decide to scrap concept.
     const TArray<TSubclassOf<UAbilityFlowerItem>>& RecipeItems = Recipe.GetItems();
 
     if (RecipeItems[0] == RecipeItems[1])

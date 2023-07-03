@@ -34,6 +34,9 @@ public:
 	UFUNCTION()
 	void ToggleMenu(bool ShouldToggle, float health, float maxHealth, float strength, float mag, float def, float res, float wepAug);
 
+	UFUNCTION()
+	void EnableCreationWidget(UAbilityFlowerItem* FlowerItem);
+
 protected:
 	virtual void NativeConstruct() override;
 
