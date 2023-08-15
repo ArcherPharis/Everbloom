@@ -7,6 +7,7 @@
 #include "FloriologyCraftingWidget.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCreationWidget, class UAbilityFlowerItem*, Flower);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddAbility, TSubclassOf<class UEBGameplayAbilityBase>, ButtonAbility);
 
 /**
  * 
@@ -19,14 +20,15 @@ class EVERBLOOM_API UFloriologyCraftingWidget : public UUserWidget
 public:
 	void SetFlowerOneImage(UTexture2D* FlowerIcon, FText FlowerName);
 	void SetFlowerTwoImage(UTexture2D* FlowerIcon);
-	void EnableValidCombinationButton(TSubclassOf<class UGameplayAbility> ValidAbility);
+	void EnableValidCombinationButton(TSubclassOf<class UEBGameplayAbilityBase> ValidAbility);
+	void DisableValidCombinationButton();
 	void ToggleCombinationButton(bool bToggle);
 	void AddToNodeEntryList(class UAbilityFlowerItem* Item);
 	void ClearNodes();
 	class UFloriologyCreationWidget* GetCreationWidget() const { return CreationWidget; }
 
 	FOnCreationWidget OnCreationWidget;
-
+	FOnAddAbility OnAddAbility;
 
 
 protected:
@@ -53,9 +55,12 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UFloriologyCreationWidget* CreationWidget;
 
-	TSubclassOf<class UGameplayAbility> HeldAbility;
+	TSubclassOf<class UEBGameplayAbilityBase> HeldAbility;
 	
 	UFUNCTION()
 	void ProcessFlowerItem(class UAbilityFlowerItem* FlowerItem);
+
+	UFUNCTION()
+	void AbilityButtonPressed();
 
 };

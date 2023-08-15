@@ -3,6 +3,7 @@
 
 #include "EverbloomGameModeBase.h"
 #include "FloriologyRecipes.h"
+#include "Kismet/GameplayStatics.h"
 
 TSubclassOf<class UEBGameplayAbilityBase> AEverbloomGameModeBase::GetAbilityForCombination(TArray<class UAbilityFlowerItem*> Items) const
 {
@@ -33,5 +34,11 @@ UAbilityFlowerItem* AEverbloomGameModeBase::GetRemainingFlowerFromRecipe(FRecipe
     return nullptr;
 
 
+}
+
+void AEverbloomGameModeBase::StartPlay()
+{
+    Super::StartPlay();
+    EmiliaPlayer = Cast<AEmilia>(UGameplayStatics::GetPlayerCharacter(this, 0));
 }
 

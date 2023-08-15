@@ -23,6 +23,8 @@ public:
 	void AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd);
 	FOnNewAbilityFlowerObtained OnNewAbilityFlowerObtained;
 
+	void AddNormalAbility(TSubclassOf<class UEBGameplayAbilityBase> AbilityToAdd);
+
 	float GetCurrentWeaponDamage() const;
 
 	UFUNCTION(BlueprintPure, Category = "InventoryComp")
@@ -30,6 +32,8 @@ public:
 
 	int GetLifedews() const { return Lifedew; }
 	void SetLifedewAmount(int Amount);
+
+	TArray<UAbilityFlowerItem*> GetFlowersObtained() const { return FlowersObtained; }
 
 protected:
 	// Called when the game starts
@@ -40,6 +44,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void InitializeInventory(USceneComponent* CompToAttach);
+
+	bool CheckIfFlowerExistsInInventory(UAbilityFlowerItem* FlowerToCheck);
 
 private:
 	
@@ -56,6 +62,9 @@ private:
 
 	UPROPERTY()
 	TArray<AWeapon*> Weapons;
+
+	UPROPERTY(VisibleAnywhere, Category = "Ability Flowers")
+	TArray<TSubclassOf<class UEBGameplayAbilityBase>> ObtainedNormalAbilities;
 
 	UPROPERTY()
 	AWeapon* CurrentWeapon;

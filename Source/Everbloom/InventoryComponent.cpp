@@ -3,6 +3,8 @@
 
 #include "InventoryComponent.h"
 #include "Weapon.h"
+#include "AbilityFlowerItem.h"
+#include "EBGameplayAbilityBase.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -16,7 +18,7 @@ UInventoryComponent::UInventoryComponent()
 
 void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 {
-	if (!FlowersObtained.Contains(FlowerToAdd))
+	if (!CheckIfFlowerExistsInInventory(FlowerToAdd))
 	{
 		FlowersObtained.Add(FlowerToAdd);
 		OnNewAbilityFlowerObtained.Broadcast(FlowerToAdd);
@@ -25,6 +27,11 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Designer, you have two of the same flowers in the world! Remove one!"));
 	}
+}
+
+void UInventoryComponent::AddNormalAbility(TSubclassOf<UEBGameplayAbilityBase> AbilityToAdd)
+{
+	ObtainedNormalAbilities.AddUnique(AbilityToAdd);
 }
 
 float UInventoryComponent::GetCurrentWeaponDamage() const
@@ -72,5 +79,18 @@ void UInventoryComponent::InitializeInventory(USceneComponent* CompToAttach)
 		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, CurrentWeapon->GetAttachmentSocketName());
 		Weapons.Add(CurrentWeapon);
 	}
+}
+
+bool UInventoryComponent::CheckIfFlowerExistsInInventory(UAbilityFlowerItem* FlowerToCheck)
+{
+	for (UAbilityFlowerItem* Flower : FlowersObtained)
+	{
+		if (Flower->GetClass() == FlowerToCheck->GetClass())
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 

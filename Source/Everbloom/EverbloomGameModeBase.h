@@ -19,9 +19,16 @@ public:
 	TSubclassOf<class UEBGameplayAbilityBase> GetAbilityForCombination(TArray<class UAbilityFlowerItem*> Items)const;
 	TArray<FRecipe> GetFlowerRecipes() const;
 	class UAbilityFlowerItem* GetRemainingFlowerFromRecipe(FRecipe Recipe, TSubclassOf<UAbilityFlowerItem> FlowerItemClass);
+	class AEmilia* GetEmilia() const { return EmiliaPlayer; }
 
 private:
+
+	virtual void StartPlay() override;
+
 	UPROPERTY(EditDefaultsOnly)
 	class UFloriologyRecipes* Recipes;
+
+	UPROPERTY()
+	class AEmilia* EmiliaPlayer;
 	
 };

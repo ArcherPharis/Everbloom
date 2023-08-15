@@ -24,11 +24,17 @@ void UFloriologyCraftingWidget::SetFlowerTwoImage(UTexture2D* FlowerIcon)
 
 }
 
-void UFloriologyCraftingWidget::EnableValidCombinationButton(TSubclassOf<class UGameplayAbility> ValidAbility)
+void UFloriologyCraftingWidget::EnableValidCombinationButton(TSubclassOf<class UEBGameplayAbilityBase> ValidAbility)
 {
 	ToggleCombinationButton(true);
 	HeldAbility = ValidAbility;
 
+}
+
+void UFloriologyCraftingWidget::DisableValidCombinationButton()
+{
+	ToggleCombinationButton(false);
+	HeldAbility = nullptr;
 }
 
 void UFloriologyCraftingWidget::ToggleCombinationButton(bool bToggle)
@@ -75,6 +81,7 @@ void UFloriologyCraftingWidget::ClearNodes()
 void UFloriologyCraftingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	MakeFlowerButton->OnClicked.AddDynamic(this, &UFloriologyCraftingWidget::AbilityButtonPressed);
 	MakeFlowerButton->SetIsEnabled(false);
 
 }
@@ -82,4 +89,13 @@ void UFloriologyCraftingWidget::NativeConstruct()
 void UFloriologyCraftingWidget::ProcessFlowerItem(UAbilityFlowerItem* FlowerItem)
 {
 	OnCreationWidget.Broadcast(FlowerItem);
+}
+
+void UFloriologyCraftingWidget::AbilityButtonPressed()
+{
+	if (HeldAbility)
+	{
+		OnAddAbility.Broadcast(HeldAbility);
+
+	}
 }

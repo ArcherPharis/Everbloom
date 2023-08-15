@@ -78,6 +78,9 @@ private:
 	UFUNCTION()
 	void SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven);
 
+	UFUNCTION()
+	void GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability);
+
 	UPROPERTY()
 	class AEverbloomGameModeBase* Gamemode;
 

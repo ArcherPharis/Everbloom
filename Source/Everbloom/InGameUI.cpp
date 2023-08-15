@@ -10,6 +10,8 @@
 #include "EBGameplayAbilityBase.h"
 #include "EverbloomGameModeBase.h"
 #include "FloriologyCraftingWidget.h"
+#include "Emilia.h"
+#include "InventoryComponent.h"
 #include "FloriologyRecipes.h"
 #include "Kismet/GameplayStatics.h"
 #include "FloriologyCreationWidget.h"
@@ -75,10 +77,29 @@ void UInGameUI::EnableCreationWidget(UAbilityFlowerItem* FlowerItem)
 {
 	TSubclassOf<UEBGameplayAbilityBase> abilityForRecipe = Gamemode->GetAbilityForCombination({ FlowerOne, FlowerItem });
 
-
 	if (abilityForRecipe)
 	{
 		CraftingWidget->GetCreationWidget()->SetCreationBox(FlowerItem, abilityForRecipe);
+
+		if (Gamemode->GetEmilia()->GetInventoryComponent()->CheckIfFlowerExistsInInventory(FlowerItem))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("We have the flower item."));
+			CraftingWidget->GetCreationWidget()->SetCreationBox(FlowerItem, abilityForRecipe);
+			CraftingWidget->EnableValidCombinationButton(abilityForRecipe);
+		}
+		else
+		{
+			//this is where we check if they have the ability already or not, and set the text.
+			CraftingWidget->DisableValidCombinationButton();
+			UE_LOG(LogTemp, Warning, TEXT("can't find it"));
+
+		}
+
+		//we search if the inventory has floweritem in the inventory. We have FlowerOne, because it was sent
+		//from the inventory. If yes, we enable the button and give it abilityForRecipe.
+		// if they have the item but also have the ability, we instead change required flower text to already obtained.
+		//user clicks the button and we add the ability to their inventory..if they don't already have it.
+		//we just pass a nullptr floweritem, the function will just ask if floweritem is valid, if not, set text.
 	}
 	else
 	{
@@ -96,6 +117,7 @@ void UInGameUI::NativeConstruct()
 
 	Gamemode = Cast<AEverbloomGameModeBase>(UGameplayStatics::GetGameMode(this));
 	CraftingWidget->OnCreationWidget.AddDynamic(this, &UInGameUI::EnableCreationWidget);
+	CraftingWidget->OnAddAbility.AddDynamic(this, &UInGameUI::GiveAbilityToPlayer);
 }
 
 void UInGameUI::HandleFlowerFromEntry(UAbilityFlowerItem* FlowerGiven)
@@ -148,9 +170,15 @@ void UInGameUI::SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven)
 
 }
 
+void UInGameUI::GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability)
+{
+	Gamemode->GetEmilia()->GetInventoryComponent()->AddNormalAbility(Ability);
+}
+
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)
 {
 	UAbilityFlowerEntry* Entry = Cast<UAbilityFlowerEntry>(&UserWidget);
+
 	if (Entry)
 	{
 		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::SpawnUpgradeNodes);
