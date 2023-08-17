@@ -28,6 +28,7 @@ public:
 
 	virtual void BeginPlay() override;
 
+
 	void GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input = -1);
 
 	virtual void Tick(float DeltaTime) override;
@@ -38,8 +39,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Emilia")
 	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
-
-
+	class UCameraComponent* GetCameraComponent() const { return Camera; }
 	FOnToggleFlowerMenu OnToggleFlowerMenu;
 	FOnToggleMenu OnToggleMenu;
 	
@@ -68,6 +68,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LockOnToggleAction;
 
+	void InitMove();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void LockOnToggle(const FInputActionValue& Value);
@@ -79,6 +80,9 @@ protected:
 	
 
 private:
+
+	void InitSpecialAbilities();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class USpringArmComponent* SpringArm;
 
@@ -86,17 +90,22 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> BasicAttackAbility;
-
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> AirAttackAbility;
-
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> JumpAbility;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> DoubleJumpAbility;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> MovementAbility;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag BasicAttackCombo;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	FGameplayTag MovementTagX;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	FGameplayTag MovementTagY;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class UCameraComponent* Camera;

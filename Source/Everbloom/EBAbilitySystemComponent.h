@@ -13,5 +13,6 @@ UCLASS()
 class EVERBLOOM_API UEBAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+
 	
 };

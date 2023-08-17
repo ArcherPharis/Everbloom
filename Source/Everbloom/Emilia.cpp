@@ -19,6 +19,7 @@
 #include "EBAbilitySystemComponent.h"
 #include "Components/TimelineComponent.h"
 #include "InventoryComponent.h"
+#include "GA_Movement.h"
 
 AEmilia::AEmilia()
 {
@@ -73,10 +74,7 @@ void AEmilia::BeginPlay()
 		AS->SetWeaponAugmentDamage(InventoryComponent->GetCurrentWeaponDamage());
 	}
 
-	GiveAbility(BasicAttackAbility);
-	GiveAbility(AirAttackAbility);
-	GiveAbility(JumpAbility);
-	GiveAbility(DoubleJumpAbility);
+	InitSpecialAbilities();
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -120,12 +118,22 @@ void AEmilia::LookAtTarget(AActor* Target)
 	}
 }
 
+void AEmilia::InitMove()
+{
+	FGameplayAbilitySpec* MovementSpec = GiveAbility(MovementAbility);
+}
+
 void AEmilia::Move(const FInputActionValue& Value)
 {
+	GetAbilitySystemComponent()->TryActivateAbilityByClass(MovementAbility);
 	const FVector2D CurrentValue = Value.Get<FVector2D>();
+	FGameplayEventData EventDataX;
+	EventDataX.EventMagnitude = CurrentValue.X;
+	FGameplayEventData EventDataY;
+	EventDataY.EventMagnitude = CurrentValue.Y;
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, MovementTagX, EventDataX);
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, MovementTagY, EventDataY);
 
-	AddMovementInput(FVector(Camera->GetForwardVector().X, Camera->GetForwardVector().Y, 0).GetSafeNormal(), CurrentValue.Y);
-	AddMovementInput(Camera->GetRightVector(), CurrentValue.X);
 }
 
 void AEmilia::Look(const FInputActionValue& Value)
@@ -197,6 +205,16 @@ void AEmilia::CharacterJump()
 	}
 	
 
+}
+
+void AEmilia::InitSpecialAbilities()
+{
+	GiveAbility(BasicAttackAbility);
+	GiveAbility(AirAttackAbility);
+	GiveAbility(JumpAbility);
+	//Double jump temp. Flower gives this.
+	GiveAbility(DoubleJumpAbility);
+	InitMove();
 }
 
 void AEmilia::LockOnToggle(const FInputActionValue& Value)
