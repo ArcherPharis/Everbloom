@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework./CharacterMovementComponent.h"
 #include "EBGameplayAbilityBase.h"
 #include "LockOnCapturer.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -72,8 +73,8 @@ void AEmilia::BeginPlay()
 		AS->SetWeaponAugmentDamage(InventoryComponent->GetCurrentWeaponDamage());
 	}
 
-	GiveAbility(BasicAttackAbility, 3);
-	//GiveAbility(FlowerAbilityOne, 8);
+	GiveAbility(BasicAttackAbility);
+	GiveAbility(AirAttackAbility);
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -82,6 +83,7 @@ void AEmilia::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}
+	
 }
 
 void AEmilia::GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input)
@@ -288,7 +290,6 @@ void AEmilia::Interact()
 
 void AEmilia::ToggleFlowerMenu()
 {
-	
 	OnToggleFlowerMenu.Broadcast();
 }
 
@@ -315,6 +316,12 @@ void AEmilia::ToggleMenu()
 
 void AEmilia::BasicAttack()
 {
+	if (GetCharacterMovement()->IsFalling())
+	{
+		GetAbilitySystemComponent()->TryActivateAbilityByClass(AirAttackAbility);
+		return;
+	}
+
 	FGameplayAbilitySpec* MeleeAbilitySpec = GetAbilitySystemComponent()->FindAbilitySpecFromClass(BasicAttackAbility);
 	if (MeleeAbilitySpec->IsActive())
 	{
@@ -391,6 +398,12 @@ void AEmilia::MoveToTarget(AActor* TargetActor)
 	{
 		Super::MoveToTarget(TargetActor);
 	}
+}
+
+void AEmilia::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, OnLandEventTag, FGameplayEventData());
 }
 
 

@@ -89,10 +89,10 @@ void AWorldFlower::GiveUpgrade(int ChoiceIndex, AEmilia* Emilia)
 
 void AWorldFlower::InteractWith(AEmilia* Player)
 {
-	//if (MainAbilityClass)
-	//{
-	//	Player->GiveMainAbility(MainAbilityClass, InputValue);
-	//}
+	if (MainAbilityClass)
+	{
+		Player->GiveMainAbility(MainAbilityClass, InputValue);
+	}
 	DialogueComponent->CreateDialogueBox(Player);
 	
 	

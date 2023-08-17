@@ -86,7 +86,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> BasicAttackAbility;
 
-
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> AirAttackAbility;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag BasicAttackCombo;
@@ -155,5 +156,8 @@ private:
 
 	virtual void MoveToTarget(AActor* TargetActor) override;
 
+	void Landed(const FHitResult& Hit) override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Ability Events")
+	FGameplayTag OnLandEventTag;
 };

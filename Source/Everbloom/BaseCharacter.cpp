@@ -112,36 +112,44 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
 
 
 
+
 void ABaseCharacter::MoveToTarget(AActor* TargetActor)
 {
+	if (!TargetActor)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("MoveToTarget: Invalid target actor!"));
+		return;
+	}
+
 	FVector StartLocation = GetActorLocation();
 	FVector TargetLocation = TargetActor->GetActorLocation();
 
-
-
-	float DistanceToTarget = FVector::Distance(StartLocation, TargetLocation);
-
-	const float AcceptableDistance = 200.f;
-
-
-	//original values were 800 and 50.f if you need to revert.
-	float BaseMovementSpeed = 8000.0f;
-	float MovementSpeed = BaseMovementSpeed * (DistanceToTarget / 150.0f);
+	const float DesiredDistance = 75.0f;
+	const float MaxMovementSpeed = 60000.0f;
 
 	FVector MovementDirection = (TargetLocation - StartLocation).GetSafeNormal();
+	float DistanceToTarget = FVector::Distance(StartLocation, TargetLocation);
+
+	// Rotate the character to face the target
 	FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), TargetLocation);
 	TargetRotation.Pitch = 0;
-	SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->DeltaTimeSeconds, 2000.5f));
+	SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, GetWorld()->DeltaTimeSeconds, 40.f));
 
-	if (DistanceToTarget <= AcceptableDistance)
+	if (DistanceToTarget > DesiredDistance)
 	{
-		return;
-	}
-	float MaxMovementAmount = MovementSpeed * GetWorld()->DeltaTimeSeconds;
-	float MovementAmount = FMath::Min(DistanceToTarget - AcceptableDistance, MaxMovementAmount);
+		// Calculate the desired movement speed based on distance
+		float MovementSpeed = FMath::Clamp(MaxMovementSpeed * (DistanceToTarget + DesiredDistance), 0, MaxMovementSpeed);
 
-	FVector NewLocation = StartLocation + MovementDirection * MovementAmount;
-	SetActorLocation(NewLocation);
+		// Calculate the movement amount for this frame
+		float MaxMovementAmount = MovementSpeed * GetWorld()->DeltaTimeSeconds;
+		float MovementAmount = FMath::Min(DistanceToTarget - DesiredDistance, MaxMovementAmount);
+
+		// Calculate the new location for the character
+		FVector NewLocation = StartLocation + MovementDirection * MovementAmount * 6;
+
+		// Smoothly interpolate to the new location
+		SetActorLocation(FMath::VInterpTo(GetActorLocation(), NewLocation, GetWorld()->DeltaTimeSeconds, 5.0f));
+	}
 
 
 }
