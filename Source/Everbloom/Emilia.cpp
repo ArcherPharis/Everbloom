@@ -42,7 +42,7 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AEmilia::Look);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AEmilia::Interact);
 		EnhancedInputComponent->BindAction(ToggleFlowerMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleFlowerMenu);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AEmilia::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AEmilia::CharacterJump);
 		EnhancedInputComponent->BindAction(AbilityInputAction, ETriggerEvent::Triggered, this, &AEmilia::HandleAbilityInput);
 		EnhancedInputComponent->BindAction(AttackEventInputAction, ETriggerEvent::Triggered, this, &AEmilia::BasicAttack);
 		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleMenu);
@@ -75,6 +75,8 @@ void AEmilia::BeginPlay()
 
 	GiveAbility(BasicAttackAbility);
 	GiveAbility(AirAttackAbility);
+	GiveAbility(JumpAbility);
+	GiveAbility(DoubleJumpAbility);
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -179,6 +181,21 @@ void AEmilia::LockOn()
 		SpringArm->SocketOffset = DefaultSpringArmOffset;
 		return;
 	}
+
+}
+
+void AEmilia::CharacterJump()
+{
+	if (!GetCharacterMovement()->IsFalling())
+	{
+		GetAbilitySystemComponent()->TryActivateAbilityByClass(JumpAbility);
+	}
+	else
+	{
+		GetAbilitySystemComponent()->TryActivateAbilityByClass(DoubleJumpAbility);
+
+	}
+	
 
 }
 

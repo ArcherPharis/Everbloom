@@ -75,6 +75,7 @@ protected:
 	void ToggleFlowerMenu();
 	void ToggleMenu();
 	void LockOn();
+	void CharacterJump();
 	
 
 private:
@@ -88,6 +89,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> AirAttackAbility;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> JumpAbility;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> DoubleJumpAbility;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag BasicAttackCombo;
