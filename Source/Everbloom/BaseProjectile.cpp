@@ -65,11 +65,18 @@ void ABaseProjectile::SetHomingTarget(AActor* PotentialTarget, TSubclassOf<class
             }
         }
 
-        // No target found, continue forward as normal
         MovementComp->HomingTargetComponent = nullptr;
         MovementComp->bIsHomingProjectile = false;
     }
 }
+
+void ABaseProjectile::SetProjectileVelocity(FVector CameraLocation, TSubclassOf<class UGameplayEffect> GPE)
+{
+    EffectToApply = GPE;
+    MovementComp->Velocity = CameraLocation * MovementComp->InitialSpeed;
+
+}
+
 
 void ABaseProjectile::OnImpact(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {

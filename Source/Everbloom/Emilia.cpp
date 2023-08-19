@@ -49,6 +49,8 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(ToggleMenuAction, ETriggerEvent::Triggered, this, &AEmilia::ToggleMenu);
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Triggered, this, &AEmilia::LockOn);
 		EnhancedInputComponent->BindAction(LockOnToggleAction, ETriggerEvent::Triggered, this, &AEmilia::LockOnToggle);
+		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Triggered, this, &AEmilia::CastCurrentMagic);
+
 	}
 }
 
@@ -205,6 +207,11 @@ void AEmilia::CharacterJump()
 	}
 	
 
+}
+
+void AEmilia::CastCurrentMagic()
+{
+	GetAbilitySystemComponent()->TryActivateAbilityByClass(GetInventoryComponent()->GetCurrentMagic()->GetClass());
 }
 
 void AEmilia::InitSpecialAbilities()

@@ -172,7 +172,7 @@ void UInGameUI::SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven)
 
 void UInGameUI::GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability)
 {
-	Gamemode->GetEmilia()->GetInventoryComponent()->AddNormalAbility(Ability);
+	Gamemode->GetEmilia()->GetInventoryComponent()->GiveNewMagic(Ability.GetDefaultObject());
 }
 
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)

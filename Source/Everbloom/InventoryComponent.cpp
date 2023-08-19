@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "AbilityFlowerItem.h"
 #include "EBGameplayAbilityBase.h"
+#include "Emilia.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -29,10 +30,7 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 	}
 }
 
-void UInventoryComponent::AddNormalAbility(TSubclassOf<UEBGameplayAbilityBase> AbilityToAdd)
-{
-	ObtainedNormalAbilities.AddUnique(AbilityToAdd);
-}
+
 
 float UInventoryComponent::GetCurrentWeaponDamage() const
 {
@@ -53,7 +51,7 @@ void UInventoryComponent::SetLifedewAmount(int Amount)
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
+	GiveStarterMagic();
 	// ...
 	
 }
@@ -92,5 +90,24 @@ bool UInventoryComponent::CheckIfFlowerExistsInInventory(UAbilityFlowerItem* Flo
 	}
 
 	return false;
+}
+
+void UInventoryComponent::GiveStarterMagic()
+{
+	AEmilia* Emilia = Cast<AEmilia>(GetOwner());
+	if (Emilia)
+	{
+		FGameplayAbilitySpec* Spec = Emilia->GiveAbility(StarterWindMagicClass);
+		GiveNewMagic(Cast<UEBGameplayAbilityBase>(Spec->Ability));
+	}
+}
+
+void UInventoryComponent::GiveNewMagic(UEBGameplayAbilityBase* NewAbility)
+{
+	if (!CurrentMagic)
+	{
+		CurrentMagic = NewAbility;
+	}
+	Magic.AddUnique(NewAbility);
 }
 

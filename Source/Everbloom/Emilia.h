@@ -67,6 +67,8 @@ protected:
 	UInputAction* LockOnAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LockOnToggleAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* CastingAction;
 
 	void InitMove();
 	void Move(const FInputActionValue& Value);
@@ -77,6 +79,7 @@ protected:
 	void ToggleMenu();
 	void LockOn();
 	void CharacterJump();
+	void CastCurrentMagic();
 	
 
 private:

@@ -66,6 +66,10 @@ private:
 	class UPlayerStatsWidget* StatsWidget;
 	UPROPERTY(meta = (BindWidget))
 	class UFloriologyCraftingWidget* CraftingWidget;
+	UPROPERTY(meta = (BindWidget))
+	class UEquippedWidget* EquippedWeaponWidget;
+	UPROPERTY(meta = (BindWidget))
+	class UMagicEquippedWidget* MagicEquippedWeaponWidget;
 
 	UPROPERTY()
 	class UAbilityFlowerItem* FlowerOne;

@@ -25,6 +25,7 @@ public:
 
 	void SetHomingTarget(AActor* PotentialTarget, TSubclassOf<class UGameplayEffect> GPE);
 
+	void SetProjectileVelocity(FVector CameraLocation, TSubclassOf<class UGameplayEffect> GPE);
 
 private:
 
