@@ -76,7 +76,11 @@ void ABaseProjectile::SetProjectileVelocity(FVector CameraLocation, TSubclassOf<
     MovementComp->Velocity = CameraLocation * MovementComp->InitialSpeed;
 
 }
-
+void ABaseProjectile::SetCaster(AActor* Caster)
+{
+    SetOwner(Caster);
+}
+//make the caster immune.
 
 void ABaseProjectile::OnImpact(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -88,6 +92,10 @@ void ABaseProjectile::OnImpact(UPrimitiveComponent* OverlappedComponent, AActor*
         {
             FGameplayEffectSpecHandle specHan = ASC->MakeOutgoingSpec(EffectToApply, -1, ASC->MakeEffectContext());
             ASC->ApplyGameplayEffectSpecToSelf(*specHan.Data.Get());
+            if (!bIsPersistentProjectile)
+            {
+                Destroy();
+            }
 
 
         }

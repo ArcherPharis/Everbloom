@@ -21,7 +21,7 @@ public:
 
 	class UWidgetComponent* GetCharacterWidgetComponent() const { return HUDWidget; }
 
-	
+	virtual void RotateTowardsLockedTarget();
 
 
 protected:

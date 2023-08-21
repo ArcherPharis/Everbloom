@@ -120,6 +120,15 @@ void AEmilia::LookAtTarget(AActor* Target)
 	}
 }
 
+
+void AEmilia::RotateTowardsLockedTarget()
+{
+	if (LockedOnTarget)
+	{
+		RotateToTargetEvent(LockedOnTarget);
+	}
+}
+
 void AEmilia::InitMove()
 {
 	FGameplayAbilitySpec* MovementSpec = GiveAbility(MovementAbility);
@@ -445,6 +454,7 @@ void AEmilia::MoveToTarget(AActor* TargetActor)
 void AEmilia::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
+	if (Cast<APawn>(Hit.GetActor())) return;
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, OnLandEventTag, FGameplayEventData());
 }
 

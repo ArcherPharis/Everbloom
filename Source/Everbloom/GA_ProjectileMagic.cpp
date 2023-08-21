@@ -6,7 +6,9 @@
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "BaseProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework./CharacterMovementComponent.h"
 #include "BaseCharacter.h"
+#include "Emilia.h"
 
 void UGA_ProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -27,7 +29,13 @@ void UGA_ProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 		CastEvent->EventReceived.AddDynamic(this, &UGA_ProjectileMagic::CastProjectile);
 		CastEvent->ReadyForActivation();
 	}
+	ABaseCharacter* CastingActor = GetAvatarAsCharacter();
+	CastingActor->RotateTowardsLockedTarget();
 
+	if (CastingActor->GetCharacterMovement()->IsFalling())
+	{
+		CastingActor->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorUpVector() * 300.f, true);
+	}
 }
 
 void UGA_ProjectileMagic::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
@@ -44,6 +52,7 @@ void UGA_ProjectileMagic::MontageFinished()
 void UGA_ProjectileMagic::CastProjectile(FGameplayEventData Payload)
 {
 	ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass);
+	Projectile->SetCaster(GetAvatarActorFromActorInfo());
 	ABaseCharacter* CastingActor = GetAvatarAsCharacter();
 	USkeletalMeshComponent* MeshComponent = CastingActor->GetMesh();
 	FTransform SocketTransform = MeshComponent->GetSocketTransform(FName("hand_r"));
@@ -56,9 +65,15 @@ void UGA_ProjectileMagic::CastProjectile(FGameplayEventData Payload)
 		CameraDirection = ForwardDirection;
 	}
 	Projectile->SetActorRotation(CameraDirection.Rotation());
-
 	Projectile->SetProjectileVelocity(CameraDirection, EffectToApply);
 
+	if (AEmilia* Em = Cast<AEmilia>(CastingActor))
+	{
+		AActor* Targ = Em->GetLockedOnTarget();
+		if (Targ)
+		Projectile->SetHomingTarget(Targ, EffectToApply);
+	}
+	
 	if (bIsRapidFire)
 	{
 		K2_EndAbility();

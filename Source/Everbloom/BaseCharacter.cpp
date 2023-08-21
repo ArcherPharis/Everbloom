@@ -22,6 +22,10 @@ ABaseCharacter::ABaseCharacter()
 	BaseTransform->SetupAttachment(RootComponent);
 }
 
+void ABaseCharacter::RotateTowardsLockedTarget()
+{
+}
+
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {

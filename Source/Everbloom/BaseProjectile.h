@@ -27,6 +27,8 @@ public:
 
 	void SetProjectileVelocity(FVector CameraLocation, TSubclassOf<class UGameplayEffect> GPE);
 
+	void SetCaster(AActor* Caster);
+
 private:
 
 	UPROPERTY(EditDefaultsOnly)
@@ -37,6 +39,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UProjectileMovementComponent* MovementComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bIsPersistentProjectile = false;
 
 	UFUNCTION()
 	void OnImpact(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

@@ -37,6 +37,10 @@ public:
 
 	AActor* GetLockedOnTarget() const { return LockedOnTarget; }
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void RotateToTargetEvent(AActor* Target);
+	virtual void RotateTowardsLockedTarget() override;
+
 	UFUNCTION(BlueprintPure, Category = "Emilia")
 	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }
 	class UCameraComponent* GetCameraComponent() const { return Camera; }
