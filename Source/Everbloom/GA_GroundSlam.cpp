@@ -67,6 +67,7 @@ void UGA_GroundSlam::BeginSlam(FGameplayEventData Payload)
 		FallingMontagePlay->OnCompleted.AddDynamic(this, &UGA_GroundSlam::MontageFinished);
 		FallingMontagePlay->ReadyForActivation();
 	}
+	BlockAbilitiesWithTag.AddTag(MovementToBlockTag);
 }
 
 void UGA_GroundSlam::Slam(FGameplayEventData Payload)

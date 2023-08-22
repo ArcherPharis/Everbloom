@@ -31,6 +31,8 @@ private:
 	FGameplayTag BeginSlamTag;
 	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
 	FGameplayTag OnLandTag;
+	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
+	FGameplayTag MovementToBlockTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
 	TSubclassOf<UGameplayEffect> OnLandDamageEffect;
