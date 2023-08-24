@@ -36,9 +36,14 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
 	TSubclassOf<UGameplayEffect> OnLandDamageEffect;
+	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
+	TSubclassOf<UGameplayEffect> InAirDamageEffect;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
 	TSubclassOf<class ADentonateActor> LandingDamageDetection;
+	UPROPERTY(EditDefaultsOnly, Category = "Air Attack")
+	TSubclassOf<ADentonateActor> GrabberSphereClass;
+	ADentonateActor* GrabberSphere;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Forces")
 	float ForwardAttackForce = 200.f;
@@ -54,6 +59,9 @@ private:
 
 	UFUNCTION()
 	void MontageFinished();
+
+	UFUNCTION()
+	void SendEnemyFlyingDown(FGameplayAbilityTargetDataHandle TargetData);
 
 	UFUNCTION()
 	void BeginSlam(FGameplayEventData Payload);

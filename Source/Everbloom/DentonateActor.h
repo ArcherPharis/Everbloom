@@ -9,6 +9,8 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnExplosion, FGameplayAbilityTargetDataHandle, DataHandle);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnActorTouchedSphere, FGameplayAbilityTargetDataHandle, ActorOverlapped);
+
 
 UCLASS()
 class EVERBLOOM_API ADentonateActor : public AActor
@@ -20,6 +22,7 @@ public:
 	ADentonateActor();
 
 	FOnExplosion OnExplosion;
+	FOnActorTouchedSphere OnActorTouchedSphere;
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,4 +40,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	class USphereComponent* HitSphere;
 
+
+	UPROPERTY(EditDefaultsOnly)
+	bool bGrabberSphere{ false };
 };
+

@@ -55,6 +55,20 @@ void UGA_GroundSlam::MontageFinished()
 
 }
 
+void UGA_GroundSlam::SendEnemyFlyingDown(FGameplayAbilityTargetDataHandle TargetData)
+{
+	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(TargetData, 0);
+	for (auto targetActor : TargetActors)
+	{
+		UCharacterMovementComponent* MC = Cast<ABaseCharacter>(targetActor)->GetCharacterMovement();
+		if (!MC->IsFalling()) return;
+		MC->StopMovementImmediately();
+		MC->AddImpulse(targetActor->GetActorUpVector() * -DownwardsForce, true);
+		K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(InAirDamageEffect), TargetData);
+
+	}
+}
+
 void UGA_GroundSlam::BeginSlam(FGameplayEventData Payload)
 {
 	UCharacterMovementComponent* MC = GetAvatarAsCharacter()->GetCharacterMovement();
@@ -68,6 +82,11 @@ void UGA_GroundSlam::BeginSlam(FGameplayEventData Payload)
 		FallingMontagePlay->ReadyForActivation();
 	}
 	BlockAbilitiesWithTag.AddTag(MovementToBlockTag);
+	GrabberSphere = GetWorld()->SpawnActor<ADentonateActor>(GrabberSphereClass);
+	GrabberSphere->SetOwner(GetAvatarActorFromActorInfo());
+	GrabberSphere->SetActorLocation(GetAvatarAsCharacter()->GetActorLocation());
+	GrabberSphere->OnActorTouchedSphere.AddDynamic(this, &UGA_GroundSlam::SendEnemyFlyingDown);
+	GrabberSphere->SendOverlappingActors(GetAvatarActorFromActorInfo());
 }
 
 void UGA_GroundSlam::Slam(FGameplayEventData Payload)
@@ -85,6 +104,7 @@ void UGA_GroundSlam::Slam(FGameplayEventData Payload)
 	DA->OnExplosion.AddDynamic(this, &UGA_GroundSlam::ApplyDamageAndForce);
 	DA->SetActorLocation(GetAvatarAsCharacter()->GetActorLocation());
 	DA->SendOverlappingActors(GetAvatarAsCharacter());
+	Payload.EventMagnitude = 20.f;
 	UNiagaraComponent* NiagaraComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), LandFX, GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation(), GetAvatarAsCharacter()->GetBaseLocation()->GetComponentRotation(), FVector(5.f, 5.f, 5.f));
 }
 

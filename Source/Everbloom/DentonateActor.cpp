@@ -8,6 +8,9 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemGlobals.h"
 #include "Abilities/GameplayAbilityTargetActor.h"
+#include "GameFramework./CharacterMovementComponent.h"
+#include "BaseCharacter.h"
+
 
 // Sets default values
 ADentonateActor::ADentonateActor()
@@ -61,6 +64,15 @@ void ADentonateActor::SendOverlappingActors(AActor* OwningCharacter)
 	FGameplayAbilityTargetDataHandle TargetDataWithActors;
 	TargetDataWithActors.Data.Add(targetedActorInfo);
 
-	OnExplosion.Broadcast(TargetDataWithActors);
+	if (bGrabberSphere)
+	{
+		OnActorTouchedSphere.Broadcast(TargetDataWithActors);
+	}
+	else
+	{
+		OnExplosion.Broadcast(TargetDataWithActors);
+
+	}
 }
+
 
