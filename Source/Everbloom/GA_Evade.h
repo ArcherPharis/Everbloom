@@ -21,5 +21,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Evade")
 	UAnimMontage* EvadeMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Evade")
+	float ForwardForce = 600.f;
+
+	float OriginalBrakingWalkingSpeed;
+	float OriginalGroundFriction;
+
 
 };
