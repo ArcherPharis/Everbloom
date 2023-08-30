@@ -59,6 +59,10 @@ public:
 	FGameplayAttributeData WeaponAugmentDamage;
 	ATTRIBUTE_ACCESSORS(UEBAttributeSet, WeaponAugmentDamage);
 
+	UPROPERTY()
+	FGameplayAttributeData DewFruit;
+	ATTRIBUTE_ACCESSORS(UEBAttributeSet, DewFruit);
+
 
 	
 };

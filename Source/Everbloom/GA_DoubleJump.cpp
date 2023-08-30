@@ -16,6 +16,13 @@ void UGA_DoubleJump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
 		JumpMontagePlay->ReadyForActivation();
 	}
 	ABaseCharacter* Chara = GetAvatarAsCharacter();
+
+	if (Chara->GetCharacterMovement()->IsFalling()) {
+		FVector NewVelocity = Chara->GetVelocity();
+		NewVelocity.Z = FMath::Max(NewVelocity.Z, 0.0f);
+		Chara->GetCharacterMovement()->Velocity = NewVelocity;
+	}
+
 	Chara->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorUpVector() * JumpForce, true);
 
 	UAbilityTask_WaitGameplayEvent* LandTagEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, OnLandTag, nullptr, false, false);

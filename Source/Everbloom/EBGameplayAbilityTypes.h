@@ -21,5 +21,6 @@ enum class EAbilityInputID : uint8
 	FlowerOne,
 	FlowerTwo,
 	FlowerThree,
-	FlowerFour
+	FlowerFour,
+	UseItem
 };
