@@ -13,9 +13,6 @@
 
 void UGA_GroundSlam::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-
-	//there is also a hitbox around the character during the falling phase, will check if those targets
-	//are in the air. If they are, send them flying down too. 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	UAbilityTask_PlayMontageAndWait* AirRiseMontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, AirRiseMontage);
 	if (AirRiseMontagePlay)
