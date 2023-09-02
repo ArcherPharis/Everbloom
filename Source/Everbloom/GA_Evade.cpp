@@ -55,8 +55,6 @@ void UGA_Evade::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 
 void UGA_Evade::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
-
-
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	ACharacter* Chara = Cast<ACharacter>(GetAvatarActorFromActorInfo());
 	UCharacterMovementComponent* MoveComp = Chara->GetCharacterMovement();
