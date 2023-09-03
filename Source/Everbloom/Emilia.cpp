@@ -30,6 +30,7 @@ AEmilia::AEmilia()
 	InventoryComponent = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory Component"));
 	InventoryTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Inventory Timeline Comp"));
 	DisengageLockonTimelineComponent = CreateDefaultSubobject<UTimelineComponent>(TEXT("Disengage Timeline Comp"));
+	StartAimTimeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("Aim Tineline"));
 
 
 }
@@ -62,11 +63,14 @@ void AEmilia::BeginPlay()
 	PlayerCont = Cast<AEBPlayerController>(GetOwner());
 	FOnTimelineFloat InventoryTimeLineFloat;
 	FOnTimelineFloat DisengageLockOnFloat;
+	FOnTimelineFloat AimFloat;
 	InventoryTimeLineFloat.BindUFunction(this, "UpdateSpringArmLocation");
 	DisengageLockOnFloat.BindUFunction(this, "UpdateSpringArmFromLockon");
+	AimFloat.BindUFunction(this, "UpdateAim");
 
 	InventoryTimelineComponent->AddInterpFloat(InventoryAlpha, InventoryTimeLineFloat);
 	DisengageLockonTimelineComponent->AddInterpFloat(DisengageLockOnAlpha, DisengageLockOnFloat);
+	StartAimTimeline->AddInterpFloat(AimAlpha, AimFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
 	//TODO when we swap weapons we need to make sure we also update the augment damage, can either be done here or inventory comp.
@@ -86,6 +90,11 @@ void AEmilia::BeginPlay()
 		}
 	}
 	
+}
+
+void AEmilia::StartAim()
+{
+	StartAimTimeline->Play();
 }
 
 void AEmilia::GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input)
@@ -399,7 +408,6 @@ void AEmilia::HandleAbilityInput(const FInputActionValue& InputActionValue)
 
 void AEmilia::UpdateSpringArmLocation(float Alpha)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Updating spring arm alhpha: %f"), Alpha);
 	SpringArm->TargetArmLength = FMath::Lerp(DefaultSpringArmLength, InventoryArmLength, Alpha);
 	SpringArm->SocketOffset = FMath::Lerp(DefaultSpringArmOffset, InventorySocketLocation, Alpha);
 
@@ -409,6 +417,12 @@ void AEmilia::UpdateSpringArmLocation(float Alpha)
 void AEmilia::UpdateSpringArmFromLockon(float Alpha)
 {
 	SpringArm->SocketOffset = FMath::Lerp(LockOnSpringArmOffset, DefaultSpringArmOffset, Alpha);
+}
+
+void AEmilia::UpdateAim(float Alpha)
+{
+	SpringArm->SocketOffset = FMath::Lerp(DefaultSpringArmOffset, AimSpringArmOffset, Alpha);
+	SpringArm->TargetArmLength = FMath::Lerp(DefaultSpringArmLength, AimArmLength, Alpha);
 }
 
 AActor* AEmilia::GetClosestTarget(TArray<AActor*> Targets, float& Distance)

@@ -28,6 +28,7 @@ public:
 
 	virtual void BeginPlay() override;
 
+	void StartAim();
 
 	void GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input = -1);
 
@@ -38,7 +39,7 @@ public:
 	AActor* GetLockedOnTarget() const { return LockedOnTarget; }
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void RotateToTargetEvent(AActor* Target);
+	void RotateToTargetEvent(const AActor* Target);
 	virtual void RotateTowardsLockedTarget() override;
 
 	UFUNCTION(BlueprintPure, Category = "Emilia")
@@ -132,23 +133,35 @@ private:
 	class UTimelineComponent* InventoryTimelineComponent;
 	UPROPERTY()
 	class UTimelineComponent* DisengageLockonTimelineComponent;
+	UTimelineComponent* StartAimTimeline;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "SpringArmAlphas")
 	UCurveFloat* InventoryAlpha;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "SpringArmAlphas")
 	UCurveFloat* DisengageLockOnAlpha;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Aiming")
+	UCurveFloat* AimAlpha;
 
 	UFUNCTION()
 	void UpdateSpringArmLocation(float Alpha);
 	UFUNCTION()
 	void UpdateSpringArmFromLockon(float Alpha);
+	UFUNCTION()
+	void UpdateAim(float Alpha);
 
 	FVector  DefaultSpringArmOffset;
 	float  DefaultSpringArmLength;
 
 	UPROPERTY(EditDefaultsOnly, Category = "LockOn")
 	FVector LockOnSpringArmOffset {0.0f, 0.0f, 90.0f};
+
+	UPROPERTY(EditDefaultsOnly, Category = "Aiming")
+	FVector AimSpringArmOffset {0.0f, 0.0f, 90.0f};
+
+	UPROPERTY(EditDefaultsOnly, Category = "Aiming")
+	float AimArmLength = 200.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	float InventoryArmLength = 200.f;
