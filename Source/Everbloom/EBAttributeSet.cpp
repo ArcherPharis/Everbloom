@@ -13,8 +13,17 @@ void UEBAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     {
         SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
         float NewHealthValue = GetHealth();
-        //float OldHealthValue = NewHealthValue - Data.EvaluatedData.Magnitude;
+        float OldHealthValue = NewHealthValue - Data.EvaluatedData.Magnitude;
 
         OnHealthAttributeChanged.Broadcast(NewHealthValue, GetMaxHealth());
+    }
+
+    if (Data.EvaluatedData.Attribute == GetManaAttribute())
+    {
+        SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+        float NewManaValue = GetMana();
+        float OldManaValue = NewManaValue - Data.EvaluatedData.Magnitude;
+
+        OnManaAttributeChanged.Broadcast(NewManaValue, GetMaxMana());
     }
 }

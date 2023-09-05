@@ -11,6 +11,8 @@
 
 void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
+
+	//consider just setting walk speed to zero, we we still get an input vector.
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 
@@ -23,9 +25,6 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 		MontagePlay->OnCompleted.AddDynamic(this, &UGA_AttackCombo::MontageFinished);
 		MontagePlay->ReadyForActivation();
 	}
-	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
-	MovementComp->GravityScale = 0.0f;
-	//MovementComp->DisableMovement();
 
 	UAbilityTask_WaitGameplayEvent* WaitComboChange = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, ComboChangeTag, nullptr, false, false);
 	if (WaitComboChange)
@@ -59,16 +58,13 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-	UCharacterMovementComponent* MovementComp = GetAvatarAsCharacter()->GetCharacterMovement();
-	MovementComp->GravityScale = 1.0f;
-	//MovementComp->SetMovementMode(EMovementMode::MOVE_Walking);
 
 }
 
 void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
 {
-	
 	NextComboSectionName = UEBAbilitySystemBlueprintLibrary::GetRandomNameFromTagContainer(Payload.TargetTags);
+
 }
 
 void UGA_AttackCombo::MontageFinished()
@@ -101,6 +97,7 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 			AnimBP->Montage_JumpToSection(NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 		}
 	}
+
 }
 
 void UGA_AttackCombo::Hit(FGameplayEventData Payload)

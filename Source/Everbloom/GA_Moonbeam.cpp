@@ -7,6 +7,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitTargetData.h"
 #include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "EBAbilitySystemComponent.h"
+#include "Emilia.h"
 
 void UGA_Moonbeam::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -14,7 +15,8 @@ void UGA_Moonbeam::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 	//	return;
 	//GetAvatarAsCharacter()->GetAbilitySystemComponent()->NotifyAbilityCommit(this);
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
+	Emilia = Cast<AEmilia>(GetAvatarAsCharacter());
+	Emilia->StartAim();
 	UAbilityTask_PlayMontageAndWait* PlayBeamMontage = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, BeamMontage);
 	if (PlayBeamMontage)
 	{
@@ -30,11 +32,21 @@ void UGA_Moonbeam::ActivateAbility(const FGameplayAbilitySpecHandle Handle, cons
 		BeginFiringBeamEvent->EventReceived.AddDynamic(this, &UGA_Moonbeam::FireMoonbeam);
 		BeginFiringBeamEvent->ReadyForActivation();
 	}
+	FTimerHandle TimeHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimeHandle, this, &UGA_Moonbeam::K2_EndAbility, MoonbeamDuration, false);
+
+}
+
+void UGA_Moonbeam::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+	Emilia->EndAim();
 }
 
 void UGA_Moonbeam::EndBeamMontage()
 {
 	K2_EndAbility();
+
 }
 
 void UGA_Moonbeam::FireMoonbeam(FGameplayEventData Payload)
@@ -55,7 +67,7 @@ void UGA_Moonbeam::FireMoonbeam(FGameplayEventData Payload)
 
 		WaitMoonbeamTarget->FinishSpawningActor(this, TargetActor);
 
-		//TargetActor->AttachToActor(avatarActor, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		TargetActor->AttachToActor(avatarActor, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		USkeletalMeshComponent* CasterSMC = GetOwningComponentFromActorInfo();
 		if (CasterSMC)
 		{

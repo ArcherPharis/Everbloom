@@ -16,7 +16,11 @@ class EVERBLOOM_API UGA_Moonbeam : public UEBGameplayAbilityBase
 
 private:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Moonbeam")
+	float MoonbeamDuration = 4.0f;
 	UPROPERTY(EditDefaultsOnly, Category = "Moonbeam")
 	FName BeamSlot;
 	UPROPERTY(EditDefaultsOnly, Category = "Moonbeam")
@@ -32,5 +36,7 @@ private:
 
 	UFUNCTION()
 	void FireMoonbeam(FGameplayEventData Payload);
+
+	class AEmilia* Emilia;
 
 };

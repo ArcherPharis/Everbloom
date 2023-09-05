@@ -98,9 +98,10 @@ void ABaseCharacter::EnableAiming(bool IsCurrentlyAiming)
 void ABaseCharacter::InitAttributeEvents()
 {
 	AttributeSet->OnHealthAttributeChanged.AddDynamic(this, &ABaseCharacter::HandleCharacterHealth);
+	AttributeSet->OnManaAttributeChanged.AddDynamic(this, &ABaseCharacter::HandleCharacterMana);
 }
 
-void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
+void ABaseCharacter::HandleCharacterHealth(float NewValue, float OldValue)
 {
 	if (NewValue == 0)
 	{
@@ -112,6 +113,10 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth)
 	}
 	
 
+}
+
+void ABaseCharacter::HandleCharacterMana(float NewValue, float MaxHealth)
+{
 }
 
 

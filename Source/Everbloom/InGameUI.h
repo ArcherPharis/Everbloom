@@ -27,6 +27,8 @@ public:
 
 	UFUNCTION()
 	void SetHealthBar(float CurrentValue, float MaxValue);
+	UFUNCTION()
+	void SetManaBar(float CurrentValue, float MaxValue);
 
 	UFUNCTION()
 	void NewAbilityFlowerGiven(class UAbilityFlowerItem* Flower);
@@ -50,6 +52,8 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* HealthBar;
+	UPROPERTY(meta = (BindWidget))
+	UProgressBar* ManaBar;
 
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* MainCanvas;

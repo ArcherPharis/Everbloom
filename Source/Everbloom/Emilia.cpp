@@ -51,6 +51,7 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(LockOnAction, ETriggerEvent::Triggered, this, &AEmilia::LockOn);
 		EnhancedInputComponent->BindAction(LockOnToggleAction, ETriggerEvent::Triggered, this, &AEmilia::LockOnToggle);
 		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Triggered, this, &AEmilia::CastCurrentMagic);
+		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Completed, this, &AEmilia::CastCurrentMagicInputReleased);
 
 	}
 }
@@ -95,6 +96,20 @@ void AEmilia::BeginPlay()
 void AEmilia::StartAim()
 {
 	StartAimTimeline->Play();
+	bIsAiming = true;
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
+}
+
+void AEmilia::EndAim()
+{
+	StartAimTimeline->Reverse();
+	bIsAiming = false;
+	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
+
 }
 
 void AEmilia::GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input)
@@ -232,6 +247,11 @@ void AEmilia::CastCurrentMagic()
 	GetAbilitySystemComponent()->TryActivateAbilityByClass(GetInventoryComponent()->GetCurrentMagic()->GetClass());
 }
 
+void AEmilia::CastCurrentMagicInputReleased()
+{
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, EndAbilityTag, FGameplayEventData());
+}
+
 void AEmilia::InitSpecialAbilities()
 {
 	GiveAbility(BasicAttackAbility);
@@ -241,6 +261,7 @@ void AEmilia::InitSpecialAbilities()
 	GiveAbility(DoubleJumpAbility);
 	InitMove();
 }
+
 
 void AEmilia::LockOnToggle(const FInputActionValue& Value)
 {
@@ -376,6 +397,12 @@ void AEmilia::ToggleMenu()
 
 void AEmilia::BasicAttack()
 {
+	if (bIsAiming)
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, FireProjectileTag, FGameplayEventData());
+		return;
+	}
+
 	if (GetCharacterMovement()->IsFalling())
 	{
 		GetAbilitySystemComponent()->TryActivateAbilityByClass(AirAttackAbility);

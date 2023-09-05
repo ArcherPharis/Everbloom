@@ -23,6 +23,8 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->OnToggleMenu.AddDynamic(InGameUI, &UInGameUI::ToggleMenu);
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
 		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
+		Player->GetAttributeSet()->OnManaAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetManaBar);
+
 
 	}
 }

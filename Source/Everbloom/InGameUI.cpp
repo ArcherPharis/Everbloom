@@ -47,6 +47,11 @@ void UInGameUI::SetHealthBar(float CurrentValue, float MaxValue)
 	ChangeHealthBarColor(CurrentValue/MaxValue);
 }
 
+void UInGameUI::SetManaBar(float CurrentValue, float MaxValue)
+{
+	ManaBar->SetPercent(CurrentValue / MaxValue);
+}
+
 void UInGameUI::NewAbilityFlowerGiven(UAbilityFlowerItem* Flower)
 {
 	AbilityFlowerList->AddItem(Flower);

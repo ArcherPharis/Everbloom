@@ -29,6 +29,7 @@ public:
 	virtual void BeginPlay() override;
 
 	void StartAim();
+	void EndAim();
 
 	void GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input = -1);
 
@@ -85,12 +86,12 @@ protected:
 	void LockOn();
 	void CharacterJump();
 	void CastCurrentMagic();
+	void CastCurrentMagicInputReleased();
 	
 
 private:
 
 	void InitSpecialAbilities();
-
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class USpringArmComponent* SpringArm;
 
@@ -110,6 +111,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag BasicAttackCombo;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	FGameplayTag FireProjectileTag;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	FGameplayTag EndAbilityTag;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag MovementTagX;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
@@ -171,6 +176,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	bool bInInventory = false;
+
+	bool bIsAiming = false;
 
 	//todo, getting quite hefty, consider moving to a "LockOnComponent" or something.
 	UPROPERTY(VisibleAnywhere)

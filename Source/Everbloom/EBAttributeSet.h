@@ -14,6 +14,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthAttributeChanged, float, NewValue, float, OldValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnManaAttributeChanged, float, NewValue, float, OldValue);
 
 
 /**
@@ -29,6 +30,7 @@ public:
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	FOnHealthAttributeChanged OnHealthAttributeChanged;
+	FOnHealthAttributeChanged OnManaAttributeChanged;
 
 
 	UPROPERTY()
@@ -38,6 +40,14 @@ public:
 	UPROPERTY()
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UEBAttributeSet, MaxHealth);
+
+	UPROPERTY()
+	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UEBAttributeSet, Mana);
+
+	UPROPERTY()
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UEBAttributeSet, MaxMana);
 
 	UPROPERTY()
 	FGameplayAttributeData Strength;

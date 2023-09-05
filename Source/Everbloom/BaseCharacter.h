@@ -31,7 +31,8 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
 	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
 
-
+	UFUNCTION()
+	virtual void HandleCharacterMana(float NewValue, float OldValue);
 	
 
 public:	
@@ -87,6 +88,7 @@ private:
 
 	UFUNCTION()
 	void HandleCharacterHealth(float NewValue, float MaxHealth);
+
 
 
 
