@@ -55,5 +55,10 @@ private:
 	FName NextComboSectionName;
 
 	bool bAttackPush = false;
+
+	float OriginalWalkSpeed;
+	FRotator OriginalRotationRate;
+
+	void RotateTowardsInput();
 	
 };

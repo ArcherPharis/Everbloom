@@ -14,8 +14,13 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 
 	//consider just setting walk speed to zero, we we still get an input vector.
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-
+	RotateTowardsInput();
+	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
+	OriginalWalkSpeed = MovementComp->MaxWalkSpeed;
+	OriginalRotationRate = MovementComp->RotationRate;
+	MovementComp->MaxWalkSpeed = 0.f;
+	MovementComp->RotationRate = FRotator::ZeroRotator;
 	UAbilityTask_PlayMontageAndWait* MontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, MeleeMontage);
 	if (MontagePlay)
 	{
@@ -58,7 +63,10 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-
+	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
+	MovementComp->MaxWalkSpeed = OriginalWalkSpeed;
+	MovementComp->RotationRate = OriginalRotationRate;
 }
 
 void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
@@ -88,11 +96,7 @@ void UGA_AttackCombo::ComboCommit(FGameplayEventData Payload)
 
 		if (AnimBP && AnimBP->GetCurrentActiveMontage())
 		{
-			if (NextComboSectionName == TEXT("Combo04"))
-			{
-				//bAttackPush = true;
-			}
-
+			RotateTowardsInput();
 			AnimBP->Montage_SetNextSection(AnimBP->Montage_GetCurrentSection(), NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 			AnimBP->Montage_JumpToSection(NextComboSectionName, AnimBP->GetCurrentActiveMontage());
 		}
@@ -143,4 +147,23 @@ void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 		return;
 	}
 	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude/1.8f, true);
+}
+
+void UGA_AttackCombo::RotateTowardsInput()
+{
+	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
+
+	FVector RotateDirection;
+
+	if (MovementComp->GetLastInputVector() == FVector::ZeroVector)
+	{
+		RotateDirection = AvatarAsCharacter->GetActorForwardVector();
+	}
+	else
+	{
+		RotateDirection = MovementComp->GetLastInputVector();
+	}
+	FRotator RotateRotation = FRotator(0, RotateDirection.Rotation().Yaw, 0);
+	AvatarAsCharacter->SetActorRotation(RotateRotation);
 }
