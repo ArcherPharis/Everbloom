@@ -11,14 +11,15 @@
 
 void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
-
-	//consider just setting walk speed to zero, we we still get an input vector.
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	RotateTowardsInput();
 	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
 	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
 	OriginalWalkSpeed = MovementComp->MaxWalkSpeed;
 	OriginalRotationRate = MovementComp->RotationRate;
+	OriginalGroundFriction = MovementComp->GroundFriction;
+	//consider just setting walk speed to zero, we we still get an input vector.
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	RotateTowardsInput();
+
 	MovementComp->MaxWalkSpeed = 0.f;
 	MovementComp->RotationRate = FRotator::ZeroRotator;
 	UAbilityTask_PlayMontageAndWait* MontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, MeleeMontage);
@@ -67,6 +68,7 @@ void UGA_AttackCombo::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
 	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
 	MovementComp->MaxWalkSpeed = OriginalWalkSpeed;
 	MovementComp->RotationRate = OriginalRotationRate;
+	MovementComp->GroundFriction = OriginalGroundFriction;
 }
 
 void UGA_AttackCombo::UpdateCombo(FGameplayEventData Payload)
@@ -140,13 +142,14 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 {
 	ACharacter* AvatarAsCharacter = Cast<ACharacter>(GetAvatarActorFromActorInfo());
-	UCharacterMovementComponent* MovementComp = AvatarAsCharacter->GetCharacterMovement();
-	MovementComp->StopMovementImmediately();
-	if (MovementComp->IsFalling())
-	{
-		return;
-	}
-	AvatarAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude/1.8f, true);
+	UCharacterMovementComponent* MoveComp = AvatarAsCharacter->GetCharacterMovement();
+
+	FVector PushDirection = GetAvatarActorFromActorInfo()->GetActorForwardVector();
+	FRotator PushRotation = FRotator(0, PushDirection.Rotation().Yaw, 0);
+	MoveComp->GroundFriction = 0;
+	FVector EvadeVelocity = PushDirection.GetSafeNormal() * HitPushSpeed * Payload.EventMagnitude;
+	MoveComp->Velocity = EvadeVelocity;
+	AvatarAsCharacter->SetActorRotation(PushRotation);
 }
 
 void UGA_AttackCombo::RotateTowardsInput()

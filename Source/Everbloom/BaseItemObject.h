@@ -20,12 +20,12 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
-		FText ItemName;
+	FText ItemName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
-		FText ItemDescription;
+	FText ItemDescription;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
-		UTexture2D* ItemIcon;
+	UTexture2D* ItemIcon;
 	
 };

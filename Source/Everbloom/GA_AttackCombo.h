@@ -57,6 +57,7 @@ private:
 	bool bAttackPush = false;
 
 	float OriginalWalkSpeed;
+	float OriginalGroundFriction;
 	FRotator OriginalRotationRate;
 
 	void RotateTowardsInput();

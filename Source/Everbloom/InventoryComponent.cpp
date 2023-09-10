@@ -22,7 +22,7 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 	if (!CheckIfFlowerExistsInInventory(FlowerToAdd))
 	{
 		FlowersObtained.Add(FlowerToAdd);
-		OnNewAbilityFlowerObtained.Broadcast(FlowerToAdd);
+		//OnNewAbilityFlowerObtained.Broadcast(FlowerToAdd);
 	}
 	else
 	{
