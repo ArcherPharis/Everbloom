@@ -24,8 +24,6 @@ protected:
 
 
 private:
-
-
 	class AEmilia* Player;
 
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
