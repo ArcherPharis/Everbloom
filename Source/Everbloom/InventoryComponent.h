@@ -36,6 +36,8 @@ public:
 
 	UEBGameplayAbilityBase* GetCurrentMagic() const { return CurrentMagic; }
 
+	TArray<FText> GetFlowerWords() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

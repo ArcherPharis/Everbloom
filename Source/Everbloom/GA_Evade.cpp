@@ -66,5 +66,6 @@ void UGA_Evade::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 
 void UGA_Evade::EndMovement(FGameplayEventData Payload)
 {
+
 	K2_EndAbility();
 }

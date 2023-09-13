@@ -16,14 +16,17 @@ class EVERBLOOM_API UAbilityFlowerItem : public UBaseItemObject
 
 public:
 	TMap<TSubclassOf<UAbilityFlowerItem>, TSubclassOf<class UGameplayAbility>> GetFlowerCraftingRecipes() const { return FloriologyRecipes; }
-
-
+	FText GetFlowerWord() const { return FlowerWord; }
+	
 private:
 
 	//each flower item knows of all of its recipes and what flower is must be partnered with to give the player
 	//an ability.
 	UPROPERTY(EditDefaultsOnly, Category = "Floriology Crafting")
 	TMap<TSubclassOf<UAbilityFlowerItem>, TSubclassOf<UGameplayAbility>> FloriologyRecipes;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Flower Item")
+	FText FlowerWord;
 
 	
 	

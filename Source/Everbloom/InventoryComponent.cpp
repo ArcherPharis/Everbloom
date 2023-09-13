@@ -47,6 +47,21 @@ void UInventoryComponent::SetLifedewAmount(int Amount)
 	Lifedew = FMath::Clamp(Lifedew + Amount, 0, MaxLifedewAmount);
 }
 
+TArray<FText> UInventoryComponent::GetFlowerWords() const
+{
+	if (FlowersObtained.Num() > 0)
+	{
+		TArray<FText> FlowerWords;
+		for (UAbilityFlowerItem* Flower : FlowersObtained)
+		{
+			FlowerWords.Add(Flower->GetFlowerWord());
+		}
+		return FlowerWords;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("No flowers in inventory."));
+	return TArray<FText>();
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {

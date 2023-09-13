@@ -18,7 +18,6 @@ EBTNodeResult::Type UBTT_CheckCanUpgrade::ExecuteTask(UBehaviorTreeComponent& Ow
 
 	if (Pawn)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Found the flower."));
 		if (AEmilia* Emilia = Cast<AEmilia>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(PlayerKey.SelectedKeyName)))
 		{
 			int Index = OwnerComp.GetBlackboardComponent()->GetValueAsInt(BlackboardKey.SelectedKeyName);
