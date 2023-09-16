@@ -34,6 +34,41 @@ void UDialogueWidget::Reply(TArray<FText> Replies)
 	}
 }
 
+void UDialogueWidget::ReplyFText(TArray<FText> Replies)
+{
+	ReplyListView->ClearListItems();
+
+	for (FText Reply : Replies)
+	{
+		UDialogueReplyObject* ReplyObject = NewObject<UDialogueReplyObject>(ReplyObjectClass);
+		ReplyObject->OnReplyClicked.AddDynamic(this, &UDialogueWidget::ReplyForWordClicked);
+		ReplyObject->SetReplyText(Reply);
+		ReplyListView->AddItem(ReplyObject);
+		SetDialogueState(EDialogueState::Reply);
+	}
+}
+
+void UDialogueWidget::AddRepliesToCurrentList(TArray<FText> Replies, bool bIsForIndex)
+{
+
+	for (FText Reply : Replies)
+	{
+		UDialogueReplyObject* ReplyObject = NewObject<UDialogueReplyObject>(ReplyObjectClass);
+		if (bIsForIndex)
+		{
+			ReplyObject->OnReplyClicked.AddDynamic(this, &UDialogueWidget::ReplyClicked);
+
+		}
+		else
+		{
+			ReplyObject->OnReplyClicked.AddDynamic(this, &UDialogueWidget::ReplyForWordClicked);
+
+		}
+		ReplyObject->SetReplyText(Reply);
+		ReplyListView->AddItem(ReplyObject);
+	}
+}
+
 void UDialogueWidget::Exit()
 {
 	OnExit.Broadcast();
@@ -79,4 +114,11 @@ void UDialogueWidget::SetDialogueState(EDialogueState DialState)
 void UDialogueWidget::ReplyClicked(UDialogueReplyObject* ReplyClicked)
 {
 	OnReplyFinish.Broadcast(ReplyListView->GetIndexForItem(ReplyClicked));
+}
+
+void UDialogueWidget::ReplyForWordClicked(UDialogueReplyObject* ReplyClicked)
+{
+	//ReplyListView->GetItemAt(ReplyListView->GetIndexForItem(ReplyClicked));
+	FText ReplyWord =  ReplyClicked->GetReply();
+	OnReplyFText.Broadcast(ReplyWord);
 }

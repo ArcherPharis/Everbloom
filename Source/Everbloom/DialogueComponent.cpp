@@ -53,8 +53,8 @@ void UDialogueComponent::CreateDialogueBox(APawn* Player)
 	DialogueWidget = CreateWidget<UDialogueWidget>(PlayerCont, DialogueWidgetClass);
 	DialogueWidget->OnExit.AddDynamic(this, &UDialogueComponent::OnExit);
 	DialogueWidget->AddToViewport();
-	DialogueWidget->InitDialogue(PlayerCont);
-
+	PlayerCont->SetInputMode(FInputModeUIOnly());
+	PlayerCont->bShowMouseCursor = true;
 	AICont->RunBehaviorTree(DialogueTree);
 	UBlackboardComponent* BBoardComp = AICont->GetBlackboardComponent();
 	if (BBoardComp)

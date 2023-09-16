@@ -12,7 +12,7 @@ UBTT_Speak::UBTT_Speak()
 
 EBTNodeResult::Type UBTT_Speak::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	APawn* Pawn = OwnerComp.GetAIOwner()->GetPawn();
+	AActor* Actor = Cast<AActor>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("SelfActor"));
 	UDialogueWidget* DialogueWidget =  Cast<UDialogueWidget>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BlackboardKey.SelectedKeyName));
 
 	if (DialogueWidget)
@@ -20,7 +20,6 @@ EBTNodeResult::Type UBTT_Speak::ExecuteTask(UBehaviorTreeComponent& OwnerComp, u
 		DialogueWidget->Speak(Text);
 		DialogueWidget->OnSpeakFinish.RemoveDynamic(this, &UBTT_Speak::AdvanceSpeak);
 		DialogueWidget->OnSpeakFinish.AddDynamic(this, &UBTT_Speak::AdvanceSpeak);
-
 		bEventReceived = false;
 		return EBTNodeResult::InProgress;
 	}

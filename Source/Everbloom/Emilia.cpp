@@ -244,6 +244,7 @@ void AEmilia::CharacterJump()
 
 void AEmilia::CastCurrentMagic()
 {
+	if(GetInventoryComponent()->GetCurrentMagic())
 	GetAbilitySystemComponent()->TryActivateAbilityByClass(GetInventoryComponent()->GetCurrentMagic()->GetClass());
 }
 
@@ -351,20 +352,42 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 
 void AEmilia::Interact()
 {
-	FHitResult traceResult;
-	FVector ViewLoc;
-	FRotator ViewRot;
-	FCollisionQueryParams CollisionParameters;
-	CollisionParameters.AddIgnoredActor(this);
-	GetActorEyesViewPoint(ViewLoc, ViewRot);
-	if (GetWorld()->LineTraceSingleByChannel(traceResult, ViewLoc, ViewLoc + ViewRot.Vector() * GrabRange, ECC_GameTraceChannel1, CollisionParameters))
+	// Get the player controller
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+	if (!PlayerController)
 	{
-		if (traceResult.bBlockingHit)
-		{
-			AActor* hitActor = traceResult.GetActor();
-			IInteractableInterface* interactInferface = Cast<IInteractableInterface>(hitActor);
-			interactInferface->InteractWith(this);
+		return;
+	}
 
+	// Define the capsule parameters
+	FCollisionShape Capsule = FCollisionShape::MakeCapsule(50, 100);
+
+	// Define the query parameters
+	FCollisionQueryParams CollisionParameters;
+	CollisionParameters.AddIgnoredActor(this); // Ignore the calling actor
+
+	// Perform the capsule trace
+	FHitResult HitResult;
+	FVector StartLocation = GetActorLocation();
+	FVector EndLocation = StartLocation + (GetActorForwardVector() * GrabRange);
+
+	bool bHit = GetWorld()->SweepSingleByChannel(
+		HitResult,
+		StartLocation,
+		EndLocation,
+		GetActorRotation().Quaternion(),
+		ECC_GameTraceChannel1, 
+		Capsule,
+		CollisionParameters
+	);
+
+	if (bHit && HitResult.bBlockingHit)
+	{
+		AActor* HitActor = HitResult.GetActor();
+		IInteractableInterface* InteractableInterface = Cast<IInteractableInterface>(HitActor);
+		if (InteractableInterface)
+		{
+			InteractableInterface->InteractWith(this);
 		}
 	}
 }

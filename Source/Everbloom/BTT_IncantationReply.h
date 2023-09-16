@@ -4,37 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTT_FlowerWheelReply.generated.h"
+#include "BTT_IncantationReply.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class EVERBLOOM_API UBTT_FlowerWheelReply : public UBTTask_BlackboardBase
+class EVERBLOOM_API UBTT_IncantationReply : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
 
 public:
-
-	UBTT_FlowerWheelReply();
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	FBlackboardKeySelector ReplyIndex;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Blackboard")
-	TArray<FText> Replies;
-
+	UBTT_IncantationReply();
 private:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+	
 
 	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
-
 	UFUNCTION()
-	void AdvanceReply(FText Reply);
+	void AdvanceSpeak();
 
 	bool bEventReceived;
-
-	UBehaviorTreeComponent* UBTC;
-	
 };

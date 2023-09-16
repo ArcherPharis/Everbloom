@@ -24,7 +24,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	TSubclassOf<class UGameplayAbility> GetAbility() const { return MagicToGive; }
+	TSubclassOf<class UEBGameplayAbilityBase> GetAbility() const { return MagicToGive; }
+	FText GetIncantation() const { return Incantation; }
+	FText GetKeyword() const { return Keyword; }
+
+
 
 private:
 	virtual void InteractWith(AEmilia* Player);
@@ -39,10 +43,13 @@ private:
 	USkeletalMeshComponent* SpriteMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sprite")
-	TSubclassOf<UGameplayAbility> MagicToGive;
+	TSubclassOf<class UEBGameplayAbilityBase> MagicToGive;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
 	FText Incantation;
+	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
+	FText Keyword;
+
 
 
 

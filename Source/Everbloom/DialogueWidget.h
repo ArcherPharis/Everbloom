@@ -9,6 +9,8 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnExit);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSpeakFinish);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReplyFinish, int, ReplyIndexPicked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnReplyFText, FText, WordPicked);
+
 
 UENUM()
 enum EDialogueState
@@ -30,11 +32,14 @@ public:
 	FOnExit OnExit;
 	FOnSpeakFinish OnSpeakFinish;
 	FOnReplyFinish OnReplyFinish;
+	FOnReplyFText OnReplyFText;
 
 	void InitDialogue(APlayerController* Controller);
 
 	void Speak(FText Text);
 	void Reply(TArray<FText> Replies);
+	void ReplyFText(TArray<FText> Replies);
+	void AddRepliesToCurrentList(TArray<FText> Replies, bool bIsForIndex);
 	void Exit();
 
 private:
@@ -60,5 +65,8 @@ private:
 
 	UFUNCTION()
 	void ReplyClicked(class UDialogueReplyObject* ReplyClicked);
+	UFUNCTION()
+	void ReplyForWordClicked(class UDialogueReplyObject* ReplyClicked);
+
 	
 };

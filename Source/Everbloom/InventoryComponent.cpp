@@ -66,7 +66,6 @@ TArray<FText> UInventoryComponent::GetFlowerWords() const
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	GiveStarterMagic();
 	// ...
 	
 }
@@ -113,6 +112,16 @@ void UInventoryComponent::GiveStarterMagic()
 	if (Emilia)
 	{
 		FGameplayAbilitySpec* Spec = Emilia->GiveAbility(StarterWindMagicClass);
+		GiveNewMagic(Cast<UEBGameplayAbilityBase>(Spec->Ability));
+	}
+}
+
+void UInventoryComponent::GiveStandardMagicToInventory(TSubclassOf<UEBGameplayAbilityBase> NewMagic)
+{
+	AEmilia* Emilia = Cast<AEmilia>(GetOwner());
+	if (Emilia)
+	{
+		FGameplayAbilitySpec* Spec = Emilia->GiveAbility(NewMagic);
 		GiveNewMagic(Cast<UEBGameplayAbilityBase>(Spec->Ability));
 	}
 }

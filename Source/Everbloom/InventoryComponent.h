@@ -38,6 +38,8 @@ public:
 
 	TArray<FText> GetFlowerWords() const;
 
+	void GiveStandardMagicToInventory(TSubclassOf<UEBGameplayAbilityBase> NewMagic);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -52,6 +54,7 @@ public:
 
 private:
 	void GiveStarterMagic();
+
 
 	UPROPERTY(VisibleAnywhere, Category = "Ability Flowers")
 	TArray<UAbilityFlowerItem*> FlowersObtained;

@@ -31,9 +31,10 @@ EBTNodeResult::Type UBTT_FlowerWheelReply::ExecuteTask(UBehaviorTreeComponent& O
 		{
 			bEventReceived = false;
 			UInventoryComponent* Inv = Emilia->GetInventoryComponent();
-			DialogueWidget->OnReplyFinish.RemoveDynamic(this, &UBTT_FlowerWheelReply::AdvanceReply);
-			DialogueWidget->OnReplyFinish.AddDynamic(this, &UBTT_FlowerWheelReply::AdvanceReply);
-			DialogueWidget->Reply(Inv->GetFlowerWords());
+			DialogueWidget->OnReplyFText.RemoveDynamic(this, &UBTT_FlowerWheelReply::AdvanceReply);
+			DialogueWidget->OnReplyFText.AddDynamic(this, &UBTT_FlowerWheelReply::AdvanceReply);
+			DialogueWidget->ReplyFText(Inv->GetFlowerWords());
+			DialogueWidget->AddRepliesToCurrentList(Replies, false);
 			return EBTNodeResult::InProgress;
 		}
 	}
@@ -49,8 +50,8 @@ void UBTT_FlowerWheelReply::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* N
 	}
 }
 
-void UBTT_FlowerWheelReply::AdvanceReply(int ReplyInd)
+void UBTT_FlowerWheelReply::AdvanceReply(FText Reply)
 {
-	UBTC->GetBlackboardComponent()->SetValueAsInt(ReplyIndex.SelectedKeyName, ReplyInd);
+	UBTC->GetBlackboardComponent()->SetValueAsString("Keyword", Reply.ToString());
 	bEventReceived = true;
 }
