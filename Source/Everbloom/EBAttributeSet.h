@@ -30,7 +30,7 @@ public:
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	FOnHealthAttributeChanged OnHealthAttributeChanged;
-	FOnHealthAttributeChanged OnManaAttributeChanged;
+	FOnManaAttributeChanged OnManaAttributeChanged;
 
 
 	UPROPERTY()

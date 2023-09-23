@@ -13,5 +13,12 @@ UCLASS()
 class EVERBLOOM_API ARavager : public ABaseEnemy
 {
 	GENERATED_BODY()
+
+public:
+	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Ravager")
+	class ARavagerCampfire* Campfire;
 	
 };

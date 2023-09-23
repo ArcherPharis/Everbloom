@@ -8,6 +8,8 @@
 #include "Components/TimelineComponent.h"
 #include "Components/WidgetComponent.h"
 #include "EBAttributeSet.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Perception/AISense_Sight.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -20,6 +22,7 @@ ABaseCharacter::ABaseCharacter()
 	HUDWidget->SetupAttachment(GetRootComponent());
 	BaseTransform = CreateDefaultSubobject<USceneComponent>(TEXT("Base Transform"));
 	BaseTransform->SetupAttachment(RootComponent);
+	PerceptionStimuliComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("PerceptionStimuliComp");
 }
 
 void ABaseCharacter::RotateTowardsLockedTarget()

@@ -8,10 +8,11 @@
 #include "GameplayEffectTypes.h"
 #include "EBGameplayAbilityTypes.h"
 #include "GameplayAbilitySpec.h"
+#include "GenericTeamAgentInterface.h"
 #include "BaseCharacter.generated.h"
 
 UCLASS()
-class EVERBLOOM_API ABaseCharacter : public ACharacter
+class EVERBLOOM_API ABaseCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -60,7 +61,21 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Character")
 	virtual void MoveToTarget(AActor* TargetActor);
 
+	/** Assigns Team Agent to given TeamID */
+	FORCEINLINE virtual void SetGenericTeamId(const FGenericTeamId& ID) { TeamID = ID; }
+
+	/** Retrieve team identifier in form of FGenericTeamId */
+	FORCEINLINE virtual FGenericTeamId GetGenericTeamId() const { return TeamID; }
+
 private:
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	FGenericTeamId TeamID;
+
+	UPROPERTY()
+	class UAIPerceptionStimuliSourceComponent* PerceptionStimuliComp;
+
+
 	UPROPERTY()
 	UEBAbilitySystemComponent* AbilitySystemComp;
 
@@ -88,7 +103,6 @@ private:
 
 	UFUNCTION()
 	void HandleCharacterHealth(float NewValue, float MaxHealth);
-
 
 
 
