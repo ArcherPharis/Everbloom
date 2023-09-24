@@ -18,10 +18,10 @@ void UGA_Evade::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	UAbilityTask_PlayMontageAndWait* EvadeMontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, EvadeMontage);
 	if (EvadeMontagePlay)
 	{
-		EvadeMontagePlay->OnBlendOut.AddDynamic(this, &UGA_Evade::K2_EndAbility);
-		EvadeMontagePlay->OnCancelled.AddDynamic(this, &UGA_Evade::K2_EndAbility);
-		EvadeMontagePlay->OnInterrupted.AddDynamic(this, &UGA_Evade::K2_EndAbility);
-		EvadeMontagePlay->OnCompleted.AddDynamic(this, &UGA_Evade::K2_EndAbility);
+		EvadeMontagePlay->OnBlendOut.AddDynamic(this, &UGA_Evade::MontageEnded);
+		EvadeMontagePlay->OnCancelled.AddDynamic(this, &UGA_Evade::MontageEnded);
+		EvadeMontagePlay->OnInterrupted.AddDynamic(this, &UGA_Evade::MontageEnded);
+		EvadeMontagePlay->OnCompleted.AddDynamic(this, &UGA_Evade::MontageEnded);
 		EvadeMontagePlay->ReadyForActivation();
 	}
 
@@ -48,7 +48,12 @@ void UGA_Evade::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	}
 	FRotator EvadeRotation = FRotator(0, EvadeDirection.Rotation().Yaw, 0);
 	MoveComp->GroundFriction = 0;
-	FVector EvadeVelocity = EvadeDirection.GetSafeNormal() * EvadeSpeed;
+	float Speed = EvadeSpeed;
+	if (MoveComp->IsFalling())
+	{
+		Speed /= 1.2f;
+	}
+	FVector EvadeVelocity = EvadeDirection.GetSafeNormal() * Speed;
 	MoveComp->Velocity = EvadeVelocity;
 	Chara->SetActorRotation(EvadeRotation);
 }
@@ -59,6 +64,7 @@ void UGA_Evade::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 	ACharacter* Chara = Cast<ACharacter>(GetAvatarActorFromActorInfo());
 	UCharacterMovementComponent* MoveComp = Chara->GetCharacterMovement();
 	MoveComp->GroundFriction = OriginalGroundFriction;
+	if(!MoveComp->IsFalling())
 	MoveComp->StopMovementImmediately();
 
 
@@ -67,5 +73,45 @@ void UGA_Evade::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 void UGA_Evade::EndMovement(FGameplayEventData Payload)
 {
 
+	ACharacter* Chara = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MoveComp = Chara->GetCharacterMovement();
+	if (!MoveComp->IsFalling())
+	{
+		K2_EndAbility();
+
+	}
+	else
+	{
+		UAbilityTask_WaitGameplayEvent* EndMoveEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, LandingTag, nullptr, false, false);
+		if (EndMoveEvent)
+		{
+			EndMoveEvent->EventReceived.AddDynamic(this, &UGA_Evade::Landed);
+			EndMoveEvent->ReadyForActivation();
+		}
+		//GetWorld()->GetTimerManager().SetTimer(CanEvadeAgainTimer, this, &UGA_Evade::AllowForEvasion, 0.3f, false);
+	}
+
+}
+
+void UGA_Evade::Landed(FGameplayEventData Payload)
+{
+	K2_EndAbility();
+}
+
+void UGA_Evade::MontageEnded()
+{
+	ACharacter* Chara = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	UCharacterMovementComponent* MoveComp = Chara->GetCharacterMovement();
+	if (MoveComp->IsFalling())
+		return;
+	K2_EndAbility();
+}
+
+void UGA_Evade::AllowForEvasion()
+{
+	ACharacter* Chara = Cast<ACharacter>(GetAvatarActorFromActorInfo());
+	Chara->GetMesh()->GetAnimInstance()->Montage_Play(RecoveryMontage);
+	GetWorld()->GetTimerManager().ClearTimer(CanEvadeAgainTimer);
+	Chara->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorUpVector() * 400, true);
 	K2_EndAbility();
 }

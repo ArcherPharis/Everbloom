@@ -21,15 +21,34 @@ private:
 	UFUNCTION()
 	void EndMovement(FGameplayEventData Payload);
 
+	UFUNCTION()
+	void Landed(FGameplayEventData Payload);
+
+	UFUNCTION()
+	void MontageEnded();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Evade")
 	UAnimMontage* EvadeMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Evade")
+	UAnimMontage* RecoveryMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Evade")
 	FGameplayTag EndMovementTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Evade")
+	FGameplayTag RemovalAbilityTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Evade")
+	FGameplayTag LandingTag;
 	UPROPERTY(EditDefaultsOnly, Category = "Evade")
 	float EvadeSpeed = 600.f;
 
 	float OriginalGroundFriction;
+
+	FTimerHandle CanEvadeAgainTimer;
+
+	void AllowForEvasion();
 
 
 };
