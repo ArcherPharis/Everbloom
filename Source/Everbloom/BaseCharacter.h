@@ -67,6 +67,8 @@ public:
 	/** Retrieve team identifier in form of FGenericTeamId */
 	FORCEINLINE virtual FGenericTeamId GetGenericTeamId() const { return TeamID; }
 
+	void SetKiller(ABaseCharacter* KilledBy);
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "AI")
@@ -103,6 +105,9 @@ private:
 
 	UFUNCTION()
 	void HandleCharacterHealth(float NewValue, float MaxHealth);
+
+	UPROPERTY()
+	ABaseCharacter* Killer;
 
 
 

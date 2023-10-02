@@ -166,6 +166,12 @@ void ABaseCharacter::MoveToTarget(AActor* TargetActor)
 
 }
 
+void ABaseCharacter::SetKiller(ABaseCharacter* KilledBy)
+{
+	Killer = KilledBy;
+	UE_LOG(LogTemp, Warning, TEXT("My killer was: %s"), *Killer->GetName());
+}
+
 FGameplayAbilitySpec* ABaseCharacter::GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID, bool broadCast, int level)
 {
 	FGameplayAbilitySpecHandle specHandle = AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(newAbility, -1, inputID));

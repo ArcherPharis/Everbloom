@@ -28,5 +28,10 @@ private:
 	FGameplayTag HitEventTag;
 
 	float AttackEffectMagnitude = 1;
+
+	void ClearHitCooldown();
+	FTimerHandle HitCooldownTimerHandle;
+
+	TArray<AActor*> HitActors;
 	
 };

@@ -118,25 +118,14 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 		ACharacter* TargetAsCharacter = Cast<ACharacter>(TargetActor);
 		if (TargetAsCharacter)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("NEXT SECTION!: %s"), *NextComboSectionName.ToString());
-			if (!TargetAsCharacter->GetMovementComponent()->IsFalling() || bAttackPush && TargetAsCharacter->GetMovementComponent()->IsFalling())
-			{
-				TargetAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
-			}
-			else
-			{
-				TargetAsCharacter->GetCharacterMovement()->Velocity = FVector(0, 0, 0);
-			}
+			UE_LOG(LogTemp, Warning, TEXT("Getting here"));
+			TargetAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
 		}
 	}
 
 	FGameplayEffectSpecHandle spec = MakeOutgoingGameplayEffectSpec(HitEffect, Payload.EventMagnitude);
 	spec.Data.Get()->SetContext(Payload.ContextHandle);
-	FGameplayEffectSpecHandle AirSpec = MakeOutgoingGameplayEffectSpec(InAirHitEffect, Payload.EventMagnitude);
-
-
 	K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
-	K2_ApplyGameplayEffectSpecToTarget(AirSpec, Payload.TargetData);
 }
 
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
