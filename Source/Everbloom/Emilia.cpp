@@ -432,21 +432,23 @@ void AEmilia::BasicAttack()
 		return;
 	}
 
+
 	FGameplayAbilitySpec* MeleeAbilitySpec = GetAbilitySystemComponent()->FindAbilitySpecFromClass(BasicAttackAbility);
 	if (MeleeAbilitySpec->IsActive())
 	{
-		if (LockedOnTarget)
-		{
-			FRotator Rotat = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
-			Rotat.Pitch = 0;
-			SetActorRotation(Rotat);
-		}
+
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, BasicAttackCombo, FGameplayEventData());
 	}
 	else
 	{
 
 		GetAbilitySystemComponent()->TryActivateAbilityByClass(BasicAttackAbility);
+	}
+	if (LockedOnTarget)
+	{
+		FRotator Rotat = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), LockedOnTarget->GetActorLocation());
+		Rotat.Pitch = 0;
+		SetActorRotation(Rotat);
 	}
 }
 
