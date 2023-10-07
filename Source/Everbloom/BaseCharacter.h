@@ -34,6 +34,9 @@ protected:
 
 	UFUNCTION()
 	virtual void HandleCharacterMana(float NewValue, float OldValue);
+
+	UFUNCTION()
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth);
 	
 
 public:	
@@ -103,8 +106,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	UCurveVector* VectorCurve;
 
-	UFUNCTION()
-	void HandleCharacterHealth(float NewValue, float MaxHealth);
+
 
 	UPROPERTY()
 	ABaseCharacter* Killer;

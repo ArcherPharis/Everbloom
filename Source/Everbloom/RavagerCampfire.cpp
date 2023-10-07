@@ -2,6 +2,7 @@
 
 
 #include "RavagerCampfire.h"
+#include "Chest.h"
 
 // Sets default values
 ARavagerCampfire::ARavagerCampfire()
@@ -27,5 +28,20 @@ void ARavagerCampfire::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ARavagerCampfire::IncrementRavagerCount()
+{
+	ConnectedRavagers++;
+}
+
+void ARavagerCampfire::DecrementRavagerCount()
+{
+	ConnectedRavagers--;
+	if (ConnectedRavagers == 0)
+	{
+		Chest->SetChestLockStatus(false);
+		Chest->PlayUnlockEffect();
+	}
 }
 

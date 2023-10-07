@@ -90,6 +90,7 @@ void AEmilia::BeginPlay()
 			Subsystem->AddMappingContext(MappingContext, 0);
 		}
 	}
+	Interact();
 	
 }
 
@@ -389,6 +390,15 @@ void AEmilia::Interact()
 		{
 			InteractableInterface->InteractWith(this);
 		}
+	}
+}
+
+void AEmilia::Interact(AActor* ActorToInteractWith)
+{
+	IInteractableInterface* InteractableInterface = Cast<IInteractableInterface>(ActorToInteractWith);
+	if (InteractableInterface)
+	{
+		InteractableInterface->InteractWith(this);
 	}
 }
 

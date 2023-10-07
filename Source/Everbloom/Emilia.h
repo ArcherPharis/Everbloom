@@ -81,6 +81,8 @@ protected:
 	void Look(const FInputActionValue& Value);
 	void LockOnToggle(const FInputActionValue& Value);
 	void Interact();
+	UFUNCTION(BlueprintCallable, Category = "Emilia")
+	void Interact(AActor* ActorToInteractWith);
 	void ToggleFlowerMenu();
 	void ToggleMenu();
 	void LockOn();

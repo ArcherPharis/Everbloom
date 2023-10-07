@@ -5,6 +5,8 @@
 #include "DialogueComponent.h"
 #include "Components/BoxComponent.h"
 #include "Emilia.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 AMemorySprite::AMemorySprite()
@@ -17,6 +19,10 @@ AMemorySprite::AMemorySprite()
 	HitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block);
 	SpriteMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Sprite Mesh"));
 	SpriteMesh->SetupAttachment(HitBox);
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArm->SetupAttachment(RootComponent);
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
 	DialogueComponent = CreateDefaultSubobject<UDialogueComponent>(TEXT("Dialogue Component"));
 
 }
@@ -37,6 +43,11 @@ void AMemorySprite::Tick(float DeltaTime)
 
 void AMemorySprite::InteractWith(AEmilia* Player)
 {
+	APlayerController* Cont = Cast<APlayerController>(Player->GetController());
+	if (Cont)
+	{
+		Cont->SetViewTargetWithBlend(this, 1.5f);
+	}
 	DialogueComponent->CreateDialogueBox(Player);
 }
 

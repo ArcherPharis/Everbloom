@@ -17,5 +17,7 @@ class EVERBLOOM_API ABaseEnemy : public ABaseCharacter, public IITargetingInterf
 
 private:
 	virtual void IsTargetable(bool& IsTargetable) override;
+
+
 	
 };

@@ -14,7 +14,19 @@ void ARavager::BeginPlay()
 		AEBAIController* Cont = Cast<AEBAIController>(GetController());
 		if (Cont)
 		{
+			Campfire->IncrementRavagerCount();
 			Cont->GetBlackboardComponent()->SetValueAsObject("Campfire", Campfire);
 		}
+	}
+}
+
+void ARavager::HandleCharacterHealth(float NewValue, float MaxHealth)
+{
+	Super::HandleCharacterHealth(NewValue, MaxHealth);
+
+	if (NewValue == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("I'm dead!"));
+		Campfire->DecrementRavagerCount();
 	}
 }

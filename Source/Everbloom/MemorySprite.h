@@ -28,6 +28,9 @@ public:
 	FText GetIncantation() const { return Incantation; }
 	FText GetKeyword() const { return Keyword; }
 
+	UFUNCTION(BlueprintCallable, Category = "Memory Sprite")
+	class UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
+
 
 
 private:
@@ -49,6 +52,12 @@ private:
 	FText Incantation;
 	UPROPERTY(EditDefaultsOnly, Category = "Item", meta = (MultiLine = true))
 	FText Keyword;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Apple")
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Apple")
+	class UCameraComponent* Camera;
 
 
 

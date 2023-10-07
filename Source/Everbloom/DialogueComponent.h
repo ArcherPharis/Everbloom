@@ -28,6 +28,9 @@ public:
 	void OnExit();
 
 	void CreateDialogueBox(APawn* Player);
+
+	UFUNCTION(BlueprintCallable, Category = "DialogueComponent")
+	void ChangeDialogueTree(class UBehaviorTree* NewTree);
 private:
 	class ADialogueAIController* AICont;
 
@@ -42,5 +45,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FName BlackboardWidgetName {"DialogueWidget"};
+
 		
 };

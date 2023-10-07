@@ -23,11 +23,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void IncrementRavagerCount();
+	void DecrementRavagerCount();
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Campfire")
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, Category = "Campfire")
 	TArray<class ATargetPoint*> RestingPoints;
+
+	UPROPERTY(EditAnywhere, Category = "Campfire")
+	class AChest* Chest;
+
+	UPROPERTY(VisibleAnywhere, Category = "Campfire")
+	int ConnectedRavagers;
 
 };

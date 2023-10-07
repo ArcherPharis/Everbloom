@@ -6,6 +6,8 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIModule/Classes/BrainComponent.h"
 #include "DialogueWidget.h"
+#include "Emilia.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values for this component's properties
 UDialogueComponent::UDialogueComponent()
@@ -42,9 +44,15 @@ void UDialogueComponent::OnExit()
 	AICont->GetBrainComponent()->StopLogic("Dialogue Attempted to exit.");
 	DialogueWidget->RemoveFromParent();
 	APlayerController* PlayerCont = Cast<APlayerController>(DialogueWidget->GetOwningPlayer());
+	AEmilia* Emilia = Cast<AEmilia>(PlayerCont->GetPawn());
+	UCharacterMovementComponent* Mov = Emilia->GetCharacterMovement();
+	PlayerCont->FlushPressedKeys();
 	PlayerCont->SetInputMode(FInputModeGameOnly());
+	Mov->Activate();
+	Mov->StopActiveMovement();
 	PlayerCont->bShowMouseCursor = false;
-
+	
+	
 }
 
 void UDialogueComponent::CreateDialogueBox(APawn* Player)
@@ -53,8 +61,14 @@ void UDialogueComponent::CreateDialogueBox(APawn* Player)
 	DialogueWidget = CreateWidget<UDialogueWidget>(PlayerCont, DialogueWidgetClass);
 	DialogueWidget->OnExit.AddDynamic(this, &UDialogueComponent::OnExit);
 	DialogueWidget->AddToViewport();
-	PlayerCont->SetInputMode(FInputModeUIOnly());
 	PlayerCont->bShowMouseCursor = true;
+	AEmilia* Emilia = Cast<AEmilia>(Player);
+	UCharacterMovementComponent* Mov = Emilia->GetCharacterMovement();
+	Mov->StopMovementImmediately();
+	Mov->ConsumeInputVector();
+	Mov->Deactivate();
+	PlayerCont->SetInputMode(FInputModeUIOnly());
+	
 	AICont->RunBehaviorTree(DialogueTree);
 	UBlackboardComponent* BBoardComp = AICont->GetBlackboardComponent();
 	if (BBoardComp)
@@ -63,5 +77,10 @@ void UDialogueComponent::CreateDialogueBox(APawn* Player)
 		BBoardComp->SetValueAsObject("Player", Player);
 		BBoardComp->SetValueAsObject(BlackboardWidgetName, DialogueWidget);
 	}
+}
+
+void UDialogueComponent::ChangeDialogueTree(UBehaviorTree* NewTree)
+{
+	DialogueTree = NewTree;
 }
 

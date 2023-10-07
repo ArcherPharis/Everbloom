@@ -6,6 +6,8 @@
 #include "BaseEnemy.h"
 #include "Ravager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDied);
+
 /**
  * 
  */
@@ -17,8 +19,11 @@ class EVERBLOOM_API ARavager : public ABaseEnemy
 public:
 	virtual void BeginPlay() override;
 
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Ravager")
 	class ARavagerCampfire* Campfire;
+
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
 	
 };

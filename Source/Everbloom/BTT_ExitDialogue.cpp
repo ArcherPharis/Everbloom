@@ -5,6 +5,7 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DialogueWidget.h"
+#include "Emilia.h"
 
 UBTT_ExitDialogue::UBTT_ExitDialogue()
 {
@@ -17,6 +18,12 @@ EBTNodeResult::Type UBTT_ExitDialogue::ExecuteTask(UBehaviorTreeComponent& Owner
 	UDialogueWidget* DialogueWidget = Cast<UDialogueWidget>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BlackboardKey.SelectedKeyName));
 	if (DialogueWidget)
 	{
+		AEmilia* Em = Cast<AEmilia>(OwnerComp.GetBlackboardComponent()->GetValueAsObject("Player"));
+		APlayerController* Cont = Cast<APlayerController>(Em->GetController());
+		if (Cont)
+		{
+			Cont->SetViewTargetWithBlend(Em, 0.5f);
+		}
 		DialogueWidget->Exit();
 		return EBTNodeResult::Succeeded;
 	}
