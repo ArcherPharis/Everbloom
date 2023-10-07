@@ -27,6 +27,10 @@ void ARavager::HandleCharacterHealth(float NewValue, float MaxHealth)
 	if (NewValue == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("I'm dead!"));
-		Campfire->DecrementRavagerCount();
+		if (Campfire)
+		{
+			Campfire->DecrementRavagerCount();
+
+		}
 	}
 }

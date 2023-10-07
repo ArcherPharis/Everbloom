@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Memory Sprite")
 	class UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
+	void OnDialogueChanged();
+
 
 
 private:
