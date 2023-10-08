@@ -39,6 +39,9 @@ public:
 	UFUNCTION()
 	void EnableCreationWidget(UAbilityFlowerItem* FlowerItem);
 
+	UFUNCTION()
+	void CreateNewTip(FText TextToGiveTip);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -67,6 +70,9 @@ private:
 	class UListView* AbilityFlowerList;
 
 	UPROPERTY(meta = (BindWidget))
+	class UVerticalBox* TipBox;
+
+	UPROPERTY(meta = (BindWidget))
 	class UPlayerStatsWidget* StatsWidget;
 	UPROPERTY(meta = (BindWidget))
 	class UFloriologyCraftingWidget* CraftingWidget;
@@ -74,6 +80,9 @@ private:
 	class UEquippedWidget* EquippedWeaponWidget;
 	UPROPERTY(meta = (BindWidget))
 	class UMagicEquippedWidget* MagicEquippedWeaponWidget;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tips")
+	TSubclassOf<class UTipWidget> TipWidgetClass;
 
 	UPROPERTY()
 	class UAbilityFlowerItem* FlowerOne;

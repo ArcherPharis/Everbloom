@@ -15,8 +15,13 @@ class EVERBLOOM_API ABaseEnemy : public ABaseCharacter, public IITargetingInterf
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+
 private:
 	virtual void IsTargetable(bool& IsTargetable) override;
+
+	
 
 
 	

@@ -18,6 +18,8 @@
 #include "Components/CanvasPanel.h"
 #include "Components/ListView.h"
 #include "MainAbilitiesWidget.h"
+#include "Components/VerticalBox.h"
+#include "TipWidget.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -94,17 +96,10 @@ void UInGameUI::EnableCreationWidget(UAbilityFlowerItem* FlowerItem)
 		}
 		else
 		{
-			//this is where we check if they have the ability already or not, and set the text.
 			CraftingWidget->DisableValidCombinationButton();
 			UE_LOG(LogTemp, Warning, TEXT("can't find it"));
 
 		}
-
-		//we search if the inventory has floweritem in the inventory. We have FlowerOne, because it was sent
-		//from the inventory. If yes, we enable the button and give it abilityForRecipe.
-		// if they have the item but also have the ability, we instead change required flower text to already obtained.
-		//user clicks the button and we add the ability to their inventory..if they don't already have it.
-		//we just pass a nullptr floweritem, the function will just ask if floweritem is valid, if not, set text.
 	}
 	else
 	{
@@ -112,6 +107,13 @@ void UInGameUI::EnableCreationWidget(UAbilityFlowerItem* FlowerItem)
 
 	}
 
+}
+
+void UInGameUI::CreateNewTip(FText TextToGiveTip)
+{
+	UTipWidget* Tip = CreateWidget<UTipWidget>(GetOwningPlayer(), TipWidgetClass);
+	Tip->SetTipText(TextToGiveTip);
+	TipBox->AddChildToVerticalBox(Tip);
 }
 
 

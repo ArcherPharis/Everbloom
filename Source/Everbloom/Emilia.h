@@ -11,7 +11,7 @@ class AAbilityFlower;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnToggleFlowerMenu);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_EightParams(FOnToggleMenu, bool, Toggle, float, currentHP, float, maxHP, float, str, float, mag, float, def, float, res, float, WeaponDamage);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSendTip, FText, Text);
 
 
 /**
@@ -48,6 +48,7 @@ public:
 	class UCameraComponent* GetCameraComponent() const { return Camera; }
 	FOnToggleFlowerMenu OnToggleFlowerMenu;
 	FOnToggleMenu OnToggleMenu;
+	FOnSendTip OnSentTip;
 	
 
 protected:

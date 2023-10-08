@@ -23,7 +23,6 @@ void ARavager::BeginPlay()
 void ARavager::HandleCharacterHealth(float NewValue, float MaxHealth)
 {
 	Super::HandleCharacterHealth(NewValue, MaxHealth);
-
 	if (NewValue == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("I'm dead!"));
