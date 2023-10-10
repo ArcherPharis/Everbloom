@@ -107,7 +107,7 @@ void AEmilia::EndAim()
 {
 	StartAimTimeline->Reverse();
 	bIsAiming = false;
-	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	GetCharacterMovement()->MaxWalkSpeed = 750.f;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 
