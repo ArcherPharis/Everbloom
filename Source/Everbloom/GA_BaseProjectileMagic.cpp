@@ -15,6 +15,7 @@ void UGA_BaseProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle H
 		return;
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
 	Emilia = Cast<AEmilia>(GetAvatarAsCharacter());
 	Emilia->StartAim();
 	UAbilityTask_WaitGameplayEvent* FireEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, PlayerInputFireTag, nullptr, false, false);
@@ -32,6 +33,17 @@ void UGA_BaseProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle H
 		EndEvent->EventReceived.AddDynamic(this, &UGA_BaseProjectileMagic::EndFromInputRelease);
 		EndEvent->ReadyForActivation();
 	}
+
+	UAbilityTask_PlayMontageAndWait* AimMontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, AimMontage);
+	if (AimMontagePlay)
+	{
+		AimMontagePlay->OnBlendOut.AddDynamic(this, &UGA_BaseProjectileMagic::MontageFinished);
+		AimMontagePlay->OnCancelled.AddDynamic(this, &UGA_BaseProjectileMagic::MontageFinished);
+		AimMontagePlay->OnInterrupted.AddDynamic(this, &UGA_BaseProjectileMagic::MontageFinished);
+		AimMontagePlay->OnCompleted.AddDynamic(this, &UGA_BaseProjectileMagic::MontageFinished);
+		AimMontagePlay->ReadyForActivation();
+	}
+
 
 
 }
@@ -59,7 +71,7 @@ void UGA_BaseProjectileMagic::DetermineFiring(FGameplayEventData Payload)
 	ABaseProjectile* Projectile = GetWorld()->SpawnActor<ABaseProjectile>(ProjectileClass);
 	Projectile->SetCaster(Emilia);
 	USkeletalMeshComponent* MeshComponent = Emilia->GetMesh();
-	FTransform SocketTransform = MeshComponent->GetSocketTransform(FName("hand_r"));
+	FTransform SocketTransform = MeshComponent->GetSocketTransform(FName("cup_r"));
 	Projectile->SetActorLocation(SocketTransform.GetLocation());
 	FVector CameraDirection = Emilia->GetControlRotation().Vector();
 	Projectile->SetActorRotation(CameraDirection.Rotation());
@@ -74,7 +86,7 @@ void UGA_BaseProjectileMagic::EndFromInputRelease(FGameplayEventData Payload)
 
 void UGA_BaseProjectileMagic::MontageFinished()
 {
-	
+	K2_EndAbility();
 }
 
 void UGA_BaseProjectileMagic::UpdateFireStatus()
