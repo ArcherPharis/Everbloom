@@ -29,7 +29,7 @@ private:
 	void EndFromInputRelease(FGameplayEventData Payload);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	UAnimMontage* AimMontage;
+	UAnimMontage* CastMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FGameplayTag PlayerInputFireTag;
