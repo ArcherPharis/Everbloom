@@ -4,10 +4,27 @@
 #include "BaseEnemy.h"
 #include "AIController.h"
 #include "BrainComponent.h"
+#include "Weapon.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
 	IsTargetable = true;
+}
+
+void ABaseEnemy::SpawnWeapon()
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = GetOwner();
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Weapon = GetWorld()->SpawnActor<AWeapon>(WeaponToSpawn, SpawnParams);
+	FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
+	Weapon->AttachToComponent(GetMesh(), AttachRules, Weapon->GetAttachmentSocketName());
+}
+
+void ABaseEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	SpawnWeapon();
 }
 
 void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
