@@ -21,6 +21,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 	class AWeapon* GetWeapon() const { return Weapon; }
 
+	void UseMeleeAbility();
+
 protected:
 	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
 
@@ -31,6 +33,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
 	TSubclassOf<class AWeapon> WeaponToSpawn;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
+	TSubclassOf<class UGameplayAbility> MeleeAbility;
 
 	AWeapon* Weapon;
 

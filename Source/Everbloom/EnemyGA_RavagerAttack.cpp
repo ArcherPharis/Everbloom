@@ -46,8 +46,9 @@ void UEnemyGA_RavagerAttack::MontageFinished()
 
 void UEnemyGA_RavagerAttack::Hit(FGameplayEventData Payload)
 {
-	if (Payload.TargetData.Num() == 0) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("Recieving event"));
+	if (Payload.TargetData.Num() == 0) return;
 
 	TArray<AActor*> TargetActors = UAbilitySystemBlueprintLibrary::GetActorsFromTargetData(Payload.TargetData, 0);
 	for (AActor* TargetActor : TargetActors)

@@ -5,6 +5,7 @@
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "Weapon.h"
+#include "EBAbilitySystemComponent.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -19,12 +20,19 @@ void ABaseEnemy::SpawnWeapon()
 	Weapon = GetWorld()->SpawnActor<AWeapon>(WeaponToSpawn, SpawnParams);
 	FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
 	Weapon->AttachToComponent(GetMesh(), AttachRules, Weapon->GetAttachmentSocketName());
+	Weapon->SetOwner(this);
 }
 
 void ABaseEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	SpawnWeapon();
+	GiveAbility(MeleeAbility);
+}
+
+void ABaseEnemy::UseMeleeAbility()
+{
+	GetAbilitySystemComponent()->TryActivateAbilityByClass(MeleeAbility);
 }
 
 void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
