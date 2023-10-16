@@ -11,6 +11,8 @@
 #include "GenericTeamAgentInterface.h"
 #include "BaseCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDead);
+
 UCLASS()
 class EVERBLOOM_API ABaseCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
@@ -23,6 +25,8 @@ public:
 	class UWidgetComponent* GetCharacterWidgetComponent() const { return HUDWidget; }
 
 	virtual void RotateTowardsLockedTarget();
+
+	FOnDead OnDead;
 
 
 protected:

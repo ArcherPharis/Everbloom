@@ -106,9 +106,9 @@ void ABaseCharacter::InitAttributeEvents()
 
 void ABaseCharacter::HandleCharacterHealth(float NewValue, float OldValue)
 {
-	if (NewValue == 0)
+	if (NewValue <= 0)
 	{
-
+		OnDead.Broadcast();
 	}
 	else
 	{

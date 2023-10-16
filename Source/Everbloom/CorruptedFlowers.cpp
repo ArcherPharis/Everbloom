@@ -27,6 +27,7 @@ void ACorruptedFlowers::BeginPlay()
 {
 	Super::BeginPlay();
 	StartBossFightTriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ACorruptedFlowers::StartBossFight);
+
 	
 }
 
@@ -44,8 +45,14 @@ void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent,
 		ABaseEnemy* EnemySpawned = GetWorld()->SpawnActor<ABaseEnemy>(EnemyToSpawn);
 		EnemySpawned->SetActorLocation(EnemySpawnLocation->GetComponentLocation());
 		EnemySpawned->SetActorRotation(EnemySpawnLocation->GetComponentRotation());
+		EnemySpawned->OnDead.AddDynamic(this, &ACorruptedFlowers::EnemyDied);
 		StartBossFightTriggerBox->DestroyComponent();
 		
 	}
+}
+
+void ACorruptedFlowers::EnemyDied()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Lower the rock formation!"));
 }
 
