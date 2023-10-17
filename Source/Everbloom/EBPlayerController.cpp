@@ -25,6 +25,7 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
 		Player->GetAttributeSet()->OnManaAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetManaBar);
 		Player->OnSentTip.AddDynamic(InGameUI, &UInGameUI::CreateNewTip);
+		Player->OnObtainAbilityFlower.AddDynamic(InGameUI, &UInGameUI::AddToFlowerNotificationBox);
 
 	}
 }

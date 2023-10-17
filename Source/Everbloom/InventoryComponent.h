@@ -8,6 +8,7 @@
 
 class UAbilityFlowerItem;
 
+//TODO: deprecated, the player sends this info instead, not the inventory comp
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewAbilityFlowerObtained, UAbilityFlowerItem*, Flower);
 
 
@@ -81,6 +82,6 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	UEBGameplayAbilityBase* CurrentMagic;
 
-	
+	class AEmilia* Emilia;
 		
 };

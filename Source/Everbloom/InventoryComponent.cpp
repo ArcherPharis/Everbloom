@@ -22,6 +22,7 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 	if (!CheckIfFlowerExistsInInventory(FlowerToAdd))
 	{
 		FlowersObtained.Add(FlowerToAdd);
+		Emilia->OnObtainAbilityFlower.Broadcast(FlowerToAdd);
 		//OnNewAbilityFlowerObtained.Broadcast(FlowerToAdd);
 	}
 	else
@@ -66,6 +67,7 @@ TArray<FText> UInventoryComponent::GetFlowerWords() const
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Emilia = Cast<AEmilia>(GetOwner());
 	// ...
 	
 }
@@ -108,7 +110,6 @@ bool UInventoryComponent::CheckIfFlowerExistsInInventory(UAbilityFlowerItem* Flo
 
 void UInventoryComponent::GiveStarterMagic()
 {
-	AEmilia* Emilia = Cast<AEmilia>(GetOwner());
 	if (Emilia)
 	{
 		FGameplayAbilitySpec* Spec = Emilia->GiveAbility(StarterWindMagicClass);
@@ -118,7 +119,6 @@ void UInventoryComponent::GiveStarterMagic()
 
 void UInventoryComponent::GiveStandardMagicToInventory(TSubclassOf<UEBGameplayAbilityBase> NewMagic)
 {
-	AEmilia* Emilia = Cast<AEmilia>(GetOwner());
 	if (Emilia)
 	{
 		FGameplayAbilitySpec* Spec = Emilia->GiveAbility(NewMagic);

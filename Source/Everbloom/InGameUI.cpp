@@ -20,6 +20,7 @@
 #include "MainAbilitiesWidget.h"
 #include "Components/VerticalBox.h"
 #include "TipWidget.h"
+#include "FlowerNotification.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -180,6 +181,13 @@ void UInGameUI::SpawnUpgradeNodes(UAbilityFlowerItem* FlowerGiven)
 void UInGameUI::GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability)
 {
 	Gamemode->GetEmilia()->GetInventoryComponent()->GiveNewMagic(Ability.GetDefaultObject());
+}
+
+void UInGameUI::AddToFlowerNotificationBox(UAbilityFlowerItem* Flower)
+{
+	UFlowerNotification* Notif = CreateWidget<UFlowerNotification>(GetOwningPlayer(), FlowerNotificationWidgetClass);
+	Notif->PopulateNotificationFields(Flower->GetItemIcon(), Flower->GetItemName(), Flower->GetItemDescription());
+	FlowerNotificationBox->AddChildToVerticalBox(Notif);
 }
 
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)

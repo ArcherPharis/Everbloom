@@ -16,6 +16,7 @@ class EVERBLOOM_API UBaseItemObject : public UObject
 
 public:
 	FText GetItemName() const { return ItemName; }
+	FText GetItemDescription() const { return ItemDescription; }
 	UTexture2D* GetItemIcon() const { return ItemIcon; }
 
 private:

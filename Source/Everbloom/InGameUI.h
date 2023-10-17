@@ -42,6 +42,9 @@ public:
 	UFUNCTION()
 	void CreateNewTip(FText TextToGiveTip);
 
+	UFUNCTION()
+	void AddToFlowerNotificationBox(UAbilityFlowerItem* Flower);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -73,6 +76,9 @@ private:
 	class UVerticalBox* TipBox;
 
 	UPROPERTY(meta = (BindWidget))
+	class UVerticalBox* FlowerNotificationBox;
+
+	UPROPERTY(meta = (BindWidget))
 	class UPlayerStatsWidget* StatsWidget;
 	UPROPERTY(meta = (BindWidget))
 	class UFloriologyCraftingWidget* CraftingWidget;
@@ -98,9 +104,14 @@ private:
 	UFUNCTION()
 	void GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability);
 
+
+
 	UPROPERTY()
 	class AEverbloomGameModeBase* Gamemode;
 
 	void HandleNewFlowerEntry(UUserWidget& UserWidget);
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UFlowerNotification> FlowerNotificationWidgetClass;
 	
 };

@@ -12,6 +12,8 @@ class AAbilityFlower;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnToggleFlowerMenu);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_EightParams(FOnToggleMenu, bool, Toggle, float, currentHP, float, maxHP, float, str, float, mag, float, def, float, res, float, WeaponDamage);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSendTip, FText, Text);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObtainAbilityFlower, class UAbilityFlowerItem*, Flower);
+
 
 
 /**
@@ -49,6 +51,7 @@ public:
 	FOnToggleFlowerMenu OnToggleFlowerMenu;
 	FOnToggleMenu OnToggleMenu;
 	FOnSendTip OnSentTip;
+	FOnObtainAbilityFlower OnObtainAbilityFlower;
 	
 
 protected:
