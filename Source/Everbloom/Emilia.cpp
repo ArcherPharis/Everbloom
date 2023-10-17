@@ -154,6 +154,17 @@ void AEmilia::RotateTowardsLockedTarget()
 	}
 }
 
+void AEmilia::CheckToUnlock(const ABaseCharacter* PotentialTarget)
+{
+	if (PotentialTarget->IsDead() && PotentialTarget == LockedOnTarget)
+	{
+		UWidgetComponent* WidgetCpt = LockedOnTarget->FindComponentByClass<UWidgetComponent>();
+		WidgetCpt->SetVisibility(false);
+		LockedOnTarget = nullptr;
+		DisengageLockonTimelineComponent->Play();
+	}
+}
+
 void AEmilia::InitMove()
 {
 	FGameplayAbilitySpec* MovementSpec = GiveAbility(MovementAbility);

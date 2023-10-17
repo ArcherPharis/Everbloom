@@ -6,6 +6,7 @@
 #include "BrainComponent.h"
 #include "Weapon.h"
 #include "EBAbilitySystemComponent.h"
+#include "Emilia.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -44,6 +45,14 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 		if (Cont)
 		{
 			Cont->GetBrainComponent()->StopLogic("cuz he ded");
+		}
+
+		if (GetKiller())
+		{
+			if (AEmilia* Player = Cast<AEmilia>(GetKiller()))
+			{
+				Player->CheckToUnlock(this);
+			}
 		}
 	}
 }

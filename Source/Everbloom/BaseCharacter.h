@@ -26,6 +26,8 @@ public:
 
 	virtual void RotateTowardsLockedTarget();
 
+	bool IsDead() const;
+
 	FOnDead OnDead;
 
 
@@ -75,6 +77,7 @@ public:
 	FORCEINLINE virtual FGenericTeamId GetGenericTeamId() const { return TeamID; }
 
 	void SetKiller(ABaseCharacter* KilledBy);
+	ABaseCharacter* GetKiller() const { return Killer; }
 
 private:
 

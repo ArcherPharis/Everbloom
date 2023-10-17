@@ -44,6 +44,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void RotateToTargetEvent(const AActor* Target);
 	virtual void RotateTowardsLockedTarget() override;
+	void CheckToUnlock(const ABaseCharacter* PotentialTarget);
 
 	UFUNCTION(BlueprintPure, Category = "Emilia")
 	class UInventoryComponent* GetInventoryComponent() const { return InventoryComponent; }

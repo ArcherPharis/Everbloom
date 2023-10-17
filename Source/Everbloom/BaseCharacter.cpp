@@ -29,6 +29,16 @@ void ABaseCharacter::RotateTowardsLockedTarget()
 {
 }
 
+bool ABaseCharacter::IsDead() const
+{
+	if (GetAttributeSet()->GetHealth() <= 0)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 // Called when the game starts or when spawned
 void ABaseCharacter::BeginPlay()
 {
