@@ -119,6 +119,10 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float OldValue)
 	if (NewValue <= 0)
 	{
 		OnDead.Broadcast();
+		if (DeathMontage)
+		{
+			GetMesh()->GetAnimInstance()->Montage_Play(DeathMontage);
+		}
 	}
 	else
 	{

@@ -33,6 +33,9 @@ public:
 	void StartAim();
 	void EndAim();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayerDied();
+
 	void GiveMainAbility(TSubclassOf<class UGameplayAbility> Ability, int input = -1);
 
 	virtual void Tick(float DeltaTime) override;
@@ -99,6 +102,9 @@ protected:
 private:
 
 	void InitSpecialAbilities();
+
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class USpringArmComponent* SpringArm;
 
@@ -155,6 +161,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Aiming")
 	UCurveFloat* AimAlpha;
+
+
 
 	UFUNCTION()
 	void UpdateSpringArmLocation(float Alpha);

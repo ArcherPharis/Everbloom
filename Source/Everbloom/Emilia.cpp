@@ -14,6 +14,7 @@
 #include "EBAttributeSet.h"
 #include "Components/InputComponent.h"
 #include "EBPlayerController.h"
+#include "Components/CapsuleComponent.h"
 #include "InteractableInterface.h"
 #include "Camera/CameraComponent.h"
 #include "EBAbilitySystemComponent.h"
@@ -273,6 +274,22 @@ void AEmilia::InitSpecialAbilities()
 	//Double jump temp. Flower gives this.
 	GiveAbility(DoubleJumpAbility);
 	InitMove();
+}
+
+void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth)
+{
+	Super::HandleCharacterHealth(NewValue, MaxHealth);
+	if (NewValue <= 0)
+	{
+		PlayerCont->bShowMouseCursor = true;
+		UCharacterMovementComponent* Mov = GetCharacterMovement();
+		Mov->StopMovementImmediately();
+		Mov->ConsumeInputVector();
+		Mov->Deactivate();
+		PlayerCont->SetInputMode(FInputModeUIOnly());
+		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
+		PlayerDied();
+	}
 }
 
 

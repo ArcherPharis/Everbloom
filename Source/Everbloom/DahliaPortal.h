@@ -24,19 +24,26 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void TeleportEmilia();
+
 private:
 	virtual void InteractWith(AEmilia* Player);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Sign")
+	UPROPERTY(EditDefaultsOnly, Category = "Dahlia Door")
 	UStaticMeshComponent* DoorMesh;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Sign")
+	UPROPERTY(EditDefaultsOnly, Category = "Dahlia Door")
 	class UBoxComponent* HitBox;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	UPROPERTY(EditDefaultsOnly, Category = "Dahlia Door")
 	class UDialogueComponent* DialogueComponent;
 
-	UPROPERTY(EditAnywhere, Category = "Campfire")
+	UPROPERTY(EditAnywhere, Category = "Dahlia Door")
 	class ATargetPoint* RestingPoints;
+
+	UPROPERTY(VisibleAnywhere, Category = "Dahlia Door")
+	int FlowersLeft = 3;
+
+	AActor* Teleportee;
 
 };

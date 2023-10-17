@@ -37,15 +37,24 @@ void ADahliaPortal::Tick(float DeltaTime)
 
 }
 
+void ADahliaPortal::TeleportEmilia()
+{
+	if (Teleportee)
+	{
+		Teleportee->SetActorLocation(RestingPoints->GetActorLocation());
+		Teleportee->SetActorRotation(RestingPoints->GetActorRotation());
+	}
+}
+
 void ADahliaPortal::InteractWith(AEmilia* Player)
 {
 	UE_LOG(LogTemp, Warning, TEXT("IS THIS WORKING"));
 	if (Player)
 	{
-		Player->SetActorLocation(RestingPoints->GetActorLocation());
-		Player->SetActorRotation(RestingPoints->GetActorRotation());
+		Teleportee = Player;
+		DialogueComponent->CreateDialogueBox(Player);
+
 	}
 
-	//DialogueComponent->CreateDialogueBox(Player);
 }
 

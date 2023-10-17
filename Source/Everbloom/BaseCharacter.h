@@ -107,13 +107,13 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	USceneComponent* BaseTransform;
 
-	bool bIsAiming = false;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	UAnimMontage* DeathMontage;
 
+	bool bIsAiming = false;
 
 	UPROPERTY(EditDefaultsOnly)
 	UCurveVector* VectorCurve;
-
-
 
 	UPROPERTY()
 	ABaseCharacter* Killer;
