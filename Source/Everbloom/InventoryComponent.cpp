@@ -118,7 +118,7 @@ void UInventoryComponent::SpawnNewWeapon(TSubclassOf<AWeapon> NewWeapon, USceneC
 
 void UInventoryComponent::CycleWeapons(float CycleDirection)
 {
-	if (Weapons.Num() == 0)
+	if (Weapons.Num() == 0 || Weapons.Num() <= 1)
 	{
 		return;
 	}
@@ -138,12 +138,12 @@ void UInventoryComponent::CycleWeapons(float CycleDirection)
 void UInventoryComponent::CycleMagic(float CycleDirection)
 {
 	FGameplayAbilitySpec* WindSpec = Emilia->GetAbilitySystemComponent()->FindAbilitySpecFromClass(StarterWindMagicClass);
-	if (WindSpec->IsActive())
+	if (WindSpec && WindSpec->IsActive())
 	{
 		return;
 	}
 
-	if (Magic.Num() == 0)
+	if (Magic.Num() == 0 || Magic.Num() <= 1)
 	{
 		return;
 	}
