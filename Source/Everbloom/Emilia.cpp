@@ -75,12 +75,6 @@ void AEmilia::BeginPlay()
 	StartAimTimeline->AddInterpFloat(AimAlpha, AimFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
-	//TODO when we swap weapons we need to make sure we also update the augment damage, can either be done here or inventory comp.
-	if (InventoryComponent)
-	{
-		UEBAttributeSet* AS = GetAttributeSet();
-		AS->SetWeaponAugmentDamage(InventoryComponent->GetCurrentWeaponDamage());
-	}
 
 	InitSpecialAbilities();
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))

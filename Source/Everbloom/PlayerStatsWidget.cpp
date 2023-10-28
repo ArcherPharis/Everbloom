@@ -34,10 +34,6 @@ void UPlayerStatsWidget::SetResistanceText(FString Text)
 	ResistanceText->SetText(FText::FromString(Text));
 }
 
-void UPlayerStatsWidget::SetStrengthAugmentText(FString Text)
-{
-	StrengthAugmentText->SetText(FText::FromString(Text));
-}
 
 void UPlayerStatsWidget::SetAllStatTexts(FString HP, FString MaxHP, FString Str, FString Mag, FString Def, FString Res, FString StrAug)
 {
@@ -47,5 +43,4 @@ void UPlayerStatsWidget::SetAllStatTexts(FString HP, FString MaxHP, FString Str,
 	SetMagicText(Mag);
 	SetDefenseText(Def);
 	SetResistanceText(Res);
-	SetStrengthAugmentText(StrAug);
 }

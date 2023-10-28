@@ -25,7 +25,12 @@ public:
 
 	FName GetAttachmentSocketName() const { return WeaponSocketName; }
 
-	float GetWeaponDamage() const { return Damage; }
+	void DisableWeapon();
+	void EnableWeapon();
+
+	void ApplyWeaponEffect(class ABaseCharacter* WeaponOwner);
+	void RemoveWeaponEffect(ABaseCharacter* WeaponOwner);
+
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
@@ -35,7 +40,9 @@ private:
 	FName WeaponSocketName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	float Damage = 10.f;
+	TSubclassOf<class UGameplayEffect> WeaponEffect;
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	TSubclassOf<class UGameplayEffect> WeaponRemovalEffect;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "GameplayAbility")
 	class UHitDetectionComponent* HitDetectionComp;

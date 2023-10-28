@@ -21,7 +21,6 @@ public:
 	void SetMagicText(FString Text);
 	void SetDefenseText(FString Text);
 	void SetResistanceText(FString Text);
-	void SetStrengthAugmentText(FString Text);
 	void SetAllStatTexts(FString HP, FString MaxHP, FString Str, FString Mag, FString Def, FString Res, FString StrAug);
 
 
@@ -35,8 +34,6 @@ private:
 	class UProgressBar* HealthProgressBar;
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* StrengthText;
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* StrengthAugmentText;
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* StrengthProgressBar;
 	UPROPERTY(meta = (BindWidget))

@@ -3,6 +3,8 @@
 
 #include "Weapon.h"
 #include "HitDetectionComponent.h"
+#include "BaseCharacter.h"
+#include "EBAbilitySystemComponent.h"
 
 // Sets default values
 AWeapon::AWeapon()
@@ -29,5 +31,28 @@ void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AWeapon::DisableWeapon()
+{
+	SetActorHiddenInGame(true);
+	HitDetectionComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+}
+
+void AWeapon::EnableWeapon()
+{
+}
+
+void AWeapon::ApplyWeaponEffect(ABaseCharacter* WeaponOwner)
+{
+	FGameplayEffectSpecHandle Spec = WeaponOwner->GetAbilitySystemComponent()->MakeOutgoingSpec(WeaponEffect, -1, WeaponOwner->GetAbilitySystemComponent()->MakeEffectContext());
+	WeaponOwner->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
+
+}
+
+void AWeapon::RemoveWeaponEffect(ABaseCharacter* WeaponOwner)
+{
+	FGameplayEffectSpecHandle Spec = WeaponOwner->GetAbilitySystemComponent()->MakeOutgoingSpec(WeaponRemovalEffect, -1, WeaponOwner->GetAbilitySystemComponent()->MakeEffectContext());
+	WeaponOwner->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
 }
 

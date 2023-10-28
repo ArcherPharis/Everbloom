@@ -32,17 +32,6 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 }
 
 
-
-float UInventoryComponent::GetCurrentWeaponDamage() const
-{
-	if (CurrentWeapon)
-	{
-		return CurrentWeapon->GetWeaponDamage();
-	}
-	return 0.f;
-}
-
-
 void UInventoryComponent::SetLifedewAmount(int Amount)
 {
 	Lifedew = FMath::Clamp(Lifedew + Amount, 0, MaxLifedewAmount);
@@ -68,6 +57,7 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Emilia = Cast<AEmilia>(GetOwner());
+	SpawnNewWeapon(GolemSwordClass, Emilia->GetMesh());
 	// ...
 	
 }
@@ -91,6 +81,7 @@ void UInventoryComponent::InitializeInventory(USceneComponent* CompToAttach)
 		CurrentWeapon = GetWorld()->SpawnActor<AWeapon>(InitialWeaponClass, SpawnParams);
 		FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
 		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, CurrentWeapon->GetAttachmentSocketName());
+		CurrentWeapon->ApplyWeaponEffect(Emilia);
 		Weapons.Add(CurrentWeapon);
 	}
 }
@@ -106,6 +97,20 @@ bool UInventoryComponent::CheckIfFlowerExistsInInventory(UAbilityFlowerItem* Flo
 	}
 
 	return false;
+}
+
+void UInventoryComponent::SpawnNewWeapon(TSubclassOf<AWeapon> NewWeapon, USceneComponent* CompToAttach)
+{
+	if (NewWeapon)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = GetOwner();
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AWeapon* NewWep = GetWorld()->SpawnActor<AWeapon>(NewWeapon, SpawnParams);
+		FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
+		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, NewWep->GetAttachmentSocketName());
+		Weapons.Add(NewWep);
+	}
 }
 
 void UInventoryComponent::GiveStarterMagic()

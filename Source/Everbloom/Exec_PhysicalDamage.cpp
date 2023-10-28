@@ -46,10 +46,10 @@ void UExec_PhysicalDamage::Execute_Implementation(const FGameplayEffectCustomExe
 	float AttackMagnitude = 0.0f;
 	float DefenseMagnitude = 0.0f;
 	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().HealthDef, FAggregatorEvaluateParameters(), HealthMagnitude);
-	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().HealthDef, FAggregatorEvaluateParameters(), DefenseMagnitude);
+	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().DefenseDef, FAggregatorEvaluateParameters(), DefenseMagnitude);
 	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().StrengthDef, FAggregatorEvaluateParameters(), AttackMagnitude);
 
-	OutHealth = HealthMagnitude - AttackMagnitude;
+	OutHealth = HealthMagnitude - (AttackMagnitude - DefenseMagnitude);
 	if (OutHealth <= 0)
 	{
 		ABaseCharacter* DeadCharacter = Cast<ABaseCharacter>(ExecParams.GetTargetAbilitySystemComponent()->GetOwner());

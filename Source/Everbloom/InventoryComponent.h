@@ -25,7 +25,6 @@ public:
 	FOnNewAbilityFlowerObtained OnNewAbilityFlowerObtained;
 
 	void GiveNewMagic(class UEBGameplayAbilityBase* NewAbility);
-	float GetCurrentWeaponDamage() const;
 
 	UFUNCTION(BlueprintPure, Category = "InventoryComp")
 	class AWeapon* GetCurrentWeapon() const { return CurrentWeapon; }
@@ -52,23 +51,25 @@ public:
 	void InitializeInventory(USceneComponent* CompToAttach);
 
 	bool CheckIfFlowerExistsInInventory(UAbilityFlowerItem* FlowerToCheck);
+	void SpawnNewWeapon(TSubclassOf<class AWeapon> NewWeapon, USceneComponent* CompToAttach);
 
 private:
 	void GiveStarterMagic();
-
 
 	UPROPERTY(VisibleAnywhere, Category = "Ability Flowers")
 	TArray<UAbilityFlowerItem*> FlowersObtained;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AWeapon> InitialWeaponClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AWeapon> GolemSwordClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	int Lifedew = 0;
 
 	int MaxLifedewAmount = 9999;
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TArray<AWeapon*> Weapons;
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TArray<class UEBGameplayAbilityBase*> Magic;
@@ -77,7 +78,7 @@ private:
 	TArray<TSubclassOf<class UEBGameplayAbilityBase>> ObtainedFlowerAbilities;
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TSubclassOf<UEBGameplayAbilityBase> StarterWindMagicClass;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	AWeapon* CurrentWeapon;
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	UEBGameplayAbilityBase* CurrentMagic;
