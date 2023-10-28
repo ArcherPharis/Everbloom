@@ -57,7 +57,7 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Emilia = Cast<AEmilia>(GetOwner());
-	SpawnNewWeapon(GolemSwordClass, Emilia->GetMesh());
+	
 	// ...
 	
 }
@@ -108,9 +108,29 @@ void UInventoryComponent::SpawnNewWeapon(TSubclassOf<AWeapon> NewWeapon, USceneC
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 		AWeapon* NewWep = GetWorld()->SpawnActor<AWeapon>(NewWeapon, SpawnParams);
 		FAttachmentTransformRules AttachRules{ EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::KeepWorld, true };
-		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, NewWep->GetAttachmentSocketName());
+		NewWep->AttachToComponent(CompToAttach, AttachRules, NewWep->GetAttachmentSocketName());
+		NewWep->DisableWeapon();
 		Weapons.Add(NewWep);
 	}
+}
+
+void UInventoryComponent::CycleWeapons(float CycleDirection)
+{
+	if (Weapons.Num() == 0)
+	{
+		return;
+	}
+	int32 NewIndex = (CurrentWeaponIndex + static_cast<int32>(CycleDirection)) % Weapons.Num();
+	if (NewIndex < 0)
+	{
+		NewIndex = Weapons.Num() - 1;
+	}
+	CurrentWeapon->DisableWeapon();
+	CurrentWeapon->RemoveWeaponEffect(Emilia);
+	CurrentWeapon = Weapons[NewIndex];
+	CurrentWeapon->EnableWeapon();
+	CurrentWeapon->ApplyWeaponEffect(Emilia);
+	CurrentWeaponIndex = NewIndex;
 }
 
 void UInventoryComponent::GiveStarterMagic()

@@ -52,6 +52,8 @@ public:
 
 	bool CheckIfFlowerExistsInInventory(UAbilityFlowerItem* FlowerToCheck);
 	void SpawnNewWeapon(TSubclassOf<class AWeapon> NewWeapon, USceneComponent* CompToAttach);
+	void CycleWeapons(float CycleDirection);
+	TSubclassOf<class AWeapon> GetGolemSwordClass() const { return GolemSwordClass; }
 
 private:
 	void GiveStarterMagic();
@@ -84,5 +86,7 @@ private:
 	UEBGameplayAbilityBase* CurrentMagic;
 
 	class AEmilia* Emilia;
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentWeaponIndex = 0;
 		
 };

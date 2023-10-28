@@ -41,6 +41,8 @@ void AWeapon::DisableWeapon()
 
 void AWeapon::EnableWeapon()
 {
+	SetActorHiddenInGame(false);
+	HitDetectionComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
 
 void AWeapon::ApplyWeaponEffect(ABaseCharacter* WeaponOwner)

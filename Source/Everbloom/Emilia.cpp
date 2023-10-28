@@ -53,6 +53,7 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(LockOnToggleAction, ETriggerEvent::Triggered, this, &AEmilia::LockOnToggle);
 		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Triggered, this, &AEmilia::CastCurrentMagic);
 		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Completed, this, &AEmilia::CastCurrentMagicInputReleased);
+		EnhancedInputComponent->BindAction(CycleAction, ETriggerEvent::Triggered, this, &AEmilia::WeaponCycle);
 
 	}
 }
@@ -75,7 +76,8 @@ void AEmilia::BeginPlay()
 	StartAimTimeline->AddInterpFloat(AimAlpha, AimFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
-
+	InventoryComponent->SpawnNewWeapon(InventoryComponent->GetGolemSwordClass(), GetMesh());
+	InventoryComponent->CycleWeapons(1);
 	InitSpecialAbilities();
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -265,8 +267,8 @@ void AEmilia::InitSpecialAbilities()
 	GiveAbility(BasicAttackAbility);
 	GiveAbility(AirAttackAbility);
 	GiveAbility(JumpAbility);
-	//Double jump temp. Flower gives this.
 	GiveAbility(DoubleJumpAbility);
+	GiveAbility(CycleWeaponAbility);
 	InitMove();
 }
 
@@ -370,6 +372,14 @@ void AEmilia::LockOnToggle(const FInputActionValue& Value)
 			}
 		}
 	}
+}
+
+void AEmilia::WeaponCycle(const FInputActionValue& Value)
+{
+	GetAbilitySystemComponent()->TryActivateAbilityByClass(CycleWeaponAbility);
+	FGameplayEventData Data;
+	Data.EventMagnitude = Value.Get<float>();
+	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, CycleTag, Data);
 }
 
 

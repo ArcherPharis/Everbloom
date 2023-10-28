@@ -26,4 +26,24 @@ void UEBAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
         OnManaAttributeChanged.Broadcast(NewManaValue, GetMaxMana());
     }
+
+    if (Data.EvaluatedData.Attribute == GetStrengthAttribute())
+    {
+        SetStrength(FMath::Clamp(GetStrength(), 0.f, 999.f));
+    }
+
+    if (Data.EvaluatedData.Attribute == GetDefenseAttribute())
+    {
+        SetDefense(FMath::Clamp(GetDefense(), 0.f, 999.f));
+    }
+
+    if (Data.EvaluatedData.Attribute == GetMagicAttribute())
+    {
+        SetMagic(FMath::Clamp(GetMagic(), 0.f, 999.f));
+    }
+
+    if (Data.EvaluatedData.Attribute == GetResistanceAttribute())
+    {
+        SetResistance(FMath::Clamp(GetResistance(), 0.f, 999.f));
+    }
 }

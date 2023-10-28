@@ -83,11 +83,14 @@ protected:
 	UInputAction* LockOnToggleAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* CastingAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* CycleAction;
 
 	void InitMove();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void LockOnToggle(const FInputActionValue& Value);
+	void WeaponCycle(const FInputActionValue& Value);
 	void Interact();
 	UFUNCTION(BlueprintCallable, Category = "Emilia")
 	void Interact(AActor* ActorToInteractWith);
@@ -117,6 +120,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> JumpAbility;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<class UGameplayAbility> CycleWeaponAbility;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> DoubleJumpAbility;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	TSubclassOf<class UGameplayAbility> MovementAbility;
@@ -132,6 +137,8 @@ private:
 	FGameplayTag MovementTagX;
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
 	FGameplayTag MovementTagY;
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	FGameplayTag CycleTag;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class UCameraComponent* Camera;
