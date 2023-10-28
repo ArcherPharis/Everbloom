@@ -54,6 +54,8 @@ void AEmilia::SetupPlayerInputComponent(class UInputComponent* PlayerInputCompon
 		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Triggered, this, &AEmilia::CastCurrentMagic);
 		EnhancedInputComponent->BindAction(CastingAction, ETriggerEvent::Completed, this, &AEmilia::CastCurrentMagicInputReleased);
 		EnhancedInputComponent->BindAction(CycleAction, ETriggerEvent::Triggered, this, &AEmilia::WeaponCycle);
+		EnhancedInputComponent->BindAction(CycleMagic, ETriggerEvent::Triggered, this, &AEmilia::MagicCycle);
+
 
 	}
 }
@@ -77,7 +79,6 @@ void AEmilia::BeginPlay()
 
 	InventoryComponent->InitializeInventory(GetMesh());
 	InventoryComponent->SpawnNewWeapon(InventoryComponent->GetGolemSwordClass(), GetMesh());
-	InventoryComponent->CycleWeapons(1);
 	InitSpecialAbilities();
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
@@ -380,6 +381,11 @@ void AEmilia::WeaponCycle(const FInputActionValue& Value)
 	FGameplayEventData Data;
 	Data.EventMagnitude = Value.Get<float>();
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(this, CycleTag, Data);
+}
+
+void AEmilia::MagicCycle(const FInputActionValue& Value)
+{
+	GetInventoryComponent()->CycleMagic(Value.Get<float>());
 }
 
 

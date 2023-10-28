@@ -6,6 +6,7 @@
 #include "AbilityFlowerItem.h"
 #include "EBGameplayAbilityBase.h"
 #include "Emilia.h"
+#include "EBAbilitySystemComponent.h"
 
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
@@ -57,7 +58,8 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Emilia = Cast<AEmilia>(GetOwner());
-	
+	FGameplayAbilitySpec* Spec = Emilia->GiveAbility(SecondMagicClass);
+	GiveNewMagic(Cast<UEBGameplayAbilityBase>(Spec->Ability));
 	// ...
 	
 }
@@ -131,6 +133,27 @@ void UInventoryComponent::CycleWeapons(float CycleDirection)
 	CurrentWeapon->EnableWeapon();
 	CurrentWeapon->ApplyWeaponEffect(Emilia);
 	CurrentWeaponIndex = NewIndex;
+}
+
+void UInventoryComponent::CycleMagic(float CycleDirection)
+{
+	FGameplayAbilitySpec* WindSpec = Emilia->GetAbilitySystemComponent()->FindAbilitySpecFromClass(StarterWindMagicClass);
+	if (WindSpec->IsActive())
+	{
+		return;
+	}
+
+	if (Magic.Num() == 0)
+	{
+		return;
+	}
+	int32 NewIndex = (CurrentMagicIndex + static_cast<int32>(CycleDirection)) % Magic.Num();
+	if (NewIndex < 0)
+	{
+		NewIndex = Magic.Num() - 1;
+	}
+	CurrentMagic = Magic[NewIndex];
+	CurrentMagicIndex = NewIndex;
 }
 
 void UInventoryComponent::GiveStarterMagic()

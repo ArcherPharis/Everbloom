@@ -53,6 +53,7 @@ public:
 	bool CheckIfFlowerExistsInInventory(UAbilityFlowerItem* FlowerToCheck);
 	void SpawnNewWeapon(TSubclassOf<class AWeapon> NewWeapon, USceneComponent* CompToAttach);
 	void CycleWeapons(float CycleDirection);
+	void CycleMagic(float CycleDirection);
 	TSubclassOf<class AWeapon> GetGolemSwordClass() const { return GolemSwordClass; }
 
 private:
@@ -80,6 +81,8 @@ private:
 	TArray<TSubclassOf<class UEBGameplayAbilityBase>> ObtainedFlowerAbilities;
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TSubclassOf<UEBGameplayAbilityBase> StarterWindMagicClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TSubclassOf<UEBGameplayAbilityBase> SecondMagicClass;
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	AWeapon* CurrentWeapon;
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
@@ -88,5 +91,7 @@ private:
 	class AEmilia* Emilia;
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentWeaponIndex = 0;
+	UPROPERTY(VisibleAnywhere)
+	int32 CurrentMagicIndex = 0;
 		
 };

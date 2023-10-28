@@ -85,12 +85,15 @@ protected:
 	UInputAction* CastingAction;
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* CycleAction;
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UInputAction* CycleMagic;
 
 	void InitMove();
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void LockOnToggle(const FInputActionValue& Value);
 	void WeaponCycle(const FInputActionValue& Value);
+	void MagicCycle(const FInputActionValue& Value);
 	void Interact();
 	UFUNCTION(BlueprintCallable, Category = "Emilia")
 	void Interact(AActor* ActorToInteractWith);
