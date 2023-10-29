@@ -21,6 +21,8 @@
 #include "Components/VerticalBox.h"
 #include "TipWidget.h"
 #include "FlowerNotification.h"
+#include "EquippedWidget.h"
+#include "MagicEquippedWidget.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -188,6 +190,21 @@ void UInGameUI::AddToFlowerNotificationBox(UAbilityFlowerItem* Flower)
 	UFlowerNotification* Notif = CreateWidget<UFlowerNotification>(GetOwningPlayer(), FlowerNotificationWidgetClass);
 	Notif->PopulateNotificationFields(Flower->GetItemIcon(), Flower->GetItemName(), Flower->GetItemDescription());
 	FlowerNotificationBox->AddChildToVerticalBox(Notif);
+}
+
+void UInGameUI::ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name)
+{
+	EquippedWeaponWidget->ChangeWeaponDisplayed(Image, Name);
+}
+
+void UInGameUI::ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name)
+{
+	if (bNoMagicYet)
+	{
+		MagicEquippedWeaponWidget->SetWidgetsVisible();
+		bNoMagicYet = false;
+	}
+	MagicEquippedWeaponWidget->ChangeWeaponDisplayed(Image, Name);
 }
 
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)

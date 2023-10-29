@@ -10,6 +10,7 @@
 #include "GameplayEffectTypes.h"
 #include "EBAttributeSet.h"
 #include "InGameUI.h"
+#include "Weapon.h"
 
 void AEBPlayerController::OnPossess(APawn* newPawn)
 {
@@ -22,6 +23,8 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->OnToggleFlowerMenu.AddDynamic(this, &AEBPlayerController::SwitchToFloriologyScreen);
 		Player->OnToggleMenu.AddDynamic(InGameUI, &UInGameUI::ToggleMenu);
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
+		Player->GetInventoryComponent()->OnChangedWeapon.AddDynamic(this, &AEBPlayerController::PlayerChangedWeapon);
+		Player->GetInventoryComponent()->OnChangedMagic.AddDynamic(this, &AEBPlayerController::PlayerChangedMagic);
 		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
 		Player->GetAttributeSet()->OnManaAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetManaBar);
 		Player->OnSentTip.AddDynamic(InGameUI, &UInGameUI::CreateNewTip);
@@ -40,5 +43,15 @@ void AEBPlayerController::GiveAbilityToUI(UEBGameplayAbilityBase* AbilityToGive,
 void AEBPlayerController::SwitchToFloriologyScreen()
 {
 	InGameUI->SwitchToFloriology();
+}
+
+void AEBPlayerController::PlayerChangedWeapon(AWeapon* NewWeapon)
+{
+	InGameUI->ChangeCurrentEquippedWeapon(NewWeapon->GetWeaponIcon(), NewWeapon->GetWeaponName());
+}
+
+void AEBPlayerController::PlayerChangedMagic(UEBGameplayAbilityBase* NewMagic)
+{
+	InGameUI->ChangeCurrentEquippedMagic(NewMagic->GetIcon(), NewMagic->GetAbilityName());
 }
 

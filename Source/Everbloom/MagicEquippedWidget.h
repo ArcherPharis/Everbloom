@@ -14,8 +14,6 @@ class EVERBLOOM_API UMagicEquippedWidget : public UEquippedWidget
 {
 	GENERATED_BODY()
 
-private:
-	UPROPERTY(meta = (BindWidget))
-	class UTextBlock* MagicCostText;
-	
+public:
+	void SetWidgetsVisible();
 };

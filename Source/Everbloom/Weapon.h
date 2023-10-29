@@ -31,10 +31,18 @@ public:
 	void ApplyWeaponEffect(class ABaseCharacter* WeaponOwner);
 	void RemoveWeaponEffect(ABaseCharacter* WeaponOwner);
 
+	UTexture2D* GetWeaponIcon() const { return WeaponIcon; }
+	FText GetWeaponName() const { return WeaponName; }
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	USkeletalMeshComponent* WeaponMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	UTexture2D* WeaponIcon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	FText WeaponName;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	FName WeaponSocketName;

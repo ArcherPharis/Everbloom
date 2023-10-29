@@ -45,6 +45,10 @@ public:
 	UFUNCTION()
 	void AddToFlowerNotificationBox(UAbilityFlowerItem* Flower);
 
+	void ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name);
+
+	void ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -113,5 +117,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UFlowerNotification> FlowerNotificationWidgetClass;
+
+	bool bNoMagicYet = true;
 	
 };

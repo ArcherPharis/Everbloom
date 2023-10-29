@@ -58,8 +58,6 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Emilia = Cast<AEmilia>(GetOwner());
-	FGameplayAbilitySpec* Spec = Emilia->GiveAbility(SecondMagicClass);
-	GiveNewMagic(Cast<UEBGameplayAbilityBase>(Spec->Ability));
 	// ...
 	
 }
@@ -133,6 +131,7 @@ void UInventoryComponent::CycleWeapons(float CycleDirection)
 	CurrentWeapon->EnableWeapon();
 	CurrentWeapon->ApplyWeaponEffect(Emilia);
 	CurrentWeaponIndex = NewIndex;
+	OnChangedWeapon.Broadcast(CurrentWeapon);
 }
 
 void UInventoryComponent::CycleMagic(float CycleDirection)
@@ -154,6 +153,7 @@ void UInventoryComponent::CycleMagic(float CycleDirection)
 	}
 	CurrentMagic = Magic[NewIndex];
 	CurrentMagicIndex = NewIndex;
+	OnChangedMagic.Broadcast(CurrentMagic);
 }
 
 void UInventoryComponent::GiveStarterMagic()
@@ -179,6 +179,7 @@ void UInventoryComponent::GiveNewMagic(UEBGameplayAbilityBase* NewAbility)
 	if (!CurrentMagic)
 	{
 		CurrentMagic = NewAbility;
+		OnChangedMagic.Broadcast(CurrentMagic);
 	}
 	Magic.AddUnique(NewAbility);
 }

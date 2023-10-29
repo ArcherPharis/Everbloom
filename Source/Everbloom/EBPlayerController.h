@@ -35,5 +35,11 @@ private:
 	UFUNCTION()
 	void SwitchToFloriologyScreen();
 
+	UFUNCTION()
+	void PlayerChangedWeapon(class AWeapon* NewWeapon);
+
+	UFUNCTION()
+	void PlayerChangedMagic(class UEBGameplayAbilityBase* NewMagic);
+
 	
 };
