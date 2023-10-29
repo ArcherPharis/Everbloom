@@ -36,6 +36,7 @@ void UInventoryComponent::AddAbilityFlower(UAbilityFlowerItem* FlowerToAdd)
 void UInventoryComponent::SetLifedewAmount(int Amount)
 {
 	Lifedew = FMath::Clamp(Lifedew + Amount, 0, MaxLifedewAmount);
+	OnLifedewChanged.Broadcast(Lifedew);
 }
 
 TArray<FText> UInventoryComponent::GetFlowerWords() const
@@ -58,6 +59,8 @@ void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	Emilia = Cast<AEmilia>(GetOwner());
+	OnLifedewChanged.Broadcast(GetLifedews());
+
 	// ...
 	
 }

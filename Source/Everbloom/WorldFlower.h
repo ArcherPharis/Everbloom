@@ -32,6 +32,7 @@ public:
 
 private:
 	virtual void InteractWith(AEmilia* Player);
+	void GiveSpecialtyEffect(AEmilia* Player);
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	UStaticMeshComponent* FlowerMesh;

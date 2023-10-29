@@ -37,6 +37,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapons")
 	TSubclassOf<class UGameplayAbility> MeleeAbility;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Death")
+	int LifedewRewardAmount = 3;
+
 	AWeapon* Weapon;
 
 	

@@ -23,6 +23,7 @@
 #include "FlowerNotification.h"
 #include "EquippedWidget.h"
 #include "MagicEquippedWidget.h"
+#include "Components/TextBlock.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -81,6 +82,7 @@ void UInGameUI::ToggleMenu(bool ShouldToggle, float health, float maxHealth, flo
 		FString::FromInt(def), 
 		FString::FromInt(res),
 		FString::FromInt(wepAug));
+	StatsWidget->SetPercentageBars(maxHealth, strength, mag, def, res);
 }
 
 void UInGameUI::EnableCreationWidget(UAbilityFlowerItem* FlowerItem)
@@ -207,10 +209,20 @@ void UInGameUI::ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name)
 	MagicEquippedWeaponWidget->ChangeWeaponDisplayed(Image, Name);
 }
 
+void UInGameUI::SetDewfruitText(float NewAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Dew fruit was changed"));
+	DewfruitText->SetText(FText::FromString(FString::SanitizeFloat(NewAmount, 0)));
+}
+
+void UInGameUI::SetLifedewAmount(int NewAmount)
+{
+	LifedewText->SetText(FText::FromString(FString::FromInt(NewAmount)));
+}
+
 void UInGameUI::HandleNewFlowerEntry(UUserWidget& UserWidget)
 {
 	UAbilityFlowerEntry* Entry = Cast<UAbilityFlowerEntry>(&UserWidget);
-
 	if (Entry)
 	{
 		Entry->OnEntryClicked.AddDynamic(this, &UInGameUI::SpawnUpgradeNodes);

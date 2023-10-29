@@ -49,6 +49,12 @@ public:
 
 	void ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name);
 
+	UFUNCTION()
+	void SetDewfruitText(float NewAmount);
+
+	UFUNCTION()
+	void SetLifedewAmount(int NewAmount);
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -90,6 +96,12 @@ private:
 	class UEquippedWidget* EquippedWeaponWidget;
 	UPROPERTY(meta = (BindWidget))
 	class UMagicEquippedWidget* MagicEquippedWeaponWidget;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* DewfruitText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* LifedewText;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tips")
 	TSubclassOf<class UTipWidget> TipWidgetClass;

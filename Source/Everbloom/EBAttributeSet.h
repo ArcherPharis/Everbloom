@@ -15,7 +15,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthAttributeChanged, float, NewValue, float, OldValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnManaAttributeChanged, float, NewValue, float, OldValue);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDewfruitChanged, float, NewAmount);
 
 /**
  * 
@@ -31,7 +31,7 @@ public:
 
 	FOnHealthAttributeChanged OnHealthAttributeChanged;
 	FOnManaAttributeChanged OnManaAttributeChanged;
-
+	FOnDewfruitChanged OnDewfruitChanged;
 
 	UPROPERTY()
 	FGameplayAttributeData Health;

@@ -22,7 +22,7 @@ public:
 	void SetDefenseText(FString Text);
 	void SetResistanceText(FString Text);
 	void SetAllStatTexts(FString HP, FString MaxHP, FString Str, FString Mag, FString Def, FString Res, FString StrAug);
-
+	void SetPercentageBars(float HP, float Str, float Mag, float Def, float Res);
 
 
 private:
@@ -48,5 +48,8 @@ private:
 	class UTextBlock* ResistanceText;
 	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* ResistanceProgressBar;
+
+	float MaxStatAmount = 300.f;
+	float MaxHealthAmount = 1000.f;
 	
 };

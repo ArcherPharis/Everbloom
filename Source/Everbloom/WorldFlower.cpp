@@ -9,6 +9,7 @@
 #include "DialogueComponent.h"
 #include "WorldTreeMenuWidget.h"
 #include "InventoryComponent.h"
+#include "EBAbilitySystemComponent.h"
 
 
 // Sets default values
@@ -81,7 +82,8 @@ void AWorldFlower::GiveUpgrade(int ChoiceIndex, AEmilia* Emilia)
 	{
 	case 0: UE_LOG(LogTemp, Warning, TEXT("Give Health Effect Boost."));
 		break;
-	case 1: UE_LOG(LogTemp, Warning, TEXT("Give Stat Effect Boost."));
+	case 1:
+		GiveSpecialtyEffect(Emilia);
 		break;
 	default: break;
 	}
@@ -91,10 +93,17 @@ void AWorldFlower::InteractWith(AEmilia* Player)
 {
 	if (MainAbilityClass)
 	{
-		Player->GiveMainAbility(MainAbilityClass, InputValue);
+		//Player->GiveMainAbility(MainAbilityClass, InputValue);
 	}
 	DialogueComponent->CreateDialogueBox(Player);
 	
 	
+}
+
+void AWorldFlower::GiveSpecialtyEffect(AEmilia* Player)
+{
+	FGameplayEffectSpecHandle Spec = Player->GetAbilitySystemComponent()->MakeOutgoingSpec(SpecialtyUpgradeEffect, -1, Player->GetAbilitySystemComponent()->MakeEffectContext());
+	Player->GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*Spec.Data);
+	Player->GetInventoryComponent()->SetLifedewAmount(-10);
 }
 

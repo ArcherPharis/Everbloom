@@ -46,4 +46,10 @@ void UEBAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     {
         SetResistance(FMath::Clamp(GetResistance(), 0.f, 999.f));
     }
+
+    if (Data.EvaluatedData.Attribute == GetDewFruitAttribute())
+    {
+        SetDewFruit(FMath::Clamp(GetDewFruit(), 0.f, 99.f));
+        OnDewfruitChanged.Broadcast(GetDewFruit());
+    }
 }

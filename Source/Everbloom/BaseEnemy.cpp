@@ -7,6 +7,7 @@
 #include "Weapon.h"
 #include "EBAbilitySystemComponent.h"
 #include "Emilia.h"
+#include "InventoryComponent.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -52,6 +53,7 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 			if (AEmilia* Player = Cast<AEmilia>(GetKiller()))
 			{
 				Player->CheckToUnlock(this);
+				Player->GetInventoryComponent()->SetLifedewAmount(LifedewRewardAmount);
 			}
 		}
 	}

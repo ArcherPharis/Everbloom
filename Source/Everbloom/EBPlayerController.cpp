@@ -25,8 +25,10 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->GetInventoryComponent()->OnNewAbilityFlowerObtained.AddDynamic(InGameUI, &UInGameUI::NewAbilityFlowerGiven);
 		Player->GetInventoryComponent()->OnChangedWeapon.AddDynamic(this, &AEBPlayerController::PlayerChangedWeapon);
 		Player->GetInventoryComponent()->OnChangedMagic.AddDynamic(this, &AEBPlayerController::PlayerChangedMagic);
+		Player->GetInventoryComponent()->OnLifedewChanged.AddDynamic(InGameUI, &UInGameUI::SetLifedewAmount);
 		Player->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetHealthBar);
 		Player->GetAttributeSet()->OnManaAttributeChanged.AddDynamic(InGameUI, &UInGameUI::SetManaBar);
+		Player->GetAttributeSet()->OnDewfruitChanged.AddDynamic(InGameUI, &UInGameUI::SetDewfruitText);
 		Player->OnSentTip.AddDynamic(InGameUI, &UInGameUI::CreateNewTip);
 		Player->OnObtainAbilityFlower.AddDynamic(InGameUI, &UInGameUI::AddToFlowerNotificationBox);
 

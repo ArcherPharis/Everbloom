@@ -3,6 +3,7 @@
 
 #include "PlayerStatsWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/ProgressBar.h"
 
 void UPlayerStatsWidget::SetStrengthText(FString Text)
 {
@@ -43,4 +44,14 @@ void UPlayerStatsWidget::SetAllStatTexts(FString HP, FString MaxHP, FString Str,
 	SetMagicText(Mag);
 	SetDefenseText(Def);
 	SetResistanceText(Res);
+}
+
+void UPlayerStatsWidget::SetPercentageBars(float HP, float Str, float Mag, float Def, float Res)
+{
+	HealthProgressBar->SetPercent(HP / MaxHealthAmount);
+	StrengthProgressBar->SetPercent(Str / MaxStatAmount);
+	MagProgressBar->SetPercent(Mag / MaxStatAmount);
+	DefenseProgressBar->SetPercent(Def / MaxStatAmount);
+	ResistanceProgressBar->SetPercent(Res / MaxStatAmount);
+
 }

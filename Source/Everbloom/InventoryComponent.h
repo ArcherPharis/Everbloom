@@ -12,6 +12,8 @@ class UAbilityFlowerItem;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewAbilityFlowerObtained, UAbilityFlowerItem*, Flower);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedWeapons, class AWeapon*, WeaponChangedTo);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedMagic, class UEBGameplayAbilityBase*, MagicChangedTo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLifedewChanged, int, NewAmount);
+
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -27,6 +29,7 @@ public:
 	FOnNewAbilityFlowerObtained OnNewAbilityFlowerObtained;
 	FOnChangedWeapons OnChangedWeapon;
 	FOnChangedMagic OnChangedMagic;
+	FOnLifedewChanged OnLifedewChanged;
 	void GiveNewMagic(class UEBGameplayAbilityBase* NewAbility);
 
 	UFUNCTION(BlueprintPure, Category = "InventoryComp")
@@ -73,7 +76,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	int Lifedew = 0;
 
-	int MaxLifedewAmount = 9999;
+	int MaxLifedewAmount = 99999;
 
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TArray<AWeapon*> Weapons;
