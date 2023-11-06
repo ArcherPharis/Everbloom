@@ -22,9 +22,18 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void FindTaskToDo(class AAppleVillager* Villager);
 private:
+	void SetManagerForVillagers();
+	
+
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class AAppleVillager*> Villagers;
+
+	UPROPERTY(EditInstanceOnly, Category = "Villagers")
+	TArray<class AVillageVibeLocation*> VibeLocations;
+
+	UPROPERTY(EditInstanceOnly, Category = "Villagers")
+	TArray<class ATaskVillageLocation*> TaskLocations;
 
 };
