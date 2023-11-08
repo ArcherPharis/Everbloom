@@ -7,6 +7,8 @@
 #include "BaseVillagerLocation.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOccupied, ABaseVillagerLocation*, Location);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnVacant, ABaseVillagerLocation*, Location, class AAppleVillager*, Villager);
+
 
 UCLASS()
 class EVERBLOOM_API ABaseVillagerLocation : public AActor
@@ -18,10 +20,11 @@ public:
 	ABaseVillagerLocation();
 
 	FOnOccupied OnOccupied;
-
+	FOnVacant OnVacant;
 	void SetOccupied(class AAppleVillager* CurrentVillagerToSet);
 	void SetVacant();
 	bool CheckOccupied();
+	void StartOccupyTimer();
 	AAppleVillager* GetCurrentVillagerOccupyingSpace() const { return CurrentVillager; }
 
 protected:
@@ -38,5 +41,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Location")
 	TArray<UAnimMontage*> MontagesToPlay;
+
+	FTimerHandle OccupyTimerHandle;
 
 };

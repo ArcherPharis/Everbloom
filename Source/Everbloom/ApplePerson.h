@@ -20,8 +20,10 @@ public:
 
 	class UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 
-private:
+protected:
 	virtual void InteractWith(AEmilia* Player);
+
+private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDialogueComponent* DialogueComponent;

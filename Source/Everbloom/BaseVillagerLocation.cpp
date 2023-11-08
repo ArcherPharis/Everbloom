@@ -19,6 +19,7 @@ void ABaseVillagerLocation::SetOccupied(AAppleVillager* CurrentVillagerToSet)
 
 void ABaseVillagerLocation::SetVacant()
 {
+	OnVacant.Broadcast(this, CurrentVillager);
 	CurrentVillager = nullptr;
 }
 
@@ -29,6 +30,12 @@ bool ABaseVillagerLocation::CheckOccupied()
 		return true;
 	}
 	return false;
+}
+
+void ABaseVillagerLocation::StartOccupyTimer()
+{
+	float TimeVariable = FMath::RandRange(25.f, 65.f);
+	GetWorld()->GetTimerManager().SetTimer(OccupyTimerHandle, this, &ABaseVillagerLocation::SetVacant, TimeVariable, false);
 }
 
 // Called when the game starts or when spawned

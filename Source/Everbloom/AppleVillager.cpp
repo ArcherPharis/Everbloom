@@ -45,3 +45,8 @@ void AAppleVillager::BeginPlay()
 		//Manager->FindTaskToDo(this);
 	}
 }
+
+void AAppleVillager::InteractWith(AEmilia* Player)
+{
+	Super::InteractWith(Player);
+}

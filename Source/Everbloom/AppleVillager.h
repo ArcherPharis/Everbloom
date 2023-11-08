@@ -30,5 +30,5 @@ private:
 	class AVillagerAIController* AIController;
 
 	class ABaseVillagerLocation* CurrentLocation;
-
+	virtual void InteractWith(AEmilia* Player);
 };

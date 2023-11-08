@@ -18,9 +18,9 @@ AApplePeopleVillageManager::AApplePeopleVillageManager()
 void AApplePeopleVillageManager::BeginPlay()
 {
 	Super::BeginPlay();
+	BindLocations();
 	SetManagerForVillagers();
-	GetWorld()->GetTimerManager().SetTimer(DelegateDelay, this, &AApplePeopleVillageManager::BeginDelegate, 0.1f, false);
-
+	GetWorld()->GetTimerManager().SetTimer(DelegateDelay, this, &AApplePeopleVillageManager::BeginDelegate, 0.5f, false);
 }
 
 // Called every frame
@@ -73,11 +73,38 @@ void AApplePeopleVillageManager::BindLocations()
 		//this should allow the manager to know WHICH location just got occupied so it can release
 		//this location in x amount of time and grab its occupant if needed.
 		Location->OnOccupied.AddDynamic(this, &AApplePeopleVillageManager::StartOccupyTimer);
+		Location->OnVacant.AddDynamic(this, &AApplePeopleVillageManager::LocationRelease);
+
+	}
+	for (AVillageVibeLocation* Vibetation : VibeLocations)
+	{
+		Vibetation->OnOccupied.AddDynamic(this, &AApplePeopleVillageManager::StartOccupyTimer);
+		Vibetation->OnVacant.AddDynamic(this, &AApplePeopleVillageManager::LocationRelease);
+	}
+}
+
+void AApplePeopleVillageManager::AssignNewTask(AAppleVillager* Villager)
+{
+	int Decider = FMath::RandRange(0, 1);
+	if (Decider == 0)
+	{
+		FindTaskToDo(Villager);
+	}
+	else
+	{
+		GetVibing(Villager);
 	}
 }
 
 void AApplePeopleVillageManager::StartOccupyTimer(ABaseVillagerLocation* OccupiedLocation)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Starting Occupy Timer!"));
+	OccupiedLocation->StartOccupyTimer();
+}
+
+void AApplePeopleVillageManager::LocationRelease(ABaseVillagerLocation* OccupiedLocation, AAppleVillager* Villager)
+{
+	AssignNewTask(Villager);
 }
 
 
@@ -103,7 +130,8 @@ void AApplePeopleVillageManager::FindTaskToDo(AAppleVillager* Villager)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Critical Error: Task Location was never found"));
+		UE_LOG(LogTemp, Warning, TEXT("Uh oh: Task Location was never found, attempting vibe"));
+		GetVibing(Villager);
 	}
 }
 
@@ -127,7 +155,8 @@ void AApplePeopleVillageManager::GetVibing(AAppleVillager* Villager)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Critical Error: Vibe Location was never found"));
+		UE_LOG(LogTemp, Warning, TEXT("Uh oh: Vibe Location was never found, attempting work."));
+		FindTaskToDo(Villager);
 	}
 }
 

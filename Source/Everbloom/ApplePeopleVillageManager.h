@@ -30,8 +30,12 @@ private:
 	void DelegateTasks();
 	void BeginDelegate();
 	void BindLocations();
+	void AssignNewTask(AAppleVillager* Villager);
 	UFUNCTION()
 	void StartOccupyTimer(class ABaseVillagerLocation* OccupiedLocation);
+
+	UFUNCTION()
+	void LocationRelease(ABaseVillagerLocation* OccupiedLocation, AAppleVillager* Villager);
 
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class AAppleVillager*> Villagers;
