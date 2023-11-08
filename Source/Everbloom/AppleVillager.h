@@ -18,7 +18,9 @@ public:
 	void AssignManger(class AApplePeopleVillageManager* Mana);
 	class AApplePeopleVillageManager* GetManager() const { return Manager; }
 
-	void SetWorkLocation(FVector NewLocation);
+	void SetWorkLocation(FVector NewLocation, class ATaskVillageLocation* Location);
+	void SetVibeLocation(FVector NewLocation, class AVillageVibeLocation* Location);
+
 
 protected:
 	virtual void BeginPlay() override;
@@ -26,4 +28,7 @@ protected:
 private:
 	class AApplePeopleVillageManager* Manager;
 	class AVillagerAIController* AIController;
+
+	class ABaseVillagerLocation* CurrentLocation;
+
 };

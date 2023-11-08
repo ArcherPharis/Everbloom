@@ -14,6 +14,7 @@ ABaseVillagerLocation::ABaseVillagerLocation()
 void ABaseVillagerLocation::SetOccupied(AAppleVillager* CurrentVillagerToSet)
 {
 	CurrentVillager = CurrentVillagerToSet;
+	OnOccupied.Broadcast(this);
 }
 
 void ABaseVillagerLocation::SetVacant()

@@ -12,11 +12,21 @@ void AAppleVillager::AssignManger(AApplePeopleVillageManager* Mana)
 	Manager = Mana;
 }
 
-void AAppleVillager::SetWorkLocation(FVector NewLocation)
+void AAppleVillager::SetWorkLocation(FVector NewLocation, ATaskVillageLocation* Location)
 {
 	if (AIController)
 	{
+		AIController->GetBlackboardComponent()->ClearValue("VibeLocation");
 		AIController->GetBlackboardComponent()->SetValueAsVector("TaskLocation", NewLocation);
+	}
+}
+
+void AAppleVillager::SetVibeLocation(FVector NewLocation, AVillageVibeLocation* Location)
+{
+	if (AIController)
+	{
+		AIController->GetBlackboardComponent()->ClearValue("TaskLocation");
+		AIController->GetBlackboardComponent()->SetValueAsVector("VibeLocation", NewLocation);
 	}
 }
 
@@ -32,6 +42,6 @@ void AAppleVillager::BeginPlay()
 	if (Manager)
 	{
 		//temp, the manager will decide each apple person's task at start.
-		Manager->FindTaskToDo(this);
+		//Manager->FindTaskToDo(this);
 	}
 }

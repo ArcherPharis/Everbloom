@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "BaseVillagerLocation.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnOccupied, ABaseVillagerLocation*, Location);
+
 UCLASS()
 class EVERBLOOM_API ABaseVillagerLocation : public AActor
 {
@@ -14,6 +16,8 @@ class EVERBLOOM_API ABaseVillagerLocation : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ABaseVillagerLocation();
+
+	FOnOccupied OnOccupied;
 
 	void SetOccupied(class AAppleVillager* CurrentVillagerToSet);
 	void SetVacant();

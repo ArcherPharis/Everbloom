@@ -23,9 +23,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void FindTaskToDo(class AAppleVillager* Villager);
+	void GetVibing(class AAppleVillager* Villager);
+
 private:
 	void SetManagerForVillagers();
-	
+	void DelegateTasks();
+	void BeginDelegate();
+	void BindLocations();
+	UFUNCTION()
+	void StartOccupyTimer(class ABaseVillagerLocation* OccupiedLocation);
 
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class AAppleVillager*> Villagers;
@@ -35,5 +41,7 @@ private:
 
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class ATaskVillageLocation*> TaskLocations;
+
+	FTimerHandle DelegateDelay;
 
 };
