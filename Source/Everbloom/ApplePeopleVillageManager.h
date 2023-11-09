@@ -24,6 +24,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void FindTaskToDo(class AAppleVillager* Villager);
 	void GetVibing(class AAppleVillager* Villager);
+	void ResumeAllApples();
 
 private:
 	void SetManagerForVillagers();
@@ -36,6 +37,9 @@ private:
 
 	UFUNCTION()
 	void LocationRelease(ABaseVillagerLocation* OccupiedLocation, AAppleVillager* Villager);
+
+	UFUNCTION()
+	void PauseAllApples();
 
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class AAppleVillager*> Villagers;

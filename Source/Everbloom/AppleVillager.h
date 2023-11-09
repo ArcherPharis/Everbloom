@@ -6,6 +6,8 @@
 #include "ApplePerson.h"
 #include "AppleVillager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractedWith);
+
 /**
  * 
  */
@@ -20,7 +22,10 @@ public:
 
 	void SetWorkLocation(FVector NewLocation, class ATaskVillageLocation* Location);
 	void SetVibeLocation(FVector NewLocation, class AVillageVibeLocation* Location);
+	void PauseAIBehavior();
+	void ResumeAIBehavior();
 
+	FOnInteractedWith OnInteractedWith;
 
 protected:
 	virtual void BeginPlay() override;
@@ -31,4 +36,7 @@ private:
 
 	class ABaseVillagerLocation* CurrentLocation;
 	virtual void InteractWith(AEmilia* Player);
+
+	UFUNCTION()
+	void ResumeVillagerLogic();
 };

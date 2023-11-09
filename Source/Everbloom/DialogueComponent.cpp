@@ -51,7 +51,7 @@ void UDialogueComponent::OnExit()
 	Mov->Activate();
 	Mov->StopActiveMovement();
 	PlayerCont->bShowMouseCursor = false;
-	
+	OnDialogueExit.Broadcast();
 	
 }
 

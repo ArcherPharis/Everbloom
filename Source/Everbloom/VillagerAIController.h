@@ -22,6 +22,8 @@ public:
 
 	/** Retrieve team identifier in form of FGenericTeamId */
 	FORCEINLINE virtual FGenericTeamId GetGenericTeamId() const { return TeamID; }
+
+	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 private:
 
 	virtual void BeginPlay() override;

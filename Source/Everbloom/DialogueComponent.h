@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "DialogueComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDialogueExit);
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class EVERBLOOM_API UDialogueComponent : public UActorComponent
@@ -15,7 +17,7 @@ class EVERBLOOM_API UDialogueComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UDialogueComponent();
-
+	FOnDialogueExit OnDialogueExit;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -31,11 +33,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "DialogueComponent")
 	void ChangeDialogueTree(class UBehaviorTree* NewTree);
+
+	class UDialogueWidget* GetDialogueWidget() const { return DialogueWidget; }
 private:
 	class ADialogueAIController* AICont;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
-	TSubclassOf<class UDialogueWidget> DialogueWidgetClass;
+	TSubclassOf<UDialogueWidget> DialogueWidgetClass;
 
 	UPROPERTY()
 	UDialogueWidget* DialogueWidget;

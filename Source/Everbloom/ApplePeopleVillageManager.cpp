@@ -45,6 +45,7 @@ void AApplePeopleVillageManager::DelegateTasks()
 
 	for (AAppleVillager* Villager : Villagers)
 	{
+		Villager->OnInteractedWith.AddDynamic(this, &AApplePeopleVillageManager::PauseAllApples);
 		int Decider = FMath::RandRange(0, 1);
 
 		if (Decider == 0)
@@ -107,6 +108,15 @@ void AApplePeopleVillageManager::LocationRelease(ABaseVillagerLocation* Occupied
 	AssignNewTask(Villager);
 }
 
+void AApplePeopleVillageManager::PauseAllApples()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Attempted to pause AI Behavior"));
+	for (AAppleVillager* Villager : Villagers)
+	{
+		Villager->PauseAIBehavior();
+	}
+}
+
 
 void AApplePeopleVillageManager::FindTaskToDo(AAppleVillager* Villager)
 {
@@ -157,6 +167,14 @@ void AApplePeopleVillageManager::GetVibing(AAppleVillager* Villager)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Uh oh: Vibe Location was never found, attempting work."));
 		FindTaskToDo(Villager);
+	}
+}
+
+void AApplePeopleVillageManager::ResumeAllApples()
+{
+	for (AAppleVillager* Villager : Villagers)
+	{
+		Villager->ResumeAIBehavior();
 	}
 }
 

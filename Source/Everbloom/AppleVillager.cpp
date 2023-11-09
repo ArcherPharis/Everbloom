@@ -5,6 +5,9 @@
 #include "ApplePeopleVillageManager.h"
 #include "VillagerAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "DialogueComponent.h"
+#include "DialogueWidget.h"
 
 
 void AAppleVillager::AssignManger(AApplePeopleVillageManager* Mana)
@@ -30,6 +33,25 @@ void AAppleVillager::SetVibeLocation(FVector NewLocation, AVillageVibeLocation* 
 	}
 }
 
+void AAppleVillager::PauseAIBehavior()
+{
+	if (AIController)
+	{
+		AIController->GetBrainComponent()->PauseLogic("Cuz we need to pause");
+		AIController->StopMovement();
+	}
+}
+
+void AAppleVillager::ResumeAIBehavior()
+{
+	if (AIController)
+	{
+		AIController->GetBrainComponent()->ResumeLogic("Cuz we need to resume");
+		FAIRequestID RequestID;
+		AIController->ResumeMove(RequestID);
+	}
+}
+
 void AAppleVillager::BeginPlay()
 {
 	Super::BeginPlay();
@@ -38,15 +60,20 @@ void AAppleVillager::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Got Our AIController!"));
 	}
-
-	if (Manager)
-	{
-		//temp, the manager will decide each apple person's task at start.
-		//Manager->FindTaskToDo(this);
-	}
+	GetDialogueComponent()->OnDialogueExit.AddDynamic(this, &AAppleVillager::ResumeVillagerLogic);
 }
 
 void AAppleVillager::InteractWith(AEmilia* Player)
 {
 	Super::InteractWith(Player);
+	OnInteractedWith.Broadcast();
 }
+
+void AAppleVillager::ResumeVillagerLogic()
+{
+	if (Manager)
+	{
+		Manager->ResumeAllApples();
+	}
+}
+
