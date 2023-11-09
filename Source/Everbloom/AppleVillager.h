@@ -24,7 +24,7 @@ public:
 	void SetVibeLocation(FVector NewLocation, class AVillageVibeLocation* Location);
 	void PauseAIBehavior();
 	void ResumeAIBehavior();
-
+	void ChangeCurrentState(TEnumAsByte<struct EVillagerState> NewState);
 	FOnInteractedWith OnInteractedWith;
 
 protected:

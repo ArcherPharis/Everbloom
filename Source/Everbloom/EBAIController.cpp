@@ -38,6 +38,43 @@ void AEBAIController::OnPossess(APawn* InPawn)
 	}
 }
 
+ETeamAttitude::Type AEBAIController::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	const APawn* pawn = Cast<APawn>(&Other);
+
+	if (!pawn)
+		return ETeamAttitude::Neutral;
+
+	auto pTI = Cast<IGenericTeamAgentInterface>(&Other);
+	class IGenericTeamAgentInterface* bTI = Cast<IGenericTeamAgentInterface>(pawn->GetController());
+	if (bTI == nullptr && pTI == nullptr)
+		return ETeamAttitude::Neutral;
+
+
+	FGenericTeamId otherID = NULL;
+	if (bTI != nullptr)
+	{
+		otherID = bTI->GetGenericTeamId();
+	}
+	else if (pTI != nullptr)
+	{
+		otherID = pTI->GetGenericTeamId();
+	}
+
+	if (otherID == 20)
+	{
+		return ETeamAttitude::Neutral;
+	}
+	else if (otherID == TeamID)
+	{
+		return ETeamAttitude::Friendly;
+	}
+	else
+	{
+		return ETeamAttitude::Hostile;
+	}
+}
+
 void AEBAIController::PerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
 	if (Stimulus.WasSuccessfullySensed())

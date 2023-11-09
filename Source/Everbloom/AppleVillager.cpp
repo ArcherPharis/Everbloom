@@ -21,6 +21,7 @@ void AAppleVillager::SetWorkLocation(FVector NewLocation, ATaskVillageLocation* 
 	{
 		AIController->GetBlackboardComponent()->ClearValue("VibeLocation");
 		AIController->GetBlackboardComponent()->SetValueAsVector("TaskLocation", NewLocation);
+		ChangeCurrentState(EVillagerState::Working);
 	}
 }
 
@@ -30,6 +31,8 @@ void AAppleVillager::SetVibeLocation(FVector NewLocation, AVillageVibeLocation* 
 	{
 		AIController->GetBlackboardComponent()->ClearValue("TaskLocation");
 		AIController->GetBlackboardComponent()->SetValueAsVector("VibeLocation", NewLocation);
+		ChangeCurrentState(EVillagerState::Vibing);
+
 	}
 }
 
@@ -51,6 +54,15 @@ void AAppleVillager::ResumeAIBehavior()
 		AIController->ResumeMove(RequestID);
 	}
 }
+
+void AAppleVillager::ChangeCurrentState(TEnumAsByte<EVillagerState> NewState)
+{
+	if (AIController)
+	{
+		AIController->ChangeState(NewState);
+	}
+}
+
 
 void AAppleVillager::BeginPlay()
 {

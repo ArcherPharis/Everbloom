@@ -17,6 +17,11 @@ AVillagerAIController::AVillagerAIController()
 	}
 }
 
+void AVillagerAIController::ChangeState(TEnumAsByte<EVillagerState> NewState)
+{
+	CurrentVillagerState = NewState;
+}
+
 void AVillagerAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,17 +42,57 @@ void AVillagerAIController::OnPossess(APawn* InPawn)
 	}
 }
 
+ETeamAttitude::Type AVillagerAIController::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	const APawn* pawn = Cast<APawn>(&Other);
+
+	if (!pawn)
+		return ETeamAttitude::Neutral;
+
+	auto pTI = Cast<IGenericTeamAgentInterface>(&Other);
+	class IGenericTeamAgentInterface* bTI = Cast<IGenericTeamAgentInterface>(pawn->GetController());
+	if (bTI == nullptr && pTI == nullptr)
+		return ETeamAttitude::Neutral;
+
+
+	FGenericTeamId otherID = NULL;
+	if (bTI != nullptr)
+	{
+		otherID = bTI->GetGenericTeamId();
+	}
+	else if (pTI != nullptr)
+	{
+		otherID = pTI->GetGenericTeamId();
+	}
+
+	if (otherID == 20)
+	{
+		return ETeamAttitude::Neutral;
+	}
+	else if (otherID == TeamID)
+	{
+		return ETeamAttitude::Friendly;
+	}
+	else
+	{
+		return ETeamAttitude::Hostile;
+	}
+}
+
 void AVillagerAIController::PerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
 {
-	if (Stimulus.WasSuccessfullySensed())
+	if (Stimulus.WasSuccessfullySensed() && CurrentVillagerState == EVillagerState::Vibing)
 	{
-		//GetBlackboardComponent()->SetValueAsObject(TargetBlackboardKeyName, Actor);
+		//we need to ask the manager if we can set this or not as well if we are in the correct state.
+		GetBlackboardComponent()->SetValueAsObject("Player", Actor);
 	}
 	else
 	{
 		auto PerceptionInfo = PerceptionComp->GetActorInfo(*Actor);
 		if (!PerceptionInfo->HasAnyCurrentStimulus())
 		{
+			
+
 		}
 	}
 }

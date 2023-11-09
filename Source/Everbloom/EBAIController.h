@@ -29,7 +29,7 @@ private:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
-
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
 	FGenericTeamId TeamID;
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Perception")
