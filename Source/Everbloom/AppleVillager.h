@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "ApplePerson.h"
+#include "VillagerAIController.h"
 #include "AppleVillager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInteractedWith);
@@ -24,7 +25,7 @@ public:
 	void SetVibeLocation(FVector NewLocation, class AVillageVibeLocation* Location);
 	void PauseAIBehavior();
 	void ResumeAIBehavior();
-	void ChangeCurrentState(TEnumAsByte<struct EVillagerState> NewState);
+	void ChangeCurrentState(TEnumAsByte<EVillagerState> NewState);
 	FOnInteractedWith OnInteractedWith;
 
 protected:

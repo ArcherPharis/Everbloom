@@ -178,3 +178,12 @@ void AApplePeopleVillageManager::ResumeAllApples()
 	}
 }
 
+bool AApplePeopleVillageManager::CheckIfCanFollowEmilia()
+{
+	if (CurrentFollowers.Num() <= 3)
+	{
+		return true;
+	}
+	return false;
+}
+

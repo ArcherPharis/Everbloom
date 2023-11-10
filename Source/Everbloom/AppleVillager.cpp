@@ -59,7 +59,7 @@ void AAppleVillager::ChangeCurrentState(TEnumAsByte<EVillagerState> NewState)
 {
 	if (AIController)
 	{
-		AIController->ChangeState(NewState);
+		AIController->ChangeVillagerState(NewState);
 	}
 }
 

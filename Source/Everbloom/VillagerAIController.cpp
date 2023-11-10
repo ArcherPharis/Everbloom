@@ -5,6 +5,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "AppleVillager.h"
 
 AVillagerAIController::AVillagerAIController()
 {
@@ -17,7 +18,7 @@ AVillagerAIController::AVillagerAIController()
 	}
 }
 
-void AVillagerAIController::ChangeState(TEnumAsByte<EVillagerState> NewState)
+void AVillagerAIController::ChangeVillagerState(TEnumAsByte<EVillagerState> NewState)
 {
 	CurrentVillagerState = NewState;
 }
@@ -29,6 +30,7 @@ void AVillagerAIController::BeginPlay()
 	{
 		RunBehaviorTree(BehaviorTree);
 	}
+	VillagePawn = Cast<AAppleVillager>(GetPawn());
 }
 
 void AVillagerAIController::OnPossess(APawn* InPawn)

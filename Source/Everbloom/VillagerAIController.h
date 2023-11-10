@@ -35,7 +35,7 @@ public:
 
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
-	void ChangeState(TEnumAsByte<EVillagerState> NewState);
+	void ChangeVillagerState(TEnumAsByte<EVillagerState> NewState);
 private:
 
 	virtual void BeginPlay() override;
@@ -56,5 +56,7 @@ private:
 	void PerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	UBehaviorTree* BehaviorTree;
+
+	class AAppleVillager* VillagePawn;
 	
 };
