@@ -36,6 +36,7 @@ public:
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree; }
 
 	void ChangeVillagerState(TEnumAsByte<EVillagerState> NewState);
+	TEnumAsByte<EVillagerState> GetVillagerState() const { return CurrentVillagerState; }
 private:
 
 	virtual void BeginPlay() override;

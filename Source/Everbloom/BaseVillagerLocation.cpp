@@ -21,6 +21,16 @@ void ABaseVillagerLocation::SetVacant()
 {
 	OnVacant.Broadcast(this, CurrentVillager);
 	CurrentVillager = nullptr;
+
+}
+
+void ABaseVillagerLocation::ClearOccupyTimer()
+{
+	if (GetWorld()->GetTimerManager().IsTimerActive(OccupyTimerHandle))
+	{
+		GetWorld()->GetTimerManager().ClearTimer(OccupyTimerHandle);
+		UE_LOG(LogTemp, Warning, TEXT("Timer has been cleared."));
+	}
 }
 
 bool ABaseVillagerLocation::CheckOccupied()

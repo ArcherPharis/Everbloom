@@ -25,7 +25,8 @@ public:
 	void FindTaskToDo(class AAppleVillager* Villager);
 	void GetVibing(class AAppleVillager* Villager);
 	void ResumeAllApples();
-	bool CheckIfCanFollowEmilia();
+	bool CheckIfCanFollowEmilia(AAppleVillager* VillagerToAdd);
+	void RemoveEmiliaFollower(AAppleVillager* VillagerToAdd);
 
 private:
 	void SetManagerForVillagers();
@@ -33,6 +34,7 @@ private:
 	void BeginDelegate();
 	void BindLocations();
 	void AssignNewTask(AAppleVillager* Villager);
+
 	UFUNCTION()
 	void StartOccupyTimer(class ABaseVillagerLocation* OccupiedLocation);
 
@@ -41,6 +43,7 @@ private:
 
 	UFUNCTION()
 	void PauseAllApples();
+
 
 	UPROPERTY(EditInstanceOnly, Category = "Villagers")
 	TArray<class AAppleVillager*> Villagers;
@@ -55,5 +58,6 @@ private:
 	TArray<class AAppleVillager*> CurrentFollowers;
 
 	FTimerHandle DelegateDelay;
+
 
 };

@@ -6,6 +6,7 @@
 #include "Perception/AISenseConfig_Sight.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AppleVillager.h"
+#include "ApplePeopleVillageManager.h"
 
 AVillagerAIController::AVillagerAIController()
 {
@@ -86,7 +87,10 @@ void AVillagerAIController::PerceptionUpdated(AActor* Actor, FAIStimulus Stimulu
 	if (Stimulus.WasSuccessfullySensed() && CurrentVillagerState == EVillagerState::Vibing)
 	{
 		//we need to ask the manager if we can set this or not as well if we are in the correct state.
-		GetBlackboardComponent()->SetValueAsObject("Player", Actor);
+		if (VillagePawn->GetManager()->CheckIfCanFollowEmilia(VillagePawn))
+		{
+			GetBlackboardComponent()->SetValueAsObject("Player", Actor);
+		}
 	}
 	else
 	{

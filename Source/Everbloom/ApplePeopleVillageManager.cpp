@@ -18,8 +18,8 @@ AApplePeopleVillageManager::AApplePeopleVillageManager()
 void AApplePeopleVillageManager::BeginPlay()
 {
 	Super::BeginPlay();
-	BindLocations();
 	SetManagerForVillagers();
+	BindLocations();
 	GetWorld()->GetTimerManager().SetTimer(DelegateDelay, this, &AApplePeopleVillageManager::BeginDelegate, 0.5f, false);
 }
 
@@ -65,6 +65,7 @@ void AApplePeopleVillageManager::DelegateTasks()
 void AApplePeopleVillageManager::BeginDelegate()
 {
 	DelegateTasks();
+
 }
 
 void AApplePeopleVillageManager::BindLocations()
@@ -116,6 +117,7 @@ void AApplePeopleVillageManager::PauseAllApples()
 		Villager->PauseAIBehavior();
 	}
 }
+
 
 
 void AApplePeopleVillageManager::FindTaskToDo(AAppleVillager* Villager)
@@ -178,12 +180,48 @@ void AApplePeopleVillageManager::ResumeAllApples()
 	}
 }
 
-bool AApplePeopleVillageManager::CheckIfCanFollowEmilia()
+bool AApplePeopleVillageManager::CheckIfCanFollowEmilia(AAppleVillager* VillagerToAdd)
 {
 	if (CurrentFollowers.Num() <= 3)
 	{
+		Villagers.Remove(VillagerToAdd);
+		VillagerToAdd->ClearLocations();
+		if (VillagerToAdd->GetCurrentState() == EVillagerState::Vibing)
+		{
+			for (AVillageVibeLocation* Vib : VibeLocations)
+			{
+				if (VillagerToAdd == Vib->GetCurrentVillagerOccupyingSpace())
+				{
+					Vib->SetVacant();
+					Vib->ClearOccupyTimer();
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (ATaskVillageLocation* Task : TaskLocations)
+			{
+				if (VillagerToAdd == Task->GetCurrentVillagerOccupyingSpace())
+				{
+					Task->SetVacant();
+					Task->ClearOccupyTimer();
+					break;
+				}
+			}
+		}
+		CurrentFollowers.Add(VillagerToAdd);
+		VillagerToAdd->StartFollowTimer();
+
+		//each apple person starts their own timer? Then they ask for a task.
 		return true;
 	}
 	return false;
+}
+
+void AApplePeopleVillageManager::RemoveEmiliaFollower(AAppleVillager* VillagerToAdd)
+{
+	CurrentFollowers.Remove(VillagerToAdd);
+	Villagers.Add(VillagerToAdd);
 }
 

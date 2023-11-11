@@ -20,12 +20,17 @@ class EVERBLOOM_API AAppleVillager : public AApplePerson
 public:
 	void AssignManger(class AApplePeopleVillageManager* Mana);
 	class AApplePeopleVillageManager* GetManager() const { return Manager; }
-
+	AAppleVillager();
 	void SetWorkLocation(FVector NewLocation, class ATaskVillageLocation* Location);
 	void SetVibeLocation(FVector NewLocation, class AVillageVibeLocation* Location);
+	void ClearLocations();
+	void ClearEmilia();
 	void PauseAIBehavior();
 	void ResumeAIBehavior();
+	void StartFollowTimer();
 	void ChangeCurrentState(TEnumAsByte<EVillagerState> NewState);
+	void SpawnItemOnHead();
+	TEnumAsByte<EVillagerState> GetCurrentState();
 	FOnInteractedWith OnInteractedWith;
 
 protected:
@@ -40,4 +45,12 @@ private:
 
 	UFUNCTION()
 	void ResumeVillagerLogic();
+
+	void AskForTask();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AActor> HeadSpawnedItemClass;
+	UPROPERTY(EditDefaultsOnly)
+	USceneComponent* SpawnLocation;
+
 };

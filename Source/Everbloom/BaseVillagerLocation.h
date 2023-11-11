@@ -23,6 +23,7 @@ public:
 	FOnVacant OnVacant;
 	void SetOccupied(class AAppleVillager* CurrentVillagerToSet);
 	void SetVacant();
+	void ClearOccupyTimer();
 	bool CheckOccupied();
 	void StartOccupyTimer();
 	AAppleVillager* GetCurrentVillagerOccupyingSpace() const { return CurrentVillager; }
