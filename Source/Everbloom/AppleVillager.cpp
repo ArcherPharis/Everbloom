@@ -8,6 +8,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "DialogueComponent.h"
 #include "DialogueWidget.h"
+#include "Emilia.h"
 
 
 void AAppleVillager::AssignManger(AApplePeopleVillageManager* Mana)
@@ -93,9 +94,10 @@ void AAppleVillager::ChangeCurrentState(TEnumAsByte<EVillagerState> NewState)
 
 void AAppleVillager::SpawnItemOnHead()
 {
-	AActor* SpawnedItem = GetWorld()->SpawnActor<AActor>(HeadSpawnedItemClass);
+	SpawnedItem = GetWorld()->SpawnActor<AActor>(HeadSpawnedItemClass);
 	SpawnedItem->SetActorLocation(SpawnLocation->GetComponentLocation());
 	SpawnedItem->AttachToComponent(SpawnLocation, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	bHasSpawnedItem = true;
 }
 
 TEnumAsByte<EVillagerState> AAppleVillager::GetCurrentState()
@@ -119,6 +121,12 @@ void AAppleVillager::InteractWith(AEmilia* Player)
 {
 	Super::InteractWith(Player);
 	OnInteractedWith.Broadcast();
+	if (bHasSpawnedItem && EffectToGiveEmilia)
+	{
+		Player->ApplyEffectToSelf(EffectToGiveEmilia);
+		bHasSpawnedItem = false;
+		SpawnedItem->Destroy();
+	}
 }
 
 void AAppleVillager::ResumeVillagerLogic()

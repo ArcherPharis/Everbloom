@@ -29,14 +29,14 @@ public:
 	bool IsDead() const;
 
 	FOnDead OnDead;
-
+	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
+	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
-	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
+
 
 	UFUNCTION()
 	virtual void HandleCharacterMana(float NewValue, float OldValue);

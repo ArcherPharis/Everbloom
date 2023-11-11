@@ -48,9 +48,15 @@ private:
 
 	void AskForTask();
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Village Item")
 	TSubclassOf<AActor> HeadSpawnedItemClass;
+
+	AActor* SpawnedItem;
+	UPROPERTY(EditDefaultsOnly, Category = "Village Item")
+	TSubclassOf<class UGameplayEffect> EffectToGiveEmilia;
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* SpawnLocation;
+
+	bool bHasSpawnedItem = false;
 
 };
