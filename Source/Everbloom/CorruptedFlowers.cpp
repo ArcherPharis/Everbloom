@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Emilia.h"
 #include "BaseEnemy.h"
+#include "WorldFlower.h"
 // Sets default values
 ACorruptedFlowers::ACorruptedFlowers()
 {
@@ -27,8 +28,7 @@ void ACorruptedFlowers::BeginPlay()
 {
 	Super::BeginPlay();
 	StartBossFightTriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ACorruptedFlowers::StartBossFight);
-
-	
+	BlockingVolume->SetActorEnableCollision(false);
 }
 
 // Called every frame
@@ -47,12 +47,23 @@ void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent,
 		EnemySpawned->SetActorRotation(EnemySpawnLocation->GetComponentRotation());
 		EnemySpawned->OnDead.AddDynamic(this, &ACorruptedFlowers::EnemyDied);
 		StartBossFightTriggerBox->DestroyComponent();
+		BlockingVolume->SetActorEnableCollision(true);
+		BlockingField->SetActorHiddenInGame(false);
 		
 	}
 }
 
 void ACorruptedFlowers::EnemyDied()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Lower the rock formation!"));
+	Flower = GetWorld()->SpawnActor<AWorldFlower>(FlowerToSpawn);
+	FVector Offset = FVector(0, 0, 320.f);
+	Flower->SetActorLocation(GetActorLocation() + Offset);
+	Flower->SetActorRotation(GetActorRotation());
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	BlockingVolume->SetActorEnableCollision(false);
+	BlockingField->SetActorHiddenInGame(true);
+
+
 }
 

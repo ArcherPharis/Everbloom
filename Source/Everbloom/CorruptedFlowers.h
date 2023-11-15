@@ -39,6 +39,13 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
 	TSubclassOf<class AWorldFlower> FlowerToSpawn;
+	AWorldFlower* Flower;
+
+
+	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
+	AActor* BlockingVolume;
+	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
+	AActor* BlockingField;
 
 	UFUNCTION()
 	void StartBossFight(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
