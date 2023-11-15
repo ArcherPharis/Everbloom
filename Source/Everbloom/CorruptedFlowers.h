@@ -23,10 +23,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Corrupted Flower")
+	void NewFlowerEvent();
+
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
 	USceneComponent* EnemySpawnLocation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "CorruptedFlower")
+	class USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditDefaultsOnly, Category = "CorruptedFlower")
+	class UCameraComponent* Camera;
 
 	UPROPERTY(EditDefaultsOnly, Category = "CorruptedFlower")
 	UStaticMeshComponent* Mesh;
@@ -53,6 +63,15 @@ private:
 	UFUNCTION()
 	void EnemyDied();
 
-	AEmilia* Emilia;
+	void LookAtFlower();
+
+	void SpawnSavedFlower();
+
+	void InteractWithPlayer();
+
+	class AEmilia* Emilia;
+	ABaseEnemy* EnemySpawned;
+
+	void SetFocalActor(AActor* Target, float Time);
 
 };

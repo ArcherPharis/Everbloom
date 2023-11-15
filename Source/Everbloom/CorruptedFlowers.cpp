@@ -6,6 +6,11 @@
 #include "Emilia.h"
 #include "BaseEnemy.h"
 #include "WorldFlower.h"
+#include "EBPlayerController.h"
+#include "Kismet/GameplayStatics.h"
+#include "CorruptedFlowers.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 // Sets default values
 ACorruptedFlowers::ACorruptedFlowers()
 {
@@ -16,6 +21,10 @@ ACorruptedFlowers::ACorruptedFlowers()
 	EnemySpawnLocation->SetupAttachment(RootComponent);
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArm->SetupAttachment(RootComponent);
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera->SetupAttachment(SpringArm);
 	StartBossFightTriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Boss Trigger Box"));
 	StartBossFightTriggerBox->SetupAttachment(RootComponent);
 	StartBossFightTriggerBox->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
@@ -40,9 +49,10 @@ void ACorruptedFlowers::Tick(float DeltaTime)
 
 void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Emilia = Cast<AEmilia>(OtherActor))
+	Emilia = Cast<AEmilia>(OtherActor);
+	if (Emilia)
 	{
-		ABaseEnemy* EnemySpawned = GetWorld()->SpawnActor<ABaseEnemy>(EnemyToSpawn);
+		EnemySpawned = GetWorld()->SpawnActor<ABaseEnemy>(EnemyToSpawn);
 		EnemySpawned->SetActorLocation(EnemySpawnLocation->GetComponentLocation());
 		EnemySpawned->SetActorRotation(EnemySpawnLocation->GetComponentRotation());
 		EnemySpawned->OnDead.AddDynamic(this, &ACorruptedFlowers::EnemyDied);
@@ -55,15 +65,56 @@ void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent,
 
 void ACorruptedFlowers::EnemyDied()
 {
+
+
+	SetFocalActor(EnemySpawned, 1.5f);
+	FTimerHandle SpawnNewFlowerHandle;
+	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::LookAtFlower, 2.0f, false);
+	
+	BlockingVolume->SetActorEnableCollision(false);
+	BlockingField->SetActorHiddenInGame(true);
+
+
+}
+
+void ACorruptedFlowers::LookAtFlower()
+{
+
+	SetFocalActor(this, 1.5f);
+	FTimerHandle SpawnNewFlowerHandle;
+	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::SpawnSavedFlower, 2.0f, false);
+
+}
+
+void ACorruptedFlowers::SpawnSavedFlower()
+{
 	Flower = GetWorld()->SpawnActor<AWorldFlower>(FlowerToSpawn);
 	FVector Offset = FVector(0, 0, 320.f);
 	Flower->SetActorLocation(GetActorLocation() + Offset);
 	Flower->SetActorRotation(GetActorRotation());
 	SetActorHiddenInGame(true);
 	SetActorEnableCollision(false);
-	BlockingVolume->SetActorEnableCollision(false);
-	BlockingField->SetActorHiddenInGame(true);
+	NewFlowerEvent();
+	FTimerHandle ReturnBackToPlayerHandle;
+	GetWorld()->GetTimerManager().SetTimer(ReturnBackToPlayerHandle, this, &ACorruptedFlowers::InteractWithPlayer, 5.0f, false);
 
+
+}
+
+void ACorruptedFlowers::InteractWithPlayer()
+{
+	//we need to get WorldFlower to interact with Emilia too.
+	SetFocalActor(UGameplayStatics::GetPlayerCharacter(this, 0), 2.0f);
+
+}
+
+void ACorruptedFlowers::SetFocalActor(AActor* Target, float Time)
+{
+	APlayerController* Cont = Cast<APlayerController>(UGameplayStatics::GetPlayerCharacter(this, 0)->GetController());
+	if (Cont)
+	{
+		Cont->SetViewTargetWithBlend(Target, Time);
+	}
 
 }
 
