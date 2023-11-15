@@ -40,7 +40,7 @@ void ACorruptedFlowers::Tick(float DeltaTime)
 
 void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Cast<AEmilia>(OtherActor))
+	if (Emilia = Cast<AEmilia>(OtherActor))
 	{
 		ABaseEnemy* EnemySpawned = GetWorld()->SpawnActor<ABaseEnemy>(EnemyToSpawn);
 		EnemySpawned->SetActorLocation(EnemySpawnLocation->GetComponentLocation());

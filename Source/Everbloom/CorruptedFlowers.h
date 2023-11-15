@@ -53,4 +53,6 @@ private:
 	UFUNCTION()
 	void EnemyDied();
 
+	AEmilia* Emilia;
+
 };
