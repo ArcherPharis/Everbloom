@@ -11,6 +11,7 @@
 #include "CorruptedFlowers.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+
 // Sets default values
 ACorruptedFlowers::ACorruptedFlowers()
 {
@@ -69,7 +70,7 @@ void ACorruptedFlowers::EnemyDied()
 
 	SetFocalActor(EnemySpawned, 1.5f);
 	FTimerHandle SpawnNewFlowerHandle;
-	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::LookAtFlower, 2.0f, false);
+	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::LookAtFlower, 5.0f, false);
 	
 	BlockingVolume->SetActorEnableCollision(false);
 	BlockingField->SetActorHiddenInGame(true);
@@ -82,7 +83,7 @@ void ACorruptedFlowers::LookAtFlower()
 
 	SetFocalActor(this, 1.5f);
 	FTimerHandle SpawnNewFlowerHandle;
-	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::SpawnSavedFlower, 2.0f, false);
+	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::SpawnSavedFlower, 5.0f, false);
 
 }
 
@@ -104,6 +105,10 @@ void ACorruptedFlowers::SpawnSavedFlower()
 void ACorruptedFlowers::InteractWithPlayer()
 {
 	//we need to get WorldFlower to interact with Emilia too.
+	AEmilia* Em = Cast<AEmilia>(UGameplayStatics::GetPlayerCharacter(this, 0));
+	Em->OnSentTip.Broadcast(FText::FromString("Nova ability recovered. The Final Boss has been weakened."));
+	Em->Interact(Flower);
+	Flower->GiveEmiliaWorldFlowerAbility(Em);
 	SetFocalActor(UGameplayStatics::GetPlayerCharacter(this, 0), 2.0f);
 
 }

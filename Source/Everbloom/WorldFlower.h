@@ -28,6 +28,8 @@ public:
 	void CloseMenuWidget();
 	void CheckCanUpgrade(int ChoiceIndex, AEmilia* Emilia, bool& CanUpgrade);
 	void GiveUpgrade(int ChoiceIndex, AEmilia* Emilia);
+	void ChangeToDefaultTree();
+	void GiveEmiliaWorldFlowerAbility(AEmilia* Player);
 
 
 private:
@@ -40,7 +42,7 @@ private:
 	class UCapsuleComponent* HitCapsule;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
-	TSubclassOf<class UGameplayAbility> MainAbilityClass;
+	TSubclassOf<class UEBGameplayAbilityBase> MainAbilityClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	TSubclassOf<class UGameplayEffect> HealthUpgradeEffect;
@@ -59,6 +61,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	class UDialogueComponent* DialogueComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
+	class UBehaviorTree* PostSaveDialogueTree;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Dialogue")
 	FName WorldFlowerName {"Flower Name"};

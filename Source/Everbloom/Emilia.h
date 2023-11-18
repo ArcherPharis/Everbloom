@@ -56,7 +56,8 @@ public:
 	FOnToggleMenu OnToggleMenu;
 	FOnSendTip OnSentTip;
 	FOnObtainAbilityFlower OnObtainAbilityFlower;
-	
+	UFUNCTION(BlueprintCallable, Category = "Emilia")
+	void Interact(AActor* ActorToInteractWith);
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -95,8 +96,7 @@ protected:
 	void WeaponCycle(const FInputActionValue& Value);
 	void MagicCycle(const FInputActionValue& Value);
 	void Interact();
-	UFUNCTION(BlueprintCallable, Category = "Emilia")
-	void Interact(AActor* ActorToInteractWith);
+
 	void ToggleFlowerMenu();
 	void ToggleMenu();
 	void LockOn();

@@ -89,6 +89,16 @@ void AWorldFlower::GiveUpgrade(int ChoiceIndex, AEmilia* Emilia)
 	}
 }
 
+void AWorldFlower::ChangeToDefaultTree()
+{
+	DialogueComponent->ChangeDialogueTree(PostSaveDialogueTree);
+}
+
+void AWorldFlower::GiveEmiliaWorldFlowerAbility(AEmilia* Player)
+{
+	Player->GetInventoryComponent()->GiveStandardMagicToInventory(MainAbilityClass);
+}
+
 void AWorldFlower::InteractWith(AEmilia* Player)
 {
 	if (MainAbilityClass)
