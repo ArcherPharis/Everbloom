@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
 	void OnDialogueChanged();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
+	void OnRemoveBlocker();
+
 
 
 private:

@@ -3,19 +3,21 @@
 
 #include "BTT_DahliaPortalTeleport.h"
 #include "BehaviorTree/BlackboardComponent.h"
-#include "DahliaPortal.h"
+#include "MemorySprite.h"
 
 UBTT_DahliaPortalTeleport::UBTT_DahliaPortalTeleport()
 {
-	NodeName = "Teleport Emilia";
+	NodeName = "Sprite Remove Blocker";
 }
 
 EBTNodeResult::Type UBTT_DahliaPortalTeleport::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	ADahliaPortal* Portal = Cast<ADahliaPortal>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BlackboardKey.SelectedKeyName));
-	if (Portal)
+	AMemorySprite* MemorySprite = Cast<AMemorySprite>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(BlackboardKey.SelectedKeyName));
+	if (MemorySprite)
 	{
-		Portal->TeleportEmilia();
+		MemorySprite->OnRemoveBlocker();
+		return EBTNodeResult::Succeeded;
+
 	}
-	return EBTNodeResult::Succeeded;
+	return EBTNodeResult::Failed;
 }
