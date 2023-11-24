@@ -30,6 +30,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Quake")
 	TSubclassOf<class UGameplayEffect> QuakeEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Quake")
+	FGameplayTag StartQuakeTag;
+
 
 	UPROPERTY(EditDefaultsOnly, Category = "Quake")
 	float SpikesSpawnRadius = 500.f;
@@ -52,4 +55,7 @@ private:
 	void ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData);
 
 	void LaunchTargets(const FGameplayAbilityTargetDataHandle& Data);
+
+	UFUNCTION()
+	void BeginQuake(FGameplayEventData Payload);
 };

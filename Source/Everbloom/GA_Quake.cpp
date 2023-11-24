@@ -4,6 +4,7 @@
 #include "GA_Quake.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "NiagaraSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "BaseCharacter.h"
@@ -16,11 +17,18 @@ void UGA_Quake::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	UAbilityTask_PlayMontageAndWait* CastTargetingMontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, CastingMontage);
 	if (CastTargetingMontageTask)
 	{
-
+		CastTargetingMontageTask->OnBlendOut.AddDynamic(this, &UGA_Quake::MontageInterrupted);
 		CastTargetingMontageTask->OnCancelled.AddDynamic(this, &UGA_Quake::MontageInterrupted);
 		CastTargetingMontageTask->OnInterrupted.AddDynamic(this, &UGA_Quake::MontageInterrupted);
 		CastTargetingMontageTask->OnCompleted.AddDynamic(this, &UGA_Quake::MontageOut);
 		CastTargetingMontageTask->ReadyForActivation();
+	}
+
+	UAbilityTask_WaitGameplayEvent* BeginQuake = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, StartQuakeTag);
+	if (BeginQuake)
+	{
+		BeginQuake->EventReceived.AddDynamic(this, &UGA_Quake::BeginQuake);
+		BeginQuake->ReadyForActivation();
 	}
 
 }
@@ -33,15 +41,6 @@ void UGA_Quake::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGamep
 
 void UGA_Quake::MontageOut()
 {
-	K2_CommitAbility();
-
-	// Spawn the Niagara system at the specified location with the scale
-	SpawnSystem(SpikesSpawnRadius, NumOfFXToSpawn);
-	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActorClass);
-	DA->OnExplosion.AddDynamic(this, &UGA_Quake::ApplyDamageAndForce);
-	DA->SetActorLocation(GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation());
-	DA->SendOverlappingActors(GetAvatarAsCharacter());
-
 	K2_EndAbility();
 }
 
@@ -103,4 +102,16 @@ void UGA_Quake::LaunchTargets(const FGameplayAbilityTargetDataHandle& Data)
 			TargetAsCharacter->LaunchCharacter(FVector::UpVector * UpwardLaunchSpeed, true, true);
 		}
 	}
+}
+
+void UGA_Quake::BeginQuake(FGameplayEventData Payload)
+{
+	K2_CommitAbility();
+
+	// Spawn the Niagara system at the specified location with the scale
+	SpawnSystem(SpikesSpawnRadius, NumOfFXToSpawn);
+	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActorClass);
+	DA->OnExplosion.AddDynamic(this, &UGA_Quake::ApplyDamageAndForce);
+	DA->SetActorLocation(GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation());
+	DA->SendOverlappingActors(GetAvatarAsCharacter());
 }
