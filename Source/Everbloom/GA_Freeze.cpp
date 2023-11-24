@@ -39,10 +39,5 @@ void UGA_Freeze::MontageOut()
 
 void UGA_Freeze::FreezeTime(FGameplayEventData Payload)
 {
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        return;
-    }
 	
 }
