@@ -49,6 +49,21 @@ void UExec_PhysicalDamage::Execute_Implementation(const FGameplayEffectCustomExe
 	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().DefenseDef, FAggregatorEvaluateParameters(), DefenseMagnitude);
 	ExecParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageCapture().StrengthDef, FAggregatorEvaluateParameters(), AttackMagnitude);
 
+
+	UAbilitySystemComponent* TargetAbilitySystem = ExecParams.GetTargetAbilitySystemComponent();
+	if (TargetAbilitySystem)
+	{
+		FGameplayTag MyTagToCheck = FGameplayTag::RequestGameplayTag("Status.Blocking");
+		bool bIsBlocking = TargetAbilitySystem->HasMatchingGameplayTag(MyTagToCheck);
+		if (bIsBlocking)
+		{
+			FGameplayEventData EventData;
+			EventData.Instigator = ExecParams.GetSourceAbilitySystemComponent()->GetOwner();
+			TargetAbilitySystem->HandleGameplayEvent(EventTag, &EventData);
+			return;
+		}
+	}
+
 	if (DefenseMagnitude > AttackMagnitude)
 	{
 		OutHealth = HealthMagnitude - 1;

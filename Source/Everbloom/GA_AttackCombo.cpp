@@ -19,9 +19,12 @@ void UGA_AttackCombo::ActivateAbility(const FGameplayAbilitySpecHandle Handle, c
 	//consider just setting walk speed to zero, we we still get an input vector.
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 	RotateTowardsInput();
+	if (!bIsForBoss)
+	{
+		MovementComp->MaxWalkSpeed = 0.f;
+		MovementComp->RotationRate = FRotator::ZeroRotator;
+	}
 
-	MovementComp->MaxWalkSpeed = 0.f;
-	MovementComp->RotationRate = FRotator::ZeroRotator;
 	UAbilityTask_PlayMontageAndWait* MontagePlay = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, NAME_None, MeleeMontage);
 	if (MontagePlay)
 	{
@@ -135,7 +138,11 @@ void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)
 
 	FVector PushDirection = GetAvatarActorFromActorInfo()->GetActorForwardVector();
 	FRotator PushRotation = FRotator(0, PushDirection.Rotation().Yaw, 0);
-	MoveComp->GroundFriction = 0;
+	if (!bIsForBoss)
+	{
+		MoveComp->GroundFriction = 0;
+
+	}
 	FVector EvadeVelocity = PushDirection.GetSafeNormal() * HitPushSpeed * Payload.EventMagnitude;
 	MoveComp->Velocity = EvadeVelocity;
 	AvatarAsCharacter->SetActorRotation(PushRotation);

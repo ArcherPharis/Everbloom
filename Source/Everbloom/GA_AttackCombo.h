@@ -38,6 +38,9 @@ private:
 	TSubclassOf<UGameplayEffect> HitEffect;
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	TSubclassOf<UGameplayEffect> InAirHitEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Debugging")
+	bool bIsForBoss = false;
 	UFUNCTION()
 	void UpdateCombo(FGameplayEventData Payload);
 
