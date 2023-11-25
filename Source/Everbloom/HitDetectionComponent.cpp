@@ -37,7 +37,7 @@ void UHitDetectionComponent::Overlapped(UPrimitiveComponent* OverlappedComponent
 
 	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwner()->GetOwner(), HitEventTag, eventData);
 
-	const float CooldownDuration = 0.1f;
+	const float CooldownDuration = 0.3f;
 	GetWorld()->GetTimerManager().SetTimer(HitCooldownTimerHandle, this, &UHitDetectionComponent::ClearHitCooldown, CooldownDuration, false);
 }
 

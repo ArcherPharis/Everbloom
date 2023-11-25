@@ -106,7 +106,8 @@ void ACorruptedFlowers::InteractWithPlayer()
 {
 	//we need to get WorldFlower to interact with Emilia too.
 	AEmilia* Em = Cast<AEmilia>(UGameplayStatics::GetPlayerCharacter(this, 0));
-	Em->OnSentTip.Broadcast(FText::FromString("Nova ability recovered. The Final Boss has been weakened."));
+	OnPurified.Broadcast(this);
+	Em->OnSentTip.Broadcast(WinTipText);
 	Em->Interact(Flower);
 	Flower->GiveEmiliaWorldFlowerAbility(Em);
 	SetFocalActor(UGameplayStatics::GetPlayerCharacter(this, 0), 2.0f);

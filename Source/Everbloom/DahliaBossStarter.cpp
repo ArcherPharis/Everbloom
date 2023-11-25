@@ -4,6 +4,7 @@
 #include "DahliaBossStarter.h"
 #include "Components/BoxComponent.h"
 #include "Dahlia.h"
+#include "CorruptedFlowers.h"
 
 // Sets default values
 ADahliaBossStarter::ADahliaBossStarter()
@@ -26,6 +27,11 @@ void ADahliaBossStarter::BeginPlay()
 	Super::BeginPlay();
 	BossStartingCollision->OnComponentBeginOverlap.AddDynamic(this, &ADahliaBossStarter::Overlapped);
 	BlockingVolume->SetActorEnableCollision(false);
+
+	for (ACorruptedFlowers* Flower : FlowersInWorld)
+	{
+		Flower->OnPurified.AddDynamic(this, &ADahliaBossStarter::FlowerInWorldPurified);
+	}
 }
 
 // Called every frame
@@ -45,6 +51,20 @@ void ADahliaBossStarter::Overlapped(UPrimitiveComponent* OverlappedComponent, AA
 		BlockingVolume->SetActorEnableCollision(true);
 		BlockingField->SetActorHiddenInGame(false);
 		BossStartingCollision->DestroyComponent();
+		GiveDahliaStats();
+	}
+}
+
+void ADahliaBossStarter::FlowerInWorldPurified(ACorruptedFlowers* FlowerPurified)
+{
+	FlowersInWorld.Remove(FlowerPurified);
+}
+
+void ADahliaBossStarter::GiveDahliaStats()
+{
+	if (Dahlia)
+	{
+		Dahlia->ApplyEffectToSelf(DahliaStartingStats[FlowersInWorld.Num()]);
 	}
 }
 

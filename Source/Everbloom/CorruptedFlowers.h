@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "CorruptedFlowers.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurified, ACorruptedFlowers*, Flower);
+
 UCLASS()
 class EVERBLOOM_API ACorruptedFlowers : public AActor
 {
@@ -26,7 +28,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Corrupted Flower")
 	void NewFlowerEvent();
 
-
+	FOnPurified OnPurified;
 private:
 
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
@@ -50,6 +52,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
 	TSubclassOf<class AWorldFlower> FlowerToSpawn;
 	AWorldFlower* Flower;
+
+	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
+	FText WinTipText;
 
 
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")

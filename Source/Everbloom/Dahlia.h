@@ -18,9 +18,18 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnDahliaDeath();
 
+	void TryUsingRandomSpecialAbility();
+
 private:
+	virtual void BeginPlay() override;
+
 	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
 
+	void GiveSpecialAbilities();
+
 	bool bHasDied = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "DahliaAbilities")
+	TArray<TSubclassOf<class UGameplayAbility>> BossSpecialAbilities;
 	
 };
