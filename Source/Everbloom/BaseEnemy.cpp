@@ -8,6 +8,7 @@
 #include "EBAbilitySystemComponent.h"
 #include "Emilia.h"
 #include "InventoryComponent.h"
+#include "Components/CapsuleComponent.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -56,5 +57,6 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 				Player->GetInventoryComponent()->SetLifedewAmount(LifedewRewardAmount);
 			}
 		}
+		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 	}
 }
