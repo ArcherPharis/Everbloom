@@ -74,5 +74,6 @@ private:
 	UPROPERTY()
 	UWorldTreeMenuWidget* TreeMenuWidget;
 
-
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	bool bIsUncorrupted = false;
 };

@@ -106,7 +106,6 @@ void UGA_Quake::LaunchTargets(const FGameplayAbilityTargetDataHandle& Data)
 
 void UGA_Quake::BeginQuake(FGameplayEventData Payload)
 {
-	K2_CommitAbility();
 
 	// Spawn the Niagara system at the specified location with the scale
 	SpawnSystem(SpikesSpawnRadius, NumOfFXToSpawn);

@@ -101,9 +101,11 @@ void AWorldFlower::GiveEmiliaWorldFlowerAbility(AEmilia* Player)
 
 void AWorldFlower::InteractWith(AEmilia* Player)
 {
-	if (MainAbilityClass)
+	if (bIsUncorrupted)
 	{
-		//Player->GiveMainAbility(MainAbilityClass, InputValue);
+		Player->GetInventoryComponent()->GiveStandardMagicToInventory(MainAbilityClass);
+		Player->OnSentTip.Broadcast(FText::FromString("Quake Ability Recovered."));
+		bIsUncorrupted = false;
 	}
 	DialogueComponent->CreateDialogueBox(Player);
 	
