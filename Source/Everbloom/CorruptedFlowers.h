@@ -56,6 +56,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
 	FText WinTipText;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UBossHealthBar> HealthBarClass;
+	UPROPERTY(EditDefaultsOnly)
+	FText BossName;
+
+
+	UBossHealthBar* HealthBarWidget;
 
 	UPROPERTY(EditAnywhere, Category = "CorruptedFlower")
 	AActor* BlockingVolume;

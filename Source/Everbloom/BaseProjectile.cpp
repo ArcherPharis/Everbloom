@@ -90,12 +90,13 @@ void ABaseProjectile::OnImpact(UPrimitiveComponent* OverlappedComponent, AActor*
         UEBAbilitySystemComponent* ASC = OtherActor->FindComponentByClass<UEBAbilitySystemComponent>();
         if (ASC && EffectToApply)
         {
-            FGameplayEffectSpecHandle specHan = ASC->MakeOutgoingSpec(EffectToApply, -1, ASC->MakeEffectContext());
-            ASC->ApplyGameplayEffectSpecToSelf(*specHan.Data.Get());
-            if (!bIsPersistentProjectile)
-            {
-                Destroy();
-            }
+            //FGameplayEffectSpecHandle specHan = ASC->MakeOutgoingSpec(EffectToApply, -1, ASC->MakeEffectContext());
+            //ASC->ApplyGameplayEffectSpecToSelf(*specHan.Data.Get());
+            //if (!bIsPersistentProjectile)
+            //{
+            //    Destroy();
+            //}
+            ApplyDamageEffect(GetOwner(), OtherActor);
 
 
         }

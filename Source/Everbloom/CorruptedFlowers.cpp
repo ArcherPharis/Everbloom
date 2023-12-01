@@ -11,6 +11,8 @@
 #include "CorruptedFlowers.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "BossHealthBar.h"
+#include "EBAttributeSet.h"
 
 // Sets default values
 ACorruptedFlowers::ACorruptedFlowers()
@@ -60,6 +62,10 @@ void ACorruptedFlowers::StartBossFight(UPrimitiveComponent* OverlappedComponent,
 		StartBossFightTriggerBox->DestroyComponent();
 		BlockingVolume->SetActorEnableCollision(true);
 		BlockingField->SetActorHiddenInGame(false);
+		HealthBarWidget = CreateWidget<UBossHealthBar>(UGameplayStatics::GetPlayerController(this, 0), HealthBarClass);
+		HealthBarWidget->AddToViewport();
+		HealthBarWidget->SetBossName(BossName);
+		EnemySpawned->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(HealthBarWidget, &UBossHealthBar::SetHealthPercent);
 		
 	}
 }
@@ -71,7 +77,7 @@ void ACorruptedFlowers::EnemyDied()
 	SetFocalActor(EnemySpawned, 1.5f);
 	FTimerHandle SpawnNewFlowerHandle;
 	GetWorld()->GetTimerManager().SetTimer(SpawnNewFlowerHandle, this, &ACorruptedFlowers::LookAtFlower, 5.0f, false);
-	
+	HealthBarWidget->RemoveFromParent();
 	BlockingVolume->SetActorEnableCollision(false);
 	BlockingField->SetActorHiddenInGame(true);
 

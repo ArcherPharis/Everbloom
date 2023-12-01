@@ -29,6 +29,9 @@ public:
 
 	void SetCaster(AActor* Caster);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Projectile")
+	void ApplyDamageEffect(AActor* Caster, AActor* Damaged);
+
 private:
 
 	UPROPERTY(EditDefaultsOnly)
