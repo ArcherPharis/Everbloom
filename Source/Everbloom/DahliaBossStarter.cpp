@@ -5,6 +5,9 @@
 #include "Components/BoxComponent.h"
 #include "Dahlia.h"
 #include "CorruptedFlowers.h"
+#include "BossHealthBar.h"
+#include "Kismet/GameplayStatics.h"
+#include "EBAttributeSet.h"
 
 // Sets default values
 ADahliaBossStarter::ADahliaBossStarter()
@@ -52,6 +55,11 @@ void ADahliaBossStarter::Overlapped(UPrimitiveComponent* OverlappedComponent, AA
 		BlockingField->SetActorHiddenInGame(false);
 		BossStartingCollision->DestroyComponent();
 		GiveDahliaStats();
+
+		HealthBarWidget = CreateWidget<UBossHealthBar>(UGameplayStatics::GetPlayerController(this, 0), HealthBarClass);
+		HealthBarWidget->AddToViewport();
+		HealthBarWidget->SetBossName(BossName);
+		Dahlia->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(HealthBarWidget, &UBossHealthBar::SetHealthPercent);
 	}
 }
 

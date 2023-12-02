@@ -48,6 +48,12 @@ private:
 
 	ADahlia* Dahlia;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Boss")
+	TSubclassOf<class UBossHealthBar> HealthBarClass;
+	UPROPERTY(EditDefaultsOnly, Category = "Boss")
+	FText BossName;
+	UBossHealthBar* HealthBarWidget;
+
 	UFUNCTION()
 	void Overlapped(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
