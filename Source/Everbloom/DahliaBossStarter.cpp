@@ -55,7 +55,7 @@ void ADahliaBossStarter::Overlapped(UPrimitiveComponent* OverlappedComponent, AA
 		BlockingField->SetActorHiddenInGame(false);
 		BossStartingCollision->DestroyComponent();
 		GiveDahliaStats();
-
+		BossStarted();
 		HealthBarWidget = CreateWidget<UBossHealthBar>(UGameplayStatics::GetPlayerController(this, 0), HealthBarClass);
 		HealthBarWidget->AddToViewport();
 		HealthBarWidget->SetBossName(BossName);

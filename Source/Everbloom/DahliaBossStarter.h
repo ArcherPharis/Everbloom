@@ -25,6 +25,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BossStarted();
+
 private:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* BossStartingCollision;
