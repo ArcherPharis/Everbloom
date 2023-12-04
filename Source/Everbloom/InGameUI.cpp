@@ -194,6 +194,11 @@ void UInGameUI::AddToFlowerNotificationBox(UAbilityFlowerItem* Flower)
 	FlowerNotificationBox->AddChildToVerticalBox(Notif);
 }
 
+void UInGameUI::AddNewWeaponToStats(AWeapon* Weapon)
+{
+	StatsWidget->GiveWeaponToList(Weapon);
+}
+
 void UInGameUI::ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name)
 {
 	EquippedWeaponWidget->ChangeWeaponDisplayed(Image, Name);

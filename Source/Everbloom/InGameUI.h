@@ -45,6 +45,9 @@ public:
 	UFUNCTION()
 	void AddToFlowerNotificationBox(UAbilityFlowerItem* Flower);
 
+	UFUNCTION()
+	void AddNewWeaponToStats(class AWeapon* Weapon);
+
 	void ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name);
 
 	void ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name);

@@ -4,6 +4,8 @@
 #include "PlayerStatsWidget.h"
 #include "Components/TextBlock.h"
 #include "Components/ProgressBar.h"
+#include "Components/ListView.h"
+#include "Weapon.h"
 
 void UPlayerStatsWidget::SetStrengthText(FString Text)
 {
@@ -54,4 +56,9 @@ void UPlayerStatsWidget::SetPercentageBars(float HP, float Str, float Mag, float
 	DefenseProgressBar->SetPercent(Def / MaxStatAmount);
 	ResistanceProgressBar->SetPercent(Res / MaxStatAmount);
 
+}
+
+void UPlayerStatsWidget::GiveWeaponToList(AWeapon* NewWep)
+{
+	WeaponListView->AddItem(NewWep);
 }

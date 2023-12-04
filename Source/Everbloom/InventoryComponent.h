@@ -11,6 +11,7 @@ class UAbilityFlowerItem;
 //TODO: deprecated, the player sends this info instead, not the inventory comp
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewAbilityFlowerObtained, UAbilityFlowerItem*, Flower);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedWeapons, class AWeapon*, WeaponChangedTo);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAddNewWeapon, AWeapon*, NewWep);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnChangedMagic, class UEBGameplayAbilityBase*, MagicChangedTo);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLifedewChanged, int, NewAmount);
 
@@ -30,6 +31,7 @@ public:
 	FOnChangedWeapons OnChangedWeapon;
 	FOnChangedMagic OnChangedMagic;
 	FOnLifedewChanged OnLifedewChanged;
+	FOnAddNewWeapon OnAddNewWeapon;
 	void GiveNewMagic(class UEBGameplayAbilityBase* NewAbility);
 
 	UFUNCTION(BlueprintPure, Category = "InventoryComp")

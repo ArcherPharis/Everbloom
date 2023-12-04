@@ -86,6 +86,7 @@ void UInventoryComponent::InitializeInventory(USceneComponent* CompToAttach)
 		CurrentWeapon->AttachToComponent(CompToAttach, AttachRules, CurrentWeapon->GetAttachmentSocketName());
 		CurrentWeapon->ApplyWeaponEffect(Emilia);
 		Weapons.Add(CurrentWeapon);
+		OnAddNewWeapon.Broadcast(CurrentWeapon);
 	}
 }
 
@@ -114,6 +115,8 @@ void UInventoryComponent::SpawnNewWeapon(TSubclassOf<AWeapon> NewWeapon, USceneC
 		NewWep->AttachToComponent(CompToAttach, AttachRules, NewWep->GetAttachmentSocketName());
 		NewWep->DisableWeapon();
 		Weapons.Add(NewWep);
+		OnAddNewWeapon.Broadcast(NewWep);
+
 	}
 }
 
