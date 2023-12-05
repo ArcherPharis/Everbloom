@@ -60,6 +60,10 @@ void ADahliaBossStarter::Overlapped(UPrimitiveComponent* OverlappedComponent, AA
 		HealthBarWidget->AddToViewport();
 		HealthBarWidget->SetBossName(BossName);
 		Dahlia->GetAttributeSet()->OnHealthAttributeChanged.AddDynamic(HealthBarWidget, &UBossHealthBar::SetHealthPercent);
+		if (AmbientSoundPlayer)
+		{
+			AmbientSoundPlayer->Destroy();
+		}
 	}
 }
 

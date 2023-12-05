@@ -48,6 +48,8 @@ private:
 	AActor* BlockingVolume;
 	UPROPERTY(EditAnywhere, Category = "Boss")
 	AActor* BlockingField;
+	UPROPERTY(EditAnywhere, Category = "Boss")
+	AActor* AmbientSoundPlayer;
 
 	ADahlia* Dahlia;
 
