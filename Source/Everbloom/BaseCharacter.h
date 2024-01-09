@@ -118,6 +118,19 @@ private:
 	UPROPERTY()
 	ABaseCharacter* Killer;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Status Tags")
+	FGameplayTag StunTag;
+	UPROPERTY(EditDefaultsOnly, Category = "Status Tags")
+	bool bCanBeStunned = false;
+
+	void StunTagChanged(const FGameplayTag tag, int32 count);
+
+	void Disable();
+	void RecoverFromDisable();
+
+	void PauseAILogic(const FString& Reason = "Status");
+	void ResumeAILogic(const FString& Reason = "Status");
+
 
 
 

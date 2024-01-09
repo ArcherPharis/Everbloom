@@ -129,6 +129,7 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 	FGameplayEffectSpecHandle spec = MakeOutgoingGameplayEffectSpec(HitEffect, Payload.EventMagnitude);
 	spec.Data.Get()->SetContext(Payload.ContextHandle);
 	K2_ApplyGameplayEffectSpecToTarget(spec, Payload.TargetData);
+	ApplyStunEffectToTarget(Payload.TargetData);
 }
 
 void UGA_AttackCombo::PushPlayer(FGameplayEventData Payload)

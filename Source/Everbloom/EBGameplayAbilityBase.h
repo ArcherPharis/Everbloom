@@ -30,6 +30,10 @@ public:
 protected:
 	virtual bool CommitAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, OUT FGameplayTagContainer* OptionalRelevantTags = nullptr) override;
 
+	void ApplyStunEffectToTarget(const AActor* Target);
+	void ApplyStunEffectToTarget(FGameplayAbilityTargetDataHandle TargetData);
+
+
 private:
 	class ABaseCharacter* AvatarCharacterBase;
 
@@ -41,6 +45,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbilityBase", meta = (MultiLine = true))
 	FText AbilityDescription;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Status Granting Effects")
+	TSubclassOf<UGameplayEffect> StunEffect;
+
 
 	
 };

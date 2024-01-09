@@ -4,6 +4,7 @@
 #include "EBGameplayAbilityBase.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "BaseCharacter.h"
+#include "EBAbilitySystemComponent.h"
 
 void UEBGameplayAbilityBase::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -23,4 +24,19 @@ bool UEBGameplayAbilityBase::CommitAbility(const FGameplayAbilitySpecHandle Hand
 		return true;
 	}
 	return false;
+}
+
+void UEBGameplayAbilityBase::ApplyStunEffectToTarget(const AActor* Target)
+{
+	UEBAbilitySystemComponent* ASC = Target->FindComponentByClass<UEBAbilitySystemComponent>();
+	if (ASC)
+	{
+		FGameplayEffectSpecHandle Handle = ASC->MakeOutgoingSpec(StunEffect, -1, ASC->MakeEffectContext());
+		ASC->ApplyGameplayEffectSpecToSelf(*Handle.Data.Get());
+	}
+}
+
+void UEBGameplayAbilityBase::ApplyStunEffectToTarget(FGameplayAbilityTargetDataHandle TargetData)
+{
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(StunEffect), TargetData);
 }

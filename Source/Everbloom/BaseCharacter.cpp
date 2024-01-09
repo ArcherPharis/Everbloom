@@ -10,6 +10,8 @@
 #include "EBAttributeSet.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Perception/AISense_Sight.h"
+#include "EBAIController.h"
+#include "BrainComponent.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -45,6 +47,10 @@ void ABaseCharacter::BeginPlay()
 	Super::BeginPlay();
 	InitAttributeEvents();
 	ApplyInitialEffect();
+	if (bCanBeStunned)
+	{
+		GetAbilitySystemComponent()->RegisterGameplayTagEvent(StunTag).AddUObject(this, &ABaseCharacter::StunTagChanged);
+	}
 	for (auto& Ability : InitialAbilities)
 	{
 		GiveAbility(Ability.Value, static_cast<int32>(Ability.Key));
@@ -184,6 +190,55 @@ void ABaseCharacter::SetKiller(ABaseCharacter* KilledBy)
 {
 	Killer = KilledBy;
 	UE_LOG(LogTemp, Warning, TEXT("My killer was: %s"), *Killer->GetName());
+}
+
+void ABaseCharacter::StunTagChanged(const FGameplayTag tag, int32 count)
+{
+	if (count > 0)
+	{
+		Disable();
+	}
+	else
+	{
+		RecoverFromDisable();
+	}
+}
+
+void ABaseCharacter::Disable()
+{
+	PauseAILogic();
+}
+
+void ABaseCharacter::RecoverFromDisable()
+{
+	ResumeAILogic();
+}
+
+void ABaseCharacter::PauseAILogic(const FString& Reason)
+{
+	AAIController* AIC = GetController<AAIController>();
+	if (AIC)
+	{
+		auto BrainComp = AIC->GetBrainComponent();
+		if (BrainComp)
+		{
+			BrainComp->PauseLogic(Reason);
+			AIC->StopMovement();
+		}
+	}
+}
+
+void ABaseCharacter::ResumeAILogic(const FString& Reason)
+{
+	AAIController* AIC = GetController<AAIController>();
+	if (AIC)
+	{
+		auto BrainComp = AIC->GetBrainComponent();
+		if (BrainComp)
+		{
+			BrainComp->ResumeLogic(Reason);
+		}
+	}
 }
 
 FGameplayAbilitySpec* ABaseCharacter::GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID, bool broadCast, int level)
