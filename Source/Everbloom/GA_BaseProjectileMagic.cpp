@@ -7,6 +7,8 @@
 #include "BaseProjectile.h"
 #include "BaseCharacter.h"
 #include "Emilia.h"
+#include "EBPlayerController.h"
+#include "InGameUI.h"
 
 void UGA_BaseProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -15,9 +17,10 @@ void UGA_BaseProjectileMagic::ActivateAbility(const FGameplayAbilitySpecHandle H
 		return;
 
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
 	Emilia = Cast<AEmilia>(GetAvatarAsCharacter());
 	Emilia->StartAim();
+	AEBPlayerController* PlayerController = Cast<AEBPlayerController>(Emilia->GetOwner());
+	Reticle = PlayerController->PCCreateWidget(ReticleClass);
 	UAbilityTask_WaitGameplayEvent* FireEvent = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, PlayerInputFireTag, nullptr, false, false);
 	if (FireEvent)
 	{
@@ -52,6 +55,10 @@ void UGA_BaseProjectileMagic::EndAbility(const FGameplayAbilitySpecHandle Handle
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 	Emilia->EndAim();
+	if (Reticle)
+	{
+		Reticle->RemoveFromParent();
+	}
 }
 
 void UGA_BaseProjectileMagic::DetermineFiring(FGameplayEventData Payload)

@@ -40,6 +40,17 @@ void AEBPlayerController::GiveAbilityToUI(UEBGameplayAbilityBase* AbilityToGive,
 	InGameUI->AddNewMainAbility(AbilityToGive, PlayerToGive);
 }
 
+UUserWidget* AEBPlayerController::PCCreateWidget(TSubclassOf<UUserWidget> WidgetClass)
+{
+	if (WidgetClass)
+	{
+		UUserWidget* Widge = CreateWidget<UUserWidget>(this, WidgetClass);
+		Widge->AddToViewport();
+		return Widge;
+	}
+	return nullptr;
+}
+
 
 
 void AEBPlayerController::SwitchToFloriologyScreen()

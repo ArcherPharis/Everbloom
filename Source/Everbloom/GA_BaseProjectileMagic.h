@@ -45,6 +45,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	float FireRate = 30;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<UUserWidget> ReticleClass;
+
+	UUserWidget* Reticle;
+
 	UFUNCTION()
 	void MontageFinished();
 
