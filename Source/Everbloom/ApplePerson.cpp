@@ -26,9 +26,11 @@ void AApplePerson::InteractWith(AEmilia* Player)
 	LookAtRot.Pitch = 0.f;
 	SetActorRotation(LookAtRot);
 	APlayerController* Cont = Cast<APlayerController>(Player->GetController());
+	Player->SetActorHiddenInGame(true);
 	if (Cont)
 	{
-		Cont->SetViewTargetWithBlend(this, 0.5f);
+		Cont->SetViewTargetWithBlend(this);
+		InteractEvent();
 	}
 	DialogueComponent->CreateDialogueBox(Player);
 }

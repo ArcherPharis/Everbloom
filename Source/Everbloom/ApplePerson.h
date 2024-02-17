@@ -20,6 +20,9 @@ public:
 
 	class UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void InteractEvent();
+
 protected:
 	virtual void InteractWith(AEmilia* Player);
 

@@ -45,6 +45,7 @@ void UDialogueComponent::OnExit()
 	DialogueWidget->RemoveFromParent();
 	APlayerController* PlayerCont = Cast<APlayerController>(DialogueWidget->GetOwningPlayer());
 	AEmilia* Emilia = Cast<AEmilia>(PlayerCont->GetPawn());
+	Emilia->SetActorHiddenInGame(false);
 	UCharacterMovementComponent* Mov = Emilia->GetCharacterMovement();
 	PlayerCont->FlushPressedKeys();
 	PlayerCont->SetInputMode(FInputModeGameOnly());
