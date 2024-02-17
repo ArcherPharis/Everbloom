@@ -13,6 +13,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnToggleFlowerMenu);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_EightParams(FOnToggleMenu, bool, Toggle, float, currentHP, float, maxHP, float, str, float, mag, float, def, float, res, float, WeaponDamage);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSendTip, FText, Text);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObtainAbilityFlower, class UAbilityFlowerItem*, Flower);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSetTipText, FText, Message, bool, ToShow);
+
 
 
 
@@ -56,6 +58,7 @@ public:
 	FOnToggleMenu OnToggleMenu;
 	FOnSendTip OnSentTip;
 	FOnObtainAbilityFlower OnObtainAbilityFlower;
+	FOnSetTipText OnSetTipText;
 	UFUNCTION(BlueprintCallable, Category = "Emilia")
 	void Interact(AActor* ActorToInteractWith);
 
@@ -108,6 +111,12 @@ protected:
 private:
 
 	void InitSpecialAbilities();
+
+	UFUNCTION()
+	void OverlapCapsule(UPrimitiveComponent* OverlappedComponent,AActor* OtherActor,UPrimitiveComponent* OtherComp,int32 OtherBodyIndex,bool bFromSweep,const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnCapsuleOverlapEnded(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* PrimComp, int32 OtherBodyIndex);
 
 	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
 

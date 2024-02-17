@@ -48,6 +48,9 @@ public:
 	UFUNCTION()
 	void AddNewWeaponToStats(class AWeapon* Weapon);
 
+	UFUNCTION()
+	void SetTipText(FText Message, bool Show);
+
 	void ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name);
 
 	void ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name);
@@ -106,6 +109,9 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* LifedewText;
 
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* TipText;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Tips")
 	TSubclassOf<class UTipWidget> TipWidgetClass;
 
@@ -122,6 +128,8 @@ private:
 
 	UFUNCTION()
 	void GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ability);
+
+
 
 
 

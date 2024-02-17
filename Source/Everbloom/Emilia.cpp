@@ -72,6 +72,8 @@ void AEmilia::BeginPlay()
 	InventoryTimeLineFloat.BindUFunction(this, "UpdateSpringArmLocation");
 	DisengageLockOnFloat.BindUFunction(this, "UpdateSpringArmFromLockon");
 	AimFloat.BindUFunction(this, "UpdateAim");
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &AEmilia::OverlapCapsule);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &AEmilia::OnCapsuleOverlapEnded);
 
 	InventoryTimelineComponent->AddInterpFloat(InventoryAlpha, InventoryTimeLineFloat);
 	DisengageLockonTimelineComponent->AddInterpFloat(DisengageLockOnAlpha, DisengageLockOnFloat);
@@ -271,6 +273,24 @@ void AEmilia::InitSpecialAbilities()
 	GiveAbility(DoubleJumpAbility);
 	GiveAbility(CycleWeaponAbility);
 	InitMove();
+}
+
+void AEmilia::OverlapCapsule(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	IInteractableInterface* InteractableInterface = Cast<IInteractableInterface>(OtherActor);
+	if (InteractableInterface)
+	{
+		OnSetTipText.Broadcast(FText::FromString(FString("Press E to Interact")), true);
+	}
+}
+
+void AEmilia::OnCapsuleOverlapEnded(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* PrimComp, int32 OtherBodyIndex)
+{
+	IInteractableInterface* InteractableInterface = Cast<IInteractableInterface>(OtherActor);
+	if (InteractableInterface)
+	{
+		OnSetTipText.Broadcast(FText::FromString(FString("")), false);
+	}
 }
 
 void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth)

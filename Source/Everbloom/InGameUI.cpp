@@ -187,6 +187,20 @@ void UInGameUI::GiveAbilityToPlayer(TSubclassOf<class UEBGameplayAbilityBase> Ab
 	Gamemode->GetEmilia()->GetInventoryComponent()->GiveNewMagic(Ability.GetDefaultObject());
 }
 
+void UInGameUI::SetTipText(FText Message, bool Show)
+{
+	if (Show)
+	{
+		TipText->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		TipText->SetVisibility(ESlateVisibility::Hidden);
+
+	}
+	TipText->SetText(Message);
+}
+
 void UInGameUI::AddToFlowerNotificationBox(UAbilityFlowerItem* Flower)
 {
 	UFlowerNotification* Notif = CreateWidget<UFlowerNotification>(GetOwningPlayer(), FlowerNotificationWidgetClass);
