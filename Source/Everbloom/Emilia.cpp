@@ -80,7 +80,6 @@ void AEmilia::BeginPlay()
 	StartAimTimeline->AddInterpFloat(AimAlpha, AimFloat);
 
 	InventoryComponent->InitializeInventory(GetMesh());
-	InventoryComponent->SpawnNewWeapon(InventoryComponent->GetGolemSwordClass(), GetMesh());
 	InitSpecialAbilities();
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
