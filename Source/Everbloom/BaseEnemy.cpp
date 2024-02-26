@@ -9,6 +9,7 @@
 #include "Emilia.h"
 #include "InventoryComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -46,6 +47,7 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 		AAIController* Cont = Cast<AAIController>(GetOwner());
 		if (Cont)
 		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathSystem, GetActorTransform());
 			Cont->GetBrainComponent()->StopLogic("cuz he ded");
 		}
 

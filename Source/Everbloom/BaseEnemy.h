@@ -40,6 +40,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Death")
 	int LifedewRewardAmount = 3;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Death")
+	class UParticleSystem* DeathSystem;
+
 	AWeapon* Weapon;
 
 	
