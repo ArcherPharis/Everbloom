@@ -28,6 +28,9 @@ public:
 
 	bool IsDead() const;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnDeathEvent();
+
 	FOnDead OnDead;
 	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
 	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);

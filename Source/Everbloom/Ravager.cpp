@@ -31,5 +31,8 @@ void ARavager::HandleCharacterHealth(float NewValue, float MaxHealth)
 			Campfire->DecrementRavagerCount();
 
 		}
+		OnDeathEvent();
 	}
+	
+
 }
