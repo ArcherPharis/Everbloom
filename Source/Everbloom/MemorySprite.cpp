@@ -7,6 +7,8 @@
 #include "Emilia.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "InventoryComponent.h"
+#include "Weapon.h"
 
 // Sets default values
 AMemorySprite::AMemorySprite()
@@ -46,8 +48,12 @@ void AMemorySprite::InteractWith(AEmilia* Player)
 	APlayerController* Cont = Cast<APlayerController>(Player->GetController());
 	if (Cont)
 	{
-		Cont->SetViewTargetWithBlend(this, 1.5f);
+		Cont->SetViewTarget(this);
+		Player->SetActorHiddenInGame(true);
+		Player->GetInventoryComponent()->GetCurrentWeapon()->SetActorHiddenInGame(true);
+		OnInteracted();
 	}
 	DialogueComponent->CreateDialogueBox(Player);
+	
 }
 

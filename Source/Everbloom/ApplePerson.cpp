@@ -8,6 +8,8 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Emilia.h"
+#include "InventoryComponent.h"
+#include "Weapon.h"
 
 AApplePerson::AApplePerson()
 {
@@ -27,6 +29,7 @@ void AApplePerson::InteractWith(AEmilia* Player)
 	SetActorRotation(LookAtRot);
 	APlayerController* Cont = Cast<APlayerController>(Player->GetController());
 	Player->SetActorHiddenInGame(true);
+	Player->GetInventoryComponent()->GetCurrentWeapon()->SetActorHiddenInGame(true);
 	if (Cont)
 	{
 		Cont->SetViewTargetWithBlend(this);

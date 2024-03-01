@@ -32,6 +32,9 @@ public:
 	class UDialogueComponent* GetDialogueComponent() const { return DialogueComponent; }
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
+	void OnInteracted();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
 	void OnDialogueChanged();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Memory Sprite")
