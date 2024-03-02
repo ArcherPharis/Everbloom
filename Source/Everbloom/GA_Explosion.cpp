@@ -50,6 +50,7 @@ void UGA_Explosion::Explode(FGameplayEventData Payload)
 	DA->OnExplosion.AddDynamic(this, &UGA_Explosion::ApplyDamageAndForce);
 	DA->SetActorLocation(GetAvatarAsCharacter()->GetActorLocation());
 	DA->SendOverlappingActors(GetAvatarAsCharacter());
+	OnExplosionEvent();
 }
 
 void UGA_Explosion::ApplyDamageAndForce(FGameplayAbilityTargetDataHandle TargetData)

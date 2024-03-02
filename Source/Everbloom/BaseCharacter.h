@@ -35,6 +35,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
 	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
 
+	UFUNCTION(BlueprintPure, Category = "Base Character")
+	UAnimMontage* GetFlinchMontage() const { return FlinchMontage; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -112,6 +115,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Animations")
 	UAnimMontage* DeathMontage;
+	UPROPERTY(EditDefaultsOnly, Category = "Animations")
+	UAnimMontage* FlinchMontage;
 
 	bool bIsAiming = false;
 

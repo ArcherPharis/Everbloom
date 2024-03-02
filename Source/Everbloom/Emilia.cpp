@@ -306,6 +306,10 @@ void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth)
 		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 		PlayerDied();
 	}
+	if (NewValue >= 0 && NewValue != MaxHealth)
+	{
+		GetMesh()->GetAnimInstance()->Montage_Play(GetFlinchMontage());
+	}
 }
 
 

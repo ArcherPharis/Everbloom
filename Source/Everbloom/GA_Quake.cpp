@@ -109,6 +109,7 @@ void UGA_Quake::BeginQuake(FGameplayEventData Payload)
 
 	// Spawn the Niagara system at the specified location with the scale
 	SpawnSystem(SpikesSpawnRadius, NumOfFXToSpawn);
+	OnQuakeActivate();
 	ADentonateActor* DA = GetWorld()->SpawnActor<ADentonateActor>(DentActorClass);
 	DA->OnExplosion.AddDynamic(this, &UGA_Quake::ApplyDamageAndForce);
 	DA->SetActorLocation(GetAvatarAsCharacter()->GetBaseLocation()->GetComponentLocation());

@@ -18,6 +18,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Projectile Magic")
 	void FireEvent();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Projectile Magic")
+	void HitEvent();
+
 	
 private:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
