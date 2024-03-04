@@ -30,7 +30,11 @@ void ABaseEnemy::SpawnWeapon()
 void ABaseEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnWeapon();
+	if (WeaponToSpawn)
+	{
+		SpawnWeapon();
+
+	}
 	GiveAbility(MeleeAbility);
 }
 

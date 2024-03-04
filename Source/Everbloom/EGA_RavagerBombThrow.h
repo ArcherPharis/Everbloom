@@ -30,4 +30,12 @@ private:
 
 	UFUNCTION()
 	void ThrowBomb(FGameplayEventData Payload);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bomb Throw")
+	TSubclassOf<AActor> BombMeshClass;
+
+	AActor* BombMesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Bomb Throw")
+	TSubclassOf<AActor> ThrowableBombClass;
 };
