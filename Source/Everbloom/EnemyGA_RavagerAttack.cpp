@@ -56,7 +56,7 @@ void UEnemyGA_RavagerAttack::Hit(FGameplayEventData Payload)
 		ACharacter* TargetAsCharacter = Cast<ACharacter>(TargetActor);
 		if (TargetAsCharacter)
 		{
-			TargetAsCharacter->LaunchCharacter(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed + GetAvatarActorFromActorInfo()->GetActorUpVector() * 150, true, true);
+			TargetAsCharacter->LaunchCharacter(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed + GetAvatarActorFromActorInfo()->GetActorUpVector() * HitUpPushSpeed, true, true);
 			OnTargetHit(TargetActor);
 		}
 	}

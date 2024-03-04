@@ -44,5 +44,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	float HitPushSpeed = 400.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Melee")
+	float HitUpPushSpeed = 150.f;
 	
 };
