@@ -10,6 +10,7 @@
 #include "InventoryComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 void ABaseEnemy::IsTargetable(bool& IsTargetable)
 {
@@ -64,4 +65,11 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 		}
 		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 	}
+
+	//AAIController* AIC = GetController<AAIController>();
+	//if (AIC)
+	//{
+	//	AEmilia* Player = Cast<AEmilia>(UGameplayStatics::GetPlayerCharacter(this, 0));
+	//	AIC->GetBlackboardComponent()->SetValueAsObject("Target", Player);
+	//}
 }
