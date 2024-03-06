@@ -6,6 +6,8 @@
 #include "BaseEnemy.h"
 #include "Dahlia.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+
 /**
  * 
  */
@@ -19,6 +21,8 @@ public:
 	void OnDahliaDeath();
 
 	void TryUsingRandomSpecialAbility();
+
+	FOnDeath OnDeath;
 
 private:
 	virtual void BeginPlay() override;

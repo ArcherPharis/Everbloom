@@ -51,6 +51,7 @@ void ADahliaBossStarter::Overlapped(UPrimitiveComponent* OverlappedComponent, AA
 		Dahlia = GetWorld()->SpawnActor<ADahlia>(DahliaClass);
 		Dahlia->SetActorLocation(DahliaSpawnLocation->GetComponentLocation());
 		Dahlia->SetActorRotation(DahliaSpawnLocation->GetComponentRotation());
+		Dahlia->OnDeath.AddDynamic(this, &ADahliaBossStarter::HideBossUI);
 		BlockingVolume->SetActorEnableCollision(true);
 		BlockingField->SetActorHiddenInGame(false);
 		BossStartingCollision->DestroyComponent();
@@ -77,6 +78,14 @@ void ADahliaBossStarter::GiveDahliaStats()
 	if (Dahlia)
 	{
 		Dahlia->ApplyEffectToSelf(DahliaStartingStats[FlowersInWorld.Num()]);
+	}
+}
+
+void ADahliaBossStarter::HideBossUI()
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->RemoveFromParent();
 	}
 }
 

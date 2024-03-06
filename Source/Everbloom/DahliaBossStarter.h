@@ -66,4 +66,7 @@ private:
 	void FlowerInWorldPurified(ACorruptedFlowers* FlowerPurified);
 
 	void GiveDahliaStats();
+
+	UFUNCTION()
+	void HideBossUI();
 };

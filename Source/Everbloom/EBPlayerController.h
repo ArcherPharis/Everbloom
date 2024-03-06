@@ -20,6 +20,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void GiveAbilityToUI(class UEBGameplayAbilityBase* AbilityToGive, class AEmilia* PlayerToGive);
 
+	UFUNCTION(BlueprintCallable)
+	void HideUI();
+
 	UUserWidget* PCCreateWidget(TSubclassOf<UUserWidget> WidgetClass);
 
 protected:

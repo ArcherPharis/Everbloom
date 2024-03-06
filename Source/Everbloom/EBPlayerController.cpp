@@ -41,6 +41,14 @@ void AEBPlayerController::GiveAbilityToUI(UEBGameplayAbilityBase* AbilityToGive,
 	InGameUI->AddNewMainAbility(AbilityToGive, PlayerToGive);
 }
 
+void AEBPlayerController::HideUI()
+{
+	if (InGameUI)
+	{
+		InGameUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 UUserWidget* AEBPlayerController::PCCreateWidget(TSubclassOf<UUserWidget> WidgetClass)
 {
 	if (WidgetClass)

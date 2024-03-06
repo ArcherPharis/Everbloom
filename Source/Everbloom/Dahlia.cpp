@@ -25,6 +25,7 @@ void ADahlia::HandleCharacterHealth(float NewValue, float MaxHealth)
 	if (NewValue <= 0 && !bHasDied)
 	{
 		OnDahliaDeath();
+		OnDeath.Broadcast();
 		bHasDied = true;
 	}
 }
