@@ -5,6 +5,7 @@
 #include "EBGameplayAbilityBase.h"
 #include "Components/CapsuleComponent.h"
 #include "Emilia.h"
+#include "EBPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "DialogueComponent.h"
 #include "WorldTreeMenuWidget.h"
@@ -106,6 +107,11 @@ void AWorldFlower::InteractWith(AEmilia* Player)
 		Player->GetInventoryComponent()->GiveStandardMagicToInventory(MainAbilityClass);
 		Player->OnSentTip.Broadcast(FText::FromString("Quake Ability Recovered."));
 		bIsUncorrupted = false;
+	}
+	AEBPlayerController* PC = Cast<AEBPlayerController>(Player->GetOwner());
+	if (PC)
+	{
+		PC->SetViewTargetWithBlend(this, 3.f);
 	}
 	DialogueComponent->CreateDialogueBox(Player);
 	
