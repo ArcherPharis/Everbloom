@@ -10,6 +10,7 @@
 
 
 
+
 void UGA_Evade::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	//BrakingDeccelerationWalking and GroundFriction to 0
@@ -56,6 +57,7 @@ void UGA_Evade::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const F
 	FVector EvadeVelocity = EvadeDirection.GetSafeNormal() * Speed;
 	MoveComp->Velocity = EvadeVelocity;
 	Chara->SetActorRotation(EvadeRotation);
+	DashStarted(GetAvatarAsCharacter());
 }
 
 void UGA_Evade::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
