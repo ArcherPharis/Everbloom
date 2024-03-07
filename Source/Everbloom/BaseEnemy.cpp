@@ -65,6 +65,11 @@ void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
 		}
 		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 	}
+	else
+	{
+		if(GetFlinchMontage())
+		GetMesh()->GetAnimInstance()->Montage_Play(GetFlinchMontage());
+	}
 
 	//AAIController* AIC = GetController<AAIController>();
 	//if (AIC)
