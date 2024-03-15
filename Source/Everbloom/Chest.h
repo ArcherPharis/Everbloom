@@ -40,7 +40,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Chest")
 	USceneComponent* FXSpawnLocation;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Chest")
+	UPROPERTY(EditAnywhere, Category = "Chest")
 	TSubclassOf<class UAbilityFlowerItem> HeldAbilityFlowerClass;
 
 	UPROPERTY(VisibleAnywhere, Category = "Chest")
