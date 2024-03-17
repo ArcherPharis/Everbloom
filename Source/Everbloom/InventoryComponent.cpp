@@ -162,6 +162,24 @@ void UInventoryComponent::CycleMagic(float CycleDirection)
 	OnChangedMagic.Broadcast(CurrentMagic);
 }
 
+void UInventoryComponent::IncrementGemCount(UTexture2D* GemIcon)
+{
+	GemCount++;
+	if (Emilia)
+	{
+		Emilia->OnGiveGem.Broadcast(GemIcon, GemCount);
+	}
+	if (GemCount >= 3)
+	{
+		bAllGemsCollected = true;
+	}
+}
+
+void UInventoryComponent::GiveBloomsword()
+{
+	SpawnNewWeapon(BloomSwordClass, Emilia->GetMesh());
+}
+
 void UInventoryComponent::GiveStarterMagic()
 {
 	if (Emilia)

@@ -24,6 +24,7 @@
 #include "EquippedWidget.h"
 #include "MagicEquippedWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/Image.h"
 
 void UInGameUI::SwitchToFloriology()
 {
@@ -199,6 +200,28 @@ void UInGameUI::SetTipText(FText Message, bool Show)
 
 	}
 	TipText->SetText(Message);
+}
+
+void UInGameUI::SetGemIcons(UTexture2D* Icon, int IndexAt)
+{
+	switch (IndexAt)
+	{
+	case 1:
+		GemIconOne->SetBrushFromTexture(Icon);
+		GemIconOne->SetVisibility(ESlateVisibility::Visible);
+		break;
+	case 2:
+		GemIconTwo->SetBrushFromTexture(Icon);
+		GemIconTwo->SetVisibility(ESlateVisibility::Visible);
+		break;
+	case 3:
+		GemIconThree->SetBrushFromTexture(Icon);
+		GemIconThree->SetVisibility(ESlateVisibility::Visible);
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("Huh? Got some weird value in the gem index."));
+		break;
+	}
 }
 
 void UInGameUI::AddToFlowerNotificationBox(UAbilityFlowerItem* Flower)

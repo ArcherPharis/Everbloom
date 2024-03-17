@@ -33,6 +33,7 @@ void AEBPlayerController::OnPossess(APawn* newPawn)
 		Player->OnObtainAbilityFlower.AddDynamic(InGameUI, &UInGameUI::AddToFlowerNotificationBox);
 		Player->GetInventoryComponent()->OnAddNewWeapon.AddDynamic(InGameUI, &UInGameUI::AddNewWeaponToStats);
 		Player->OnSetTipText.AddDynamic(InGameUI, &UInGameUI::SetTipText);
+		Player->OnGiveGem.AddDynamic(InGameUI, &UInGameUI::SetGemIcons);
 	}
 }
 

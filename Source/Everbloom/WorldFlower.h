@@ -31,6 +31,8 @@ public:
 	void ChangeToDefaultTree();
 	void GiveEmiliaWorldFlowerAbility(AEmilia* Player);
 
+	void GetNewGem(AEmilia* Player);
+
 
 private:
 	virtual void InteractWith(AEmilia* Player);
@@ -43,6 +45,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	TSubclassOf<class UEBGameplayAbilityBase> MainAbilityClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
+	TSubclassOf<class UGem> GemClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "MainFlower")
 	TSubclassOf<class UGameplayEffect> HealthUpgradeEffect;

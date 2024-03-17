@@ -51,6 +51,9 @@ public:
 	UFUNCTION()
 	void SetTipText(FText Message, bool Show);
 
+	UFUNCTION()
+	void SetGemIcons(UTexture2D* Icon, int IndexAt);
+
 	void ChangeCurrentEquippedWeapon(UTexture2D* Image, FText Name);
 
 	void ChangeCurrentEquippedMagic(UTexture2D* Image, FText Name);
@@ -111,6 +114,13 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* TipText;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* GemIconOne;
+	UPROPERTY(meta = (BindWidget))
+	UImage* GemIconTwo;
+	UPROPERTY(meta = (BindWidget))
+	UImage* GemIconThree;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tips")
 	TSubclassOf<class UTipWidget> TipWidgetClass;

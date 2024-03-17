@@ -11,6 +11,7 @@
 #include "WorldTreeMenuWidget.h"
 #include "InventoryComponent.h"
 #include "EBAbilitySystemComponent.h"
+#include "Gem.h"
 
 
 // Sets default values
@@ -100,12 +101,19 @@ void AWorldFlower::GiveEmiliaWorldFlowerAbility(AEmilia* Player)
 	Player->GetInventoryComponent()->GiveStandardMagicToInventory(MainAbilityClass);
 }
 
+void AWorldFlower::GetNewGem(AEmilia* Player)
+{
+	UGem* Gem = GemClass.GetDefaultObject();
+	UTexture2D* Image = Gem->GetItemIcon();
+	Player->GetInventoryComponent()->IncrementGemCount(Image);
+}
+
 void AWorldFlower::InteractWith(AEmilia* Player)
 {
 	if (bIsUncorrupted)
 	{
-		Player->GetInventoryComponent()->GiveStandardMagicToInventory(MainAbilityClass);
-		Player->OnSentTip.Broadcast(FText::FromString("Quake Ability Recovered."));
+		GetNewGem(Player);
+		Player->OnSentTip.Broadcast(FText::FromString("Amber Gem Recovered."));
 		bIsUncorrupted = false;
 	}
 	AEBPlayerController* PC = Cast<AEBPlayerController>(Player->GetOwner());

@@ -14,6 +14,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_EightParams(FOnToggleMenu, bool, Toggle, floa
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSendTip, FText, Text);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnObtainAbilityFlower, class UAbilityFlowerItem*, Flower);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSetTipText, FText, Message, bool, ToShow);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGiveGem, UTexture2D*, GemIcon, int, Index);
+
 
 
 
@@ -59,6 +61,7 @@ public:
 	FOnSendTip OnSentTip;
 	FOnObtainAbilityFlower OnObtainAbilityFlower;
 	FOnSetTipText OnSetTipText;
+	FOnGiveGem OnGiveGem;
 	UFUNCTION(BlueprintCallable, Category = "Emilia")
 	void Interact(AActor* ActorToInteractWith);
 

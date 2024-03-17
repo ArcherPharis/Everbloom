@@ -115,7 +115,7 @@ void ACorruptedFlowers::InteractWithPlayer()
 	OnPurified.Broadcast(this);
 	Em->OnSentTip.Broadcast(WinTipText);
 	Em->Interact(Flower);
-	Flower->GiveEmiliaWorldFlowerAbility(Em);
+	Flower->GetNewGem(Em);
 	SetFocalActor(UGameplayStatics::GetPlayerCharacter(this, 0), 2.0f);
 
 }

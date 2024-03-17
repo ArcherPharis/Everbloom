@@ -64,6 +64,12 @@ public:
 	void CycleMagic(float CycleDirection);
 	TSubclassOf<class AWeapon> GetGolemSwordClass() const { return GolemSwordClass; }
 
+	void IncrementGemCount(UTexture2D* GemIcon);
+	int32 GetGemCount() const { return GemCount; }
+	bool ConfirmGemCollection() const { return bAllGemsCollected; }
+
+	void GiveBloomsword();
+
 private:
 	void GiveStarterMagic();
 
@@ -74,6 +80,8 @@ private:
 	TSubclassOf<class AWeapon> InitialWeaponClass;
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AWeapon> GolemSwordClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AWeapon> BloomSwordClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	int Lifedew = 0;
@@ -101,5 +109,11 @@ private:
 	int32 CurrentWeaponIndex = 0;
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentMagicIndex = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 GemCount = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bAllGemsCollected = false;
 		
 };
