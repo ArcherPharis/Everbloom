@@ -121,8 +121,7 @@ void UGA_AttackCombo::Hit(FGameplayEventData Payload)
 		ACharacter* TargetAsCharacter = Cast<ACharacter>(TargetActor);
 		if (TargetAsCharacter)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Getting here"));
-			TargetAsCharacter->GetCharacterMovement()->AddImpulse(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed * Payload.EventMagnitude, true);
+			TargetAsCharacter->LaunchCharacter(GetAvatarActorFromActorInfo()->GetActorForwardVector() * HitPushSpeed, true, false);
 		}
 	}
 

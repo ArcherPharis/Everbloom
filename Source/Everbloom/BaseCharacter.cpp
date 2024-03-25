@@ -120,7 +120,7 @@ void ABaseCharacter::InitAttributeEvents()
 	AttributeSet->OnManaAttributeChanged.AddDynamic(this, &ABaseCharacter::HandleCharacterMana);
 }
 
-void ABaseCharacter::HandleCharacterHealth(float NewValue, float OldValue)
+void ABaseCharacter::HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth)
 {
 	if (NewValue <= 0)
 	{
@@ -132,7 +132,7 @@ void ABaseCharacter::HandleCharacterHealth(float NewValue, float OldValue)
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Ouch"));
+	
 	}
 	
 

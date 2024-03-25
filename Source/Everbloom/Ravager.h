@@ -24,6 +24,6 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Ravager")
 	class ARavagerCampfire* Campfire;
 
-	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth) override;
 	
 };

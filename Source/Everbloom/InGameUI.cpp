@@ -48,7 +48,7 @@ void UInGameUI::AddNewMainAbility(UEBGameplayAbilityBase* Ability, AEmilia* Play
 	MainAbilities->AddMainAbility(Ability, Player);
 }
 
-void UInGameUI::SetHealthBar(float CurrentValue, float MaxValue)
+void UInGameUI::SetHealthBar(float CurrentValue, float MaxValue, float OldValue)
 {
 	HealthBar->SetPercent(CurrentValue / MaxValue);
 	ChangeHealthBarColor(CurrentValue/MaxValue);

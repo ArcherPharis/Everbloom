@@ -15,7 +15,7 @@ class EVERBLOOM_API UBossHealthBar : public UUserWidget
 	GENERATED_BODY()
 public:
 	UFUNCTION()
-	void SetHealthPercent(float Current, float Max);
+	void SetHealthPercent(float NewValue, float MaxHealth, float OldHealth);
 	void SetBossName(FText Name);
 
 

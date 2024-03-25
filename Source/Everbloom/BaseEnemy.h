@@ -24,7 +24,7 @@ public:
 	void UseMeleeAbility();
 
 protected:
-	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth) override;
 
 private:
 	virtual void IsTargetable(bool& IsTargetable) override;

@@ -48,7 +48,7 @@ protected:
 	virtual void HandleCharacterMana(float NewValue, float OldValue);
 
 	UFUNCTION()
-	virtual void HandleCharacterHealth(float NewValue, float MaxHealth);
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth);
 	
 
 public:	

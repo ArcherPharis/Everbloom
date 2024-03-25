@@ -27,7 +27,7 @@ public:
 private:
 	virtual void BeginPlay() override;
 
-	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth) override;
 
 	void GiveSpecialAbilities();
 

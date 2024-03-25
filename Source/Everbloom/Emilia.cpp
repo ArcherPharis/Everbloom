@@ -292,9 +292,9 @@ void AEmilia::OnCapsuleOverlapEnded(UPrimitiveComponent* OverlappedComp, AActor*
 	}
 }
 
-void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth)
+void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth)
 {
-	Super::HandleCharacterHealth(NewValue, MaxHealth);
+	Super::HandleCharacterHealth(NewValue, MaxHealth, OldHealth);
 	if (NewValue <= 0)
 	{
 		PlayerCont->bShowMouseCursor = true;
@@ -306,10 +306,11 @@ void AEmilia::HandleCharacterHealth(float NewValue, float MaxHealth)
 		GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 		PlayerDied();
 	}
-	if (NewValue >= 0 && NewValue != MaxHealth)
+	if (NewValue <= MaxHealth)
 	{
-		GetMesh()->GetAnimInstance()->Montage_Play(GetFlinchMontage());
+		//GetMesh()->GetAnimInstance()->Montage_Play(GetFlinchMontage());
 	}
+
 }
 
 

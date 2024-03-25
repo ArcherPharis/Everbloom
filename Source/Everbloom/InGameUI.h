@@ -26,7 +26,7 @@ public:
 	class UProgressBar* GetHealthBar() const { return HealthBar; }
 
 	UFUNCTION()
-	void SetHealthBar(float CurrentValue, float MaxValue);
+	void SetHealthBar(float CurrentValue, float MaxValue, float OldValue);
 	UFUNCTION()
 	void SetManaBar(float CurrentValue, float MaxValue);
 

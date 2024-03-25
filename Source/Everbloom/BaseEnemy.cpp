@@ -44,9 +44,9 @@ void ABaseEnemy::UseMeleeAbility()
 	GetAbilitySystemComponent()->TryActivateAbilityByClass(MeleeAbility);
 }
 
-void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth)
+void ABaseEnemy::HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth)
 {
-	Super::HandleCharacterHealth(NewValue, MaxHealth);
+	Super::HandleCharacterHealth(NewValue, MaxHealth, OldHealth);
 	if (NewValue == 0)
 	{
 		AAIController* Cont = Cast<AAIController>(GetOwner());

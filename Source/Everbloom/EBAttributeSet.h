@@ -13,7 +13,7 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthAttributeChanged, float, NewValue, float, OldValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthAttributeChanged, float, NewValue, float, OldValue, float, OldHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnManaAttributeChanged, float, NewValue, float, OldValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDewfruitChanged, float, NewAmount);
 

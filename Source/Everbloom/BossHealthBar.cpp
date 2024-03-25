@@ -5,9 +5,9 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 
-void UBossHealthBar::SetHealthPercent(float Current, float Max)
+void UBossHealthBar::SetHealthPercent(float NewValue, float MaxHealth, float OldHealth)
 {
-	HealthBar->SetPercent(Current / Max);
+	HealthBar->SetPercent(NewValue / MaxHealth);
 }
 
 void UBossHealthBar::SetBossName(FText Name)

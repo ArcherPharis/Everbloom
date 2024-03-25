@@ -19,9 +19,9 @@ void ADahlia::BeginPlay()
 	GiveSpecialAbilities();
 }
 
-void ADahlia::HandleCharacterHealth(float NewValue, float MaxHealth)
+void ADahlia::HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth)
 {
-	Super::HandleCharacterHealth(NewValue, MaxHealth);
+	Super::HandleCharacterHealth(NewValue, MaxHealth, OldHealth);
 	if (NewValue <= 0 && !bHasDied)
 	{
 		OnDahliaDeath();

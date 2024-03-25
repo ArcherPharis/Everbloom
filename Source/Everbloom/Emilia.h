@@ -121,7 +121,7 @@ private:
 	UFUNCTION()
 	void OnCapsuleOverlapEnded(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* PrimComp, int32 OtherBodyIndex);
 
-	virtual void HandleCharacterHealth(float NewValue, float MaxHealth) override;
+	virtual void HandleCharacterHealth(float NewValue, float MaxHealth, float OldHealth) override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	class USpringArmComponent* SpringArm;

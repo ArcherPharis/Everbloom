@@ -11,11 +11,11 @@ void UEBAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
     Super::PostGameplayEffectExecute(Data);
     if (Data.EvaluatedData.Attribute == GetHealthAttribute())
     {
+        float OldHealthValue = GetHealth() - Data.EvaluatedData.Magnitude;
         SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
         float NewHealthValue = GetHealth();
-        float OldHealthValue = NewHealthValue - Data.EvaluatedData.Magnitude;
 
-        OnHealthAttributeChanged.Broadcast(NewHealthValue, GetMaxHealth());
+        OnHealthAttributeChanged.Broadcast(NewHealthValue, GetMaxHealth(), OldHealthValue);
     }
 
     if (Data.EvaluatedData.Attribute == GetManaAttribute())
